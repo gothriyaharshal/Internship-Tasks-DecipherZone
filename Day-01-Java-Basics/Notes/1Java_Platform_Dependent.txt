@@ -1,0 +1,301 @@
+>>
+Java version java 21.0.9 2025-10-21 LTS
+
+>>
+Java program --> Java compiler(javac) ---> Byte 
+code --->Interpreter(JVM) 
+
+>>
+Java program only be executed by jvm not by any operating system
+
+>>
+JIt stand for just in time compiler jit is part of jvm it compiles java byte code into native machine code at run time jit improves the performance of jvm and tries to optimize the code
+
+.class--->class loader--->Byte verification--->interpreter
+
+If in my .class file there has multiple repeated lines then jit inform to interpreter and did not do repeated interpretation
+ 
+Interpreter executes first
+        ↓
+JVM monitors frequently used code
+        ↓
+JIT compiles that code
+        ↓
+Optimized native code is stored
+        ↓
+Future executions use native code
+
+>>
+Varible an naming provide for storing data Scope of variblee inside block ....instance varible are part of class not an method or block they were created when object of that class were made and destroyes when object is destroys
+
+>>Access Modifier
+
+public ...accessasible in all our project
+
+private ...accessible only in that particular class
+
+default ....
+
+protected ... 
+
+
+>>Wrapper class 
+used in collection they makes java fully object oriented programming language
+
+>>Bitwise operator
+
+~5 = > -6 ......    -(n+1)  ;
+
+
+a<<b ---> a left shift b stand for (a*2^b)
+
+a>>b ---> ab right shift b means (a/2^b)
+
+>>operator precedence 
+
+ all bodmas rule but ....left to right condition applies on * and  / which one come first which serve first
+
+
+>>>Keywords
+
+--->This keyword
+
+We having object (state and behaviour) ...object has refrence varible which refrence that particular object
+
+Student s = new Student(); //here s is refrence varible
+
+this is also is an refrence varible which refer object
+
+Why this keyword>>>>>>>
+ 
+Suppose we have Class test having field I ,,,and when I setValue of I by giving same varible name then jvm confuses it look that particular varible same as local varible not instance varible of that particular class
+
+by applying this it refers current class I.
+class Test
+{
+int i;
+void setValue(int i)
+{
+this.i = i ;    //if i not apply this keyword here
+
+                then jvm look both them same int i local varible 
+}
+
+void show()
+{
+sout(i);
+}
+}
+
+class xyz
+{ 
+  psvm()
+  {
+    Test t = new test();
+    t.setValue(10);
+    t.show();
+  }
+}
+
+
+instance varible is for object and this keyword is an refer varible of an obejt
+
+>>>>>> 6 main uses of this keyword
+
+..this keyword can be use to refer current class instance varible
+  
+ previos example....  
+
+..this keyword can be used to invoke current class method(implicitly)
+
+ class Test
+ {
+ void display()
+{
+  sout("Hello");
+}
+
+void show()
+{
+this.display();  //here if i did'nt apply this then                  also by default it were there 
+}
+
+psvm()
+{
+Test t = new Test();
+t.show();
+}
+ }  
+
+..this() can be used to invoke current class constructor
+
+Class Test
+{
+ Test()
+ {
+  sout("default constructor");
+ }
+
+ Test(int a)
+ {
+  sout("parameterized constructor");
+ }
+
+psvm()
+{
+ Test t=new Test();
+}
+}
+
+When i call this class then defalut constructor run and when i pass ...test(10) then parameterized one calls
+
+>>but suppose i create an object of that particular class as like
+ 
+  Test t = new Test(10);
+ 
+and in parametrized constructor at first line i write
+this()....then that particular this call default constructor
+
+if i make object like 
+  Test t = new Test();
+ 
+and in that non parameterized constructor when i pass this(10) then it calls parameterized first
+
+
+..this can be used to pass as an argument in the method call
+
+  class ThisDemo
+  {
+   void m1(ThisDemo t)
+   {
+    sout("im in m1 method"); 
+   }
+
+   void m2()
+    {
+     m1(this);
+    }
+
+    psvm()
+    {
+    ThisDemo td = new ThisDemo();
+    td.m2();      //then it internally calls m1 method
+    }
+   }
+
+  //ThisDemo td ..here td is also an refrence and 
+  //this also is an refrence of currenct class so we       pass it
+
+..this can be used to pass as an argument in the constructor call
+
+class Test
+{
+ Test(ThisDemo td)
+ {
+  sout("test class constructor");
+ }
+}
+
+  class ThisDemo
+  {
+    void m1()
+   {
+     Test test = new Test(this);
+   }
+
+    psvm()
+    {
+     ThisDemo thisDemo = new ThisDemo();
+     thisDemo.m1();    
+    }
+   }
+
+ 
+//here when we create an object of test class then passing this keyword in our ThisDemo class ..becose this contains refrence of ThisDemo
+
+..this can be used to return the current class instance from the method
+
+
+class ThisDemo
+{
+ ThisDemo m1()
+ {
+  return this;  //what happens here ThisDemo return type and this pointing ti same refrence of particular class
+ }
+psvm()
+ {
+
+ ThsiDemo t= new ThisDemo();
+ t.m1();
+ }
+
+
+
+Super >>>
+
+-->
+Super is also refrence varible of parent class  
+object
+this refers current class object but super refers parent class object
+
+class A
+{
+ int a = 10;
+}
+class B extend A
+{
+ int a = 20;
+ void show(int a)
+ {
+   sout(a);      //30
+   sout(this.a); //20
+   sout(super.a); //10
+ }
+}
+
+class main
+{
+ psvm()
+ {
+  B b = new B();
+  b.show(30);
+ }
+}
+
+..super keyword can be used to refer immediate parent class instance variable
+  >we see this in previous example
+
+..super keyword can be used to invoke immediate parent class method
+  >by applying super() at top line
+
+class A
+{
+ void m1()
+  {
+   sout("I am in class A");
+  }
+  
+}
+class B extend A
+{
+   void show()
+    {
+      super.m1();  it calls parent class method
+     }
+   psvm()
+   {
+     B ob = new B();
+    ob.show();
+  }
+}
+
+..super can be used to invoke immediate parent class constructor
+
+and constructor of parent class calls automatically because bydefaul there has super() in child class constructor
+
+
+
+
+
+practise thode keywords in deep
+>>>>byte Enum strictfp volatile native yield const goto
