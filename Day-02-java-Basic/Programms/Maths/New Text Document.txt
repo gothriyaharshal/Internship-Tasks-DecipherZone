@@ -1,0 +1,21 @@
+//printing strong number
+
+public class Strong_Number
+{
+ public static void main(String[] args)
+  {
+   Scanner sc = new Scanner(System.in);
+    
+  int num = sc.nextInt();
+   
+ if(isStrong(num))
+ {
+  System.out.print("Strong number");
+ }
+else
+{
+System.out.print("Not a strong number");
+}
+   
+  }
+}

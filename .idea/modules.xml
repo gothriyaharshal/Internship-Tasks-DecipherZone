@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Day-01-Java-Basics/Day-01-Java-Basics.iml" filepath="$PROJECT_DIR$/Day-01-Java-Basics/Day-01-Java-Basics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Day-02-java-Basic/Day-02-java-Basic.iml" filepath="$PROJECT_DIR$/Day-02-java-Basic/Day-02-java-Basic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Internship-Tasks-DecipherZone.iml" filepath="$PROJECT_DIR$/.idea/Internship-Tasks-DecipherZone.iml" />
+    </modules>
+  </component>
+</project>

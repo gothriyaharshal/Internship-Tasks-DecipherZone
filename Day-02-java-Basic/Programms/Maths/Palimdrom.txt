@@ -1,0 +1,21 @@
+class Palimdrome
+{
+public static void main(String[] args)
+{
+ Scanner sc = new Scanner(System.in);
+   System.out.println("Enter your range");
+ 
+  int num = sc.nextInt();
+ 
+  if( isPalimdrome(num) )
+  {
+    System.out.println("yes");
+  }
+  else
+  {
+  System.out.println("No");
+  
+   }
+
+}
+}
