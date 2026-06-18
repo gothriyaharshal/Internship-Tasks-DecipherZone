@@ -1,0 +1,26 @@
+import java.util.Scanner;
+
+class Typecasting
+{
+public static void main(String[] args)
+{
+Scanner sc = new Scanner(System.in);
+
+/*
+int → double
+double → int
+char → int
+*/
+
+
+//converting int to double ....moving 4 byte into 8 byte
+int  a = 10 ;
+
+double d= a ;
+
+System.out.println("Implicit type casting ->" d);
+
+
+
+}
+}

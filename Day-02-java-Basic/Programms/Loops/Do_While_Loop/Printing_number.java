@@ -1,0 +1,31 @@
+//printing 1 to n by do while loop
+
+import java.util.Scanner;
+class Printing_number
+{
+public static void main(String[] args)
+{
+
+
+Scanner sc=new Scanner(System.in);
+int start = sc.nextInt();
+
+int end = sc.nextInt();
+
+do{
+System.out.println(start);
+start++;
+}
+while(start<=end);
+
+
+int numm = 90;
+do{
+System.out.println(numm);
+}
+while(numm<0);
+
+
+
+}
+}

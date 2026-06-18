@@ -1,0 +1,916 @@
+Type of package
+
+Built in     --->>java.util java.lang  java.io java.sql
+
+>>>>>Scanner class inside like (java.util)
+
+user defined --->>Student etc...,
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+In Java, switch case is a conditional control statement used when you want to execute one block of code from many options based on a single value.
+
+Syntax (traditional switch)
+switch(expression)
+{
+    case value1:
+        // code
+        break;
+
+    case value2:
+        // code
+        break;
+
+    default:
+        // code
+}
+Example:
+import java.util.Scanner;
+
+class SwitchDemo
+{
+    public static void main(String[] args)
+    {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter day number (1-7)");
+        int day = sc.nextInt();
+
+        switch(day)
+        {
+            case 1:
+                System.out.println("Monday");
+                break;
+
+            case 2:
+                System.out.println("Tuesday");
+                break;
+
+            case 3:
+                System.out.println("Wednesday");
+                break;
+
+            case 4:
+                System.out.println("Thursday");
+                break;
+
+            case 5:
+                System.out.println("Friday");
+                break;
+
+            case 6:
+                System.out.println("Saturday");
+                break;
+
+            case 7:
+                System.out.println("Sunday");
+                break;
+
+            default:
+                System.out.println("Invalid day");
+        }
+    }
+}
+How it works internally:
+
+Suppose input = 3
+
+switch(3)
+
+case 1 ❌
+case 2 ❌
+case 3 ✅
+    print Wednesday
+    break
+
+break stops execution and comes out of switch.
+
+What happens if we remove break?
+int x = 2;
+
+switch(x)
+{
+    case 1:
+        System.out.println("One");
+
+    case 2:
+        System.out.println("Two");
+
+    case 3:
+        System.out.println("Three");
+}
+
+Output:
+
+Two
+Three
+
+Because after finding case 2, Java continues running next cases (fall-through) until it finds break or switch ends.
+
+Multiple cases same code
+int day = 6;
+
+switch(day)
+{
+    case 6:
+    case 7:
+        System.out.println("Weekend");
+        break;
+
+    default:
+        System.out.println("Working day");
+}
+
+Output:
+
+Weekend
+Modern Java switch (Java 14+)
+
+No need for break:
+
+int day = 2;
+
+switch(day)
+{
+    case 1 -> System.out.println("Monday");
+    case 2 -> System.out.println("Tuesday");
+    case 3 -> System.out.println("Wednesday");
+    default -> System.out.println("Invalid");
+}
+Switch supports:
+
+✅ int
+✅ byte
+✅ short
+✅ char
+✅ String
+✅ enum
+
+Not allowed:
+
+❌ float
+❌ double
+❌ boolean
+
+Example:
+
+String name = "Java";
+
+switch(name)
+{
+    case "Java":
+        System.out.println("Programming");
+        break;
+
+    case "Python":
+        System.out.println("Scripting");
+        break;
+}
+
+Output:
+
+Programming
+
+switch is basically a cleaner alternative to many if-else if conditions.
+
+Could you please deppely explain switch case in latest java
+
+In latest Java (Java 14+), switch has evolved. Earlier switch was mainly a statement with case, break, and fall-through behavior. Now Java introduced switch expressions which are safer and can return values.
+
+Let's understand deeply.
+
+1. Old switch vs Modern switch
+Old style (switch statement)
+int day = 2;
+
+switch(day)
+{
+    case 1:
+        System.out.println("Monday");
+        break;
+
+    case 2:
+        System.out.println("Tuesday");
+        break;
+
+    default:
+        System.out.println("Invalid");
+}
+
+Problem:
+
+Need break
+Forgetting break causes fall-through
+2. New switch expression (-> syntax)
+
+Modern Java:
+
+int day = 2;
+
+switch(day)
+{
+    case 1 -> System.out.println("Monday");
+    case 2 -> System.out.println("Tuesday");
+    default -> System.out.println("Invalid");
+}
+
+Here:
+
+case value -> statement
+
+means:
+
+"If this case matches, execute this code only."
+
+No break needed.
+
+3. Why break is not required now?
+
+Because -> automatically prevents fall-through.
+
+Example:
+
+int x = 2;
+
+switch(x)
+{
+    case 1 -> System.out.println("One");
+    case 2 -> System.out.println("Two");
+    case 3 -> System.out.println("Three");
+}
+
+Output:
+
+Two
+
+After executing case 2, switch finishes.
+
+4. Switch can return a value now
+
+This is the biggest change.
+
+Old way:
+
+int day = 3;
+String result;
+
+switch(day)
+{
+    case 1:
+        result = "Monday";
+        break;
+
+    case 2:
+        result = "Tuesday";
+        break;
+
+    default:
+        result = "Invalid";
+}
+
+System.out.println(result);
+
+Modern way:
+
+int day = 3;
+
+String result = switch(day)
+{
+    case 1 -> "Monday";
+    case 2 -> "Tuesday";
+    case 3 -> "Wednesday";
+    default -> "Invalid";
+};
+
+System.out.println(result);
+
+Output:
+
+Wednesday
+
+Here switch itself gives a value.
+
+5. How yield works
+
+If a case has multiple statements:
+
+int marks = 85;
+
+String grade = switch(marks)
+{
+    case 90, 100:
+        yield "A";
+
+    case 70, 80, 85:
+        yield "B";
+
+    default:
+        yield "C";
+};
+
+System.out.println(grade);
+
+Output:
+
+B
+
+yield returns the value from switch.
+
+Think:
+
+yield = return value from switch block
+6. Multiple values in one case
+
+Old:
+
+case 1:
+case 2:
+case 3:
+    System.out.println("Small number");
+
+Modern:
+
+int num = 2;
+
+switch(num)
+{
+    case 1,2,3 -> System.out.println("Small number");
+    case 4,5,6 -> System.out.println("Medium");
+    default -> System.out.println("Large");
+}
+
+Cleaner.
+
+7. Switch with String
+
+Example:
+
+String role = "ADMIN";
+
+switch(role)
+{
+    case "ADMIN" -> System.out.println("Full access");
+    case "USER" -> System.out.println("Limited access");
+    default -> System.out.println("Unknown");
+}
+8. Switch with enum
+enum Day
+{
+    MONDAY, TUESDAY, WEDNESDAY
+}
+
+class Test
+{
+    public static void main(String args[])
+    {
+        Day d = Day.MONDAY;
+
+        switch(d)
+        {
+            case MONDAY -> System.out.println("Start");
+            case TUESDAY -> System.out.println("Second day");
+            case WEDNESDAY -> System.out.println("Third day");
+        }
+    }
+}
+9. Important: case matching rules
+
+For switch:
+
+switch(expression)
+
+expression value is compared with case values.
+
+Example:
+
+int x = 10;
+
+switch(x)
+{
+    case 10 -> System.out.println("Ten");
+}
+
+Internally:
+
+x == 10 ?
+
+If true → execute.
+
+10. Pattern matching switch (newer Java versions)
+
+Modern Java also supports patterns (Java 21+).
+
+Example:
+
+Object obj = "Hello";
+
+switch(obj)
+{
+    case String s -> System.out.println(s.length());
+
+    case Integer i -> System.out.println(i * 2);
+
+    default -> System.out.println("Other");
+}
+
+Output:
+
+5
+
+Here switch checks type also.
+
+When to use switch?
+
+Use switch when:
+
+✅ Checking one variable against many fixed values
+
+Example:
+
+Menu system
+Days
+Months
+User roles
+Commands
+
+Use if-else when:
+
+✅ Conditions are complex
+
+Example:
+
+if(age > 18 && salary > 50000)
+Simple mental model:
+
+Old switch:
+
+find case
+↓
+execute
+↓
+break required
+
+Modern switch:
+
+find case
+↓
+execute
+↓
+automatically exit
+↓
+can return value
+
+Modern Java switch is closer to a value-producing expression rather than just a control statement.
+
+Could you also explain me package topic in java in deep dive formate
+Package in Java (Deep Dive)
+
+A package in Java is a mechanism used to group related classes, interfaces, enums, etc. together. It works like a folder/directory structure and helps in:
+
+Organizing code
+Avoiding name conflicts
+Providing access control
+Making code reusable
+
+Think of a package as a container of classes.
+
+Example:
+
+com.company.project
+        |
+        |---- User.java
+        |---- Login.java
+        |---- Database.java
+
+Here all these classes belong to the same package.
+
+1. Why do we need packages?
+
+Suppose you create two classes:
+
+Student.java
+
+and another developer also creates:
+
+Student.java
+
+Both have the same name.
+
+Without packages:
+
+Student
+Student
+
+Java cannot know which one you mean.
+
+With packages:
+
+college.Student
+school.Student
+
+Now they are different.
+
+2. Types of Packages
+
+Java has two types:
+
+1. Built-in packages
+
+Provided by Java.
+
+Examples:
+
+java.lang
+java.util
+java.io
+java.sql
+
+Example:
+
+import java.util.Scanner;
+
+class Test
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+    }
+}
+
+Here:
+
+Scanner
+
+class exists inside:
+
+java.util
+
+package.
+
+2. User-defined packages
+
+Created by programmers.
+
+Example:
+
+mypackage
+3. Creating your own package
+
+Suppose your project:
+
+Project
+ |
+ |--- Student.java
+ |
+ |--- Test.java
+
+Student.java:
+
+package mypackage;
+
+public class Student
+{
+    public void display()
+    {
+        System.out.println("Student class");
+    }
+}
+
+Important:
+
+The package statement must be the first line.
+
+Correct:
+
+package mypackage;
+
+class Student
+{
+
+}
+
+Wrong:
+
+import java.util.*;
+
+package mypackage; // error
+4. Using another package class
+
+Another file:
+
+import mypackage.Student;
+
+class Test
+{
+    public static void main(String args[])
+    {
+        Student s = new Student();
+
+        s.display();
+    }
+}
+
+Output:
+
+Student class
+5. Package and folder relationship
+
+Package creates folder structure.
+
+Example:
+
+package com.java.demo;
+
+Means:
+
+com
+ |
+ |---java
+       |
+       |---demo
+             |
+             |---ClassName.java
+
+The folder structure should match the package.
+
+6. Compile package program
+
+Example:
+
+Student.java
+
+Code:
+
+package college;
+
+public class Student
+{
+    public void show()
+    {
+        System.out.println("Hello");
+    }
+}
+
+Compile:
+
+javac -d . Student.java
+
+-d means:
+
+"create package folders automatically"
+
+Output:
+
+college
+ |
+ |---Student.class
+7. Import statement
+
+Import allows you to use another package class.
+
+Syntax:
+
+import package_name.class_name;
+
+Example:
+
+import java.util.Scanner;
+
+Now:
+
+Scanner sc = new Scanner(System.in);
+8. Import all classes
+
+Using:
+
+import java.util.*;
+
+Means:
+
+Import all classes from java.util.
+
+Example:
+
+import java.util.*;
+
+class Test
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+        ArrayList<Integer> list = new ArrayList<>();
+    }
+}
+9. java.lang package (special case)
+
+You never import:
+
+java.lang
+
+Why?
+
+Because Java automatically imports it.
+
+So you can directly write:
+
+String s = "Java";
+System.out.println(s);
+
+Because:
+
+String
+System
+Math
+Object
+
+are inside:
+
+java.lang
+10. Access modifiers and packages
+
+Packages are connected with access control.
+
+Example:
+
+public
+
+Accessible everywhere.
+
+public class Student
+{
+
+}
+
+Can access from another package.
+
+default (no modifier)
+
+Only same package.
+
+class Student
+{
+
+}
+
+Cannot access outside package.
+
+Example:
+
+Package A:
+
+package pack1;
+
+class Student
+{
+
+}
+
+Package B:
+
+import pack1.Student;
+
+class Test
+{
+
+}
+
+Error:
+
+Student is not public
+protected
+
+Accessible:
+
+Same package
+Subclasses outside package
+private
+
+Only inside same class.
+
+11. Package naming convention
+
+Usually reverse domain name:
+
+Example:
+
+Company:
+
+google.com
+
+Package:
+
+com.google.project
+
+Example:
+
+com.amazon.payment
+com.facebook.login
+12. Static import
+
+Normally:
+
+Math.sqrt(25);
+
+Using static import:
+
+import static java.lang.Math.*;
+
+class Test
+{
+    public static void main(String args[])
+    {
+        System.out.println(sqrt(25));
+    }
+}
+
+Now no need:
+
+Math.
+13. Sub-packages
+
+Packages can contain packages.
+
+Example:
+
+com
+ |
+ |---company
+        |
+        |---employee
+        |
+        |---payment
+
+These are:
+
+com.company.employee
+com.company.payment
+
+Important:
+
+Subpackage is not automatically imported.
+
+Example:
+
+import java.util.*;
+
+does NOT import:
+
+java.util.concurrent
+14. Internal working of package
+
+When you write:
+
+import java.util.Scanner;
+
+Compiler does:
+
+Searches classpath
+Finds:
+java/util/Scanner.class
+Loads bytecode
+Allows usage
+
+Import does not copy code.
+
+It only tells compiler where to find class.
+
+15. Package vs Import
+Package	Import
+Creates group	Uses existing class
+First line	After package
+Organizes classes	Gives access
+Example: java.util	Example: import java.util.Scanner
+Real project example (Spring style)
+
+A real application:
+
+com.shop.app
+
+ |
+ |---controller
+ |      UserController.java
+ |
+ |---service
+ |      UserService.java
+ |
+ |---repository
+        UserRepository.java
+
+Each package has a responsibility.
+
+This is how professional Java projects are organized.
+
+Short summary:
+Package = folder for Java classes
+
+package keyword → create package
+
+import keyword → use another package class
+
+public → accessible everywhere
+
+default → same package only
+
+java.lang → automatically imported
+
+Packages are one of the foundations for large Java applications like Spring Boot projects.

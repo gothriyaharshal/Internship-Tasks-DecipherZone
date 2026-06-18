@@ -1,0 +1,503 @@
+public final class String
+{
+    private final byte[] value;
+
+    private final byte coder;
+
+    private int hash;
+
+    // methods...
+}
+
+>> 
+ Internal structure of string class ....final means no other class extend this String class
+
+Why value is private?
+
+Example:
+
+private final byte[] value;
+
+Because Java does not allow direct modification.
+
+You cannot do:
+
+s.value[0] = 'X';
+
+because:
+
+private
+
+means only String class can access it.
+
+5. Why value is final?
+
+Important part.
+
+Example:
+
+private final byte[] value;
+
+Many people misunderstand final.
+
+final means:
+
+The reference cannot change.
+
+Example:
+
+final int x = 10;
+
+x = 20; // error
+
+Same:
+
+final byte[] value;
+
+means:
+
+value = new byte[]{'J','a','v','a'};
+
+cannot become:
+
+value = new byte[]{'H','i'};
+
+But array contents?
+
+Can they change?
+
+Normally yes:
+
+arr[0]='X';
+
+So why String is immutable?
+
+Because String never exposes its internal array.
+
+6. String methods create new objects
+
+Example:
+
+String s = "Java";
+
+s.concat(" World");
+
+System.out.println(s);
+
+Output:
+
+Java
+
+Why?
+
+Internally:
+
+public String concat(String str)
+{
+    return new String(newValue);
+}
+
+It creates a new String object.
+
+Memory:
+
+Before:
+
+s
+|
+v
+
+"Java"
+
+After concat:
+
+s
+|
+v
+
+"Java"
+
+
+"Java World"  (new object)
+
+But s still points to old object.
+
+7. What happens with assignment?
+String a = "Java";
+
+String b = a;
+
+b = b + " Code";
+
+Initially:
+
+a ----\
+       \
+        "Java"
+       /
+b ----/
+
+After:
+
+b = b + " Code";
+
+New object:
+
+a --------> "Java"
+
+
+b --------> "Java Code"
+
+Because strings cannot change.
+
+8. Why String uses String Pool
+
+Java has a special memory area:
+
+String Constant Pool
+
+Example:
+
+String a = "Java";
+String b = "Java";
+
+Only one object:
+
+Pool:
+
+"Java"
+
+a ----\
+       ---> "Java"
+b ----/
+
+Why possible?
+
+Because String is immutable.
+
+If String was mutable:
+
+b.replace("Java","Python");
+
+then a would also change.
+
+That would be dangerous.
+
+9. Constructor case
+String s = new String("Java");
+
+Memory:
+
+Heap:
+
+String object
+     |
+     v
+   "Java"
+
+
+Pool:
+
+"Java"
+
+Two objects may exist.
+
+10. String hash caching
+
+String has:
+
+private int hash;
+
+Example:
+
+String s="Java";
+
+s.hashCode();
+
+First time:
+
+calculates hash.
+
+Stores:
+
+hash = value
+
+Next time:
+
+returns saved hash.
+
+Why safe?
+
+Because string never changes.
+
+If string changed, hash would become wrong.
+
+11. Why immutability is useful?
+Security
+
+Example:
+
+String url="https://bank.com";
+
+If mutable:
+
+Someone could change it after validation.
+
+HashMap
+
+Example:
+
+Map<String,Integer> map;
+
+HashMap depends on:
+
+hashCode()
+equals()
+
+If String changes after insertion:
+
+data location becomes wrong.
+
+Thread safety
+
+Multiple threads can share same String safely.
+
+Complete simplified String class
+
+Something like:
+
+public final class String
+{
+    private final byte[] value;
+
+    private int hash;
+
+    public String concat(String s)
+    {
+        return new String(newValue);
+    }
+
+    public int length()
+    {
+        return value.length;
+    }
+
+    public char charAt(int index)
+    {
+        return value[index];
+    }
+}
+
+The combination:
+
+final class
++
+private data
++
+final internal array reference
++
+no modification methods
++
+new object on change
+
+creates String immutability.
+
+So String is not immutable because of one keyword; it is a design combination.
+
+
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+you say value is final in string but if any field is final then we have to provide it data at that time ...not at object creation '
+
+Your doubt is very good. The confusion is because of final variable rules vs constructor initialization.
+
+You said:
+
+if any field is final then we have to provide data at that time ...not at object creation
+
+Actually the rule is:
+
+A final instance variable must be assigned exactly once before the constructor finishes.
+It does not mean you must initialize it at declaration time.
+
+There are multiple ways.
+
+1. Initialize at declaration
+class Test
+{
+    final int x = 10;
+}
+
+Here value is given immediately.
+
+2. Initialize inside constructor (most common)
+class Test
+{
+    final int x;
+
+    Test(int value)
+    {
+        x = value;
+    }
+}
+
+Now:
+
+Test t = new Test(50);
+
+During object creation:
+
+new Test(50)
+       |
+       |
+ constructor runs
+       |
+       |
+x = 50
+
+After constructor completes:
+
+x cannot change
+3. String case
+
+Simplified String:
+
+public final class String
+{
+    private final byte[] value;
+
+    String(byte[] data)
+    {
+        value = data;
+    }
+}
+
+When you do:
+
+String s = new String("Java");
+
+Internally:
+
+new String()
+       |
+       |
+constructor
+       |
+       |
+value = ['J','a','v','a']
+
+The final variable gets assigned inside constructor.
+
+Now important part:
+
+You may think:
+
+final byte[] value;
+
+means array content cannot change.
+
+But final only locks the reference.
+
+Example:
+
+class Demo
+{
+    final int[] arr;
+
+    Demo()
+    {
+        arr = new int[3];
+    }
+
+    void change()
+    {
+        arr[0] = 100;
+    }
+}
+
+This is allowed:
+
+arr[0] = 100;
+
+Because reference is same.
+
+Memory:
+
+Before:
+
+arr
+ |
+ v
+[0,0,0]
+
+After:
+
+arr
+ |
+ v
+[100,0,0]
+
+Reference did not change.
+
+But this is not allowed:
+
+arr = new int[5];
+
+because reference changes.
+
+Now String becomes immutable because of extra design:
+
+private final byte[] value;
+
+AND
+
+String never gives this array outside.
+
+Example:
+
+You cannot do:
+
+s.value[0]='X';
+
+because:
+
+value is private
+no method returns the original array
+methods create new String objects
+
+So:
+
+String s = "Java";
+
+s.concat("World");
+
+does not do:
+
+value = old array + new chars
+
+It does:
+
+new String(new array)
+
+So the exact chain is:
+
+final
+   |
+   prevents reference change
+
+private
+   |
+   prevents outside access
+
+String methods
+   |
+   never modify array
+
+new object created
+   |
+   immutability achieved
+
+final alone does not make String immutable. It is only one part of the design.
