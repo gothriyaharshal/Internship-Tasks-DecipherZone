@@ -15,7 +15,7 @@ int row = sc.nextInt();
 
 for(int i = 1 ; i<=row ; i++)
 {
-char s = 'a' ;
+char s = ch ;
 
 for(int j = 1 ; j<=i ; j++)
 {

@@ -7,7 +7,7 @@ class A_NumberEvenOdd
    System.out.println("Enter your number");
    int num = sc.nextInt();
 
-  if(num%2==0)
+  if(num%2==0)                          //we also apply this condition like ........if(num&1 == 0) it is even by bit manipulation
  {
    System.out.println("Even");
  }

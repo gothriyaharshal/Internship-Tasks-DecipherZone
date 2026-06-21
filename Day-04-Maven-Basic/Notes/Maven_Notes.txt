@@ -1,0 +1,670 @@
+Maven>>
+
+Build tool
+
+project management tool (dependency injection)
+
+>>>>>>Comman problems and activities without maven
+
+---->> Multiple jars
+>>>>>> Dependency and version
+>>>>>  project structure
+>>>>>  Build , publish and deploye
+
+Think about a project without Maven:
+
+Suppose you create a Spring Boot application manually. You need:
+
+Spring Core jar
+Spring MVC jar
+Hibernate jar
+MySQL driver jar
+JSON jar
+Logging jar
+Many other jars
+
+Now problems come:
+
+1. Multiple JARs problem
+
+Without Maven:
+
+You download every .jar file manually and put them in your project:
+
+MyProject
+ |
+ |-- lib
+      |
+      |-- spring-core.jar
+      |-- spring-web.jar
+      |-- mysql-driver.jar
+      |-- hibernate.jar
+
+Problems:
+
+Where to download?
+Which version?
+Missing jar error?
+Wrong jar version?
+
+Example:
+
+Spring needs another library internally:
+
+spring-web.jar
+       |
+       needs
+       |
+   spring-core.jar
+
+You must find all required jars yourself.
+
+With Maven:
+
+You only write:
+
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-web</artifactId>
+    <version>6.2.0</version>
+</dependency>
+
+Maven automatically downloads:
+
+spring-web.jar
+spring-core.jar
+spring-beans.jar
+spring-context.jar
+...
+
+This is called dependency management.
+
+2. Dependency and Version Problem
+
+Imagine:
+
+Your project uses:
+
+Spring 5.0
+Hibernate 6.0
+MySQL Connector 8.0
+
+Later another developer updates:
+
+Spring 6.0
+
+Now some jars are incompatible.
+
+Without Maven:
+You manually replace jars and check compatibility.
+
+With Maven:
+
+pom.xml
+
+controls everything:
+
+<dependencies>
+
+<dependency>
+Spring version
+</dependency>
+
+<dependency>
+Hibernate version
+</dependency>
+
+</dependencies>
+
+Everyone in the team gets the same versions.
+
+3. Project Structure Problem
+
+Without Maven every developer creates different folders:
+
+Developer A:
+
+src
+classes
+libs
+config
+
+Developer B:
+
+source
+bin
+jar
+
+Confusion happens.
+
+Maven gives a standard structure:
+
+MyProject
+
+src
+ |
+ |-- main
+ |     |
+ |     |-- java
+ |     |-- resources
+ |
+ |-- test
+       |
+       |-- java
+
+
+pom.xml
+
+Every Java developer understands this.
+
+4. Build, Publish and Deploy Problem
+
+Without Maven:
+
+You manually:
+
+Compile code
+javac
+Create jar
+jar command
+Copy files
+Deploy
+
+Very repetitive.
+
+With Maven:
+
+One command:
+
+mvn clean install
+
+It does:
+
+clean
+ |
+ removes old build
+
+compile
+ |
+ compiles java code
+
+test
+ |
+ runs tests
+
+package
+ |
+ creates jar/war
+
+install
+ |
+ stores locally
+
+For Spring Boot:
+
+mvn spring-boot:run
+
+runs your application.
+
+Maven main file: pom.xml
+
+Maven works using this file:
+
+pom.xml
+
+Example:
+
+<project>
+
+<groupId>com.company</groupId>
+
+<artifactId>employee-app</artifactId>
+
+<version>1.0</version>
+
+
+<dependencies>
+
+<dependency>
+Spring Boot
+</dependency>
+
+</dependencies>
+
+
+</project>
+
+This tells Maven:
+
+Project name
+Version
+Required libraries
+Build rules
+
+Simple definition:
+
+Maven = a manager for your Java project which manages libraries, project structure, building, testing, packaging and deployment.
+
+In a real Spring Boot company project, you usually don't download jars manually; you just modify pom.xml and Maven handles the rest.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<
+
+Set upiing maven in our machine maven is in our Apache folder like Apache.Maven
+
+Download:
+
+Binary zip archive
+
+Example:
+
+apache-maven-3.9.x-bin.zip
+
+Step 3: Extract Maven
+
+Extract the zip file.
+
+Example location:
+
+C:\Program Files\Apache\maven
+
+or
+
+C:\apache-maven-3.9.x
+
+Inside it you should see:
+
+apache-maven-3.9.x
+
+bin
+boot
+conf
+lib
+Step 4: Create MAVEN_HOME variable
+
+Open:
+
+Start Menu
+   |
+Search: Environment Variables
+   |
+Edit the system environment variables
+   |
+Environment Variables
+
+Under System variables click:
+
+New
+
+Add:
+
+Variable name:
+
+MAVEN_HOME
+
+Variable value:
+
+C:\apache-maven-3.9.x
+
+(Your extracted path)
+
+Step 5: Add Maven to PATH
+
+In the same Environment Variables window:
+
+Find:
+
+Path
+
+Click:
+
+Edit
+
+Add:
+
+%MAVEN_HOME%\bin
+
+Save everything.
+
+Step 6: Verify installation
+
+Close old CMD and open a new one.
+
+Run:
+
+mvn -version
+
+Output should be like:
+
+Apache Maven 3.9.x
+
+Maven home: C:\apache-maven-3.9.x
+
+Java version: 17
+
+Now Maven is installed ✅
+
+Step 7: Test Maven project
+
+>>Maven connected with internet
+
+Create a sample project(Folder):
+run cmd>>>
+
+
+mvn archetype:generate
+
+>>>It doenload all the plugins
+
+or if you use Spring Boot:
+
+mvn spring-boot:run
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+Making an Maven project
+
+Make an folder .... run cmd ... mvn archetype:generate...it generates all the archetype 
+
+Archetype means>>
+{
+
+
+When you run:
+
+mvn archetype:generate
+
+Maven shows many options because it is asking:
+
+"Which type of project template do you want to create?"
+
+That template is called an Archetype.
+
+What is an Archetype?
+
+Archetype = a ready-made project skeleton/template
+
+It creates the initial folder structure and files for you.
+
+Example: Without archetype, you manually create:
+
+MyProject
+
+src
+ └── main
+      └── java
+      └── resources
+
+src
+ └── test
+
+pom.xml
+
+With archetype, Maven creates it automatically.
+
+Why many archetypes?
+
+Because different projects need different structures.
+
+Examples:
+
+1. Simple Java project
+
+Archetype:
+
+maven-archetype-quickstart
+
+Creates:
+
+src/main/java
+src/test/java
+pom.xml
+
+For normal Java applications.
+
+2. Web application
+
+Archetype:
+
+maven-archetype-webapp
+
+Creates:
+
+src/main/webapp
+WEB-INF
+jsp files
+
+For Servlet/JSP projects.
+
+3. Spring Boot
+
+Usually we don't use mvn archetype:generate.
+
+Spring Boot uses:
+
+Spring Initializr
+
+because it provides Spring-specific templates.
+
+What is Archetype ID?
+
+Example:
+
+Maven shows:
+
+1: maven-archetype-quickstart
+2: maven-archetype-webapp
+3: maven-archetype-simple
+
+The name is the archetypeId.
+
+Example:
+
+archetypeId =
+maven-archetype-quickstart
+
+It tells Maven:
+
+"Which template should I use?"
+
+What is Group ID?
+
+Example:
+
+org.apache.maven.archetypes
+
+This identifies who created the archetype.
+
+Think of it like a package name.
+
+Java:
+
+com.company.project
+
+Maven:
+
+groupId: org.apache.maven.archetypes
+What is Artifact ID?
+
+This is the project/template name.
+
+Example:
+
+artifactId = maven-archetype-quickstart
+
+It identifies the actual library/project.
+
+What is Version?
+
+Example:
+
+version = 1.4
+
+Means which release of that archetype.
+
+Because templates also have versions.
+
+Like:
+
+spring-boot 3.2.0
+spring-boot 3.3.0
+
+Same idea.
+
+When creating your own project Maven asks:
+
+Define value for groupId:
+
+You enter:
+
+com.akash
+
+Meaning:
+
+Your company/package identity.
+
+Define value for artifactId:
+
+You enter:
+
+EmployeeManagement
+
+Project name.
+
+Define value for version:
+
+Default:
+
+1.0-SNAPSHOT
+
+Meaning:
+
+This is a development version.
+
+Define value for package:
+
+Default:
+
+com.akash
+
+Your Java package:
+
+package com.akash;
+
+After creation:
+
+EmployeeManagement
+
+ |
+ |-- src
+ |    |
+ |    |-- main
+ |          |
+ |          |-- java
+ |              |
+ |              |-- com
+ |                  |
+ |                  |-- akash
+ |
+ |-- pom.xml
+
+In short:
+
+Term	Meaning
+Archetype	Project template
+Archetype ID	Template name
+Group ID	Owner/organization
+Artifact ID	Project/library name
+Version	Release number
+Package	Java package name
+
+
+}
+
+then we provide Archetype id ....group id....artifact id and at last press yes then 
+
+>>but in starting we were selecting default number for archetype id..Given normal name as we want of archetype id 
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Now we have full structure Maven application and write code in java file and compile that code we go into that particular project ....and switch onto cmd
+
+>> Mvn complie   (it tooks all the dependency and process them set them into our project )
+
+>>After compilation I want to collect it into package then I run (it pacakage it into jar file)   into target folder automatically
+
+  mvn pacakage 
+
+
+>>Maven also run all over test cases automatically so we don have to worry about running those test cases
+ 
+>>>Now we have jar we run that jar which is in target folder 
+
+>>>>MavenTestApp-1.0-SNAPSHOT.jar   with this name
+
+java -cp target/MavenTestApp-1.0-SNAPSHOT.jar com.StudentSystem.App
+
+>>>>>>>>>>>>>this is standard why to run we also run our class without packaging it in jar 
+
+by .....
+ java -c target/classes com.StudentSystem.App
+
+But we want if we distribute our project then it is in jar folder
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+Quick Overview>>>
+
+Maven contain >>   Archetype info  and  Dependency Info
+
+>>>We select default Archetype and give its user defined name
+>>>Give group ID and artifact id name 
+>>>After it generate whole Directory structure of project and has pom.xml 
+>>>by default there only has junit dependency if we add more maven add there jar while we compiling them
+>>>then we make whole project package and run that
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+---> Creating src directory 
+---> configuration dependency
+---> project template and help us in building(converting project in jar file)
+
+--->> for simple java application we made jar file ....for web application we made war file
+      for enterprise application we made ear file
+
+---->>if I want to add this whole project into another project then I make its jar ...in pom.xm provide its dependency with group id artifact id etc
+
+Maven loop in local first is there has any repository if there then it took from local other wise it took from online
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+Maven every build there has lifecycle
+
+>>like compile run in package etc
+
+compile ----> test ----> package(internal class run) ---->install(if there has no dependency then installing those into local)----->deploy(deploying it into Remote repo)
+
+>>Mvn clean install means installing it all dependendy were installes
+
+>>Mvn clean   
+
+It deletes the generated build output folder (usually target/)
+It removes compiled .class files
+It removes generated JAR/WAR files
+It removes temporary build files created by Maven
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+if I want to make web application of maven then I ....generate maven  then five number of that partivular that I want like webApp j2ee14 ...in front of code I pass and maven generate template for me 
+
+how we run it first make its package and then instal tomcat ....and at tomcat there has deploye section deploye it then it runs smoothly
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+We have plugins which menas give information about java and maven 
+
+
+
+
+
+
