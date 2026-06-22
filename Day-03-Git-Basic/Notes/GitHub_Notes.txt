@@ -1,3 +1,4 @@
+
 What is Git 
 
 
@@ -176,7 +177,9 @@ Git branchs
 
 >>For every separate work there has seprate branch
 
-main branch and by cloning it I make tow other branch and do changes and in third branch I want both cloned branch feature then I merge both of them and then took new branch and do work
+main branch and by cloning it I make tow other branch
+ and do changes and in third branch I want both cloned branch feature
+ then I merge both of them and then took new branch and do work
  
 
 >>git branch (for checking on which branch we are)

@@ -605,7 +605,7 @@ java -cp target/MavenTestApp-1.0-SNAPSHOT.jar com.StudentSystem.App
 >>>>>>>>>>>>>this is standard why to run we also run our class without packaging it in jar 
 
 by .....
- java -c target/classes com.StudentSystem.App
+ java -cp target/classes com.StudentSystem.App
 
 But we want if we distribute our project then it is in jar folder
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

@@ -1,0 +1,50 @@
+import java.util.Scanner;
+
+class Hollow_Special_Programm
+{
+
+ public static void main(String[] args)
+ {
+   Scanner sc = new Scanner(System.in);
+
+  //making an jagged array
+
+  int row = sc.nextInt();
+
+  int column = sc.nextInt();
+
+  for(int i = 1 ; i<=row ; i++)
+   {
+    //printing spaces
+    for(int space = 1 ; space<=row-i ; space++)
+    {
+      System.out.print(" ");
+    }  
+
+    //printing first half
+    for(int j = 1 ; j<=i ; j++)
+    {
+     if(j==1 || j==i || i==row)
+{
+      System.out.print(j);
+ }
+     else {
+         System.out.print(" ");
+     }
+   }    
+
+    for(int k = i-1 ; k>=1 ; k--)
+   {
+ if(k==1 || i==row)
+{
+      System.out.print(k);
+}
+
+ else {
+     System.out.print(" ");
+ }
+  }
+       System.out.println();
+   }
+ }
+}
