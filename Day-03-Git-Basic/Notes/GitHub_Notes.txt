@@ -295,7 +295,26 @@ i push then i face merge conflicts
 >>>
 Means if i clone master branch then i have some code make another child branch of it if i do same line changes and merge them then i did not face any confilits but .......if on my main branch some other person do chnages on those line and whrn i go to merge i found merge confkitcs
 
+after resolving merge conflict do 
 
+git add .
+
+git commit -m "sjj"
+
+then push
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+git checkout feature
+git fetch origin
+git rebase origin/main
+
+# conflict aaye toh
+# fix file
+git add .
+git rebase --continue
+
+# end
+git push origin feature --force
 
 
 
