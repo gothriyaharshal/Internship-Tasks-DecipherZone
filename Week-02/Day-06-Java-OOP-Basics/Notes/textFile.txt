@@ -1,0 +1,426 @@
+>>Problems without oops
+
+unstructured code and messy ....
+
+
+>>Memory allocation by new keyword happens on Runtime
+
+Student s = new Student();
+
+here memory allocated at heap in runtime
+
+>>Class has charcteriStics(varible) and Behaviour(method)
+
+>>A_Class_Obejct    (see this one)
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<
+
+
+instance varible and static varible has bydefault value but local varible didn't have
+
+>>because local store in stack and jada der tk nhi chlega vo object toh heap m hota h vo kyi der tk vha rhta h 
+
+> B_Class_Obejct(see this one)
+
+>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+Making constructor and calling each one by this keyword constructor chaining(calling one construort from another)/overloading also there
+
+>C_class_Constuctor
+
+>>We directly didn't call constructor only call by object creation or by this keyword
+
+>>If there has no space in heap and at runtime constructor initiate value it throw runtime error
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<
+
+Deep Obejct 
+
+>>Refrence took 4 byte or 8 byte always depends on jvm in stack
+
+>>in heap total size
+
+  Header Size (Metadata of object + 8  bytes)
+  padding(8 k multiple  m byte hone chhaiye nhi h toh                   add krdo )
+  field size(like int age string nam like)
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<
+
+Call by value and Call by Refrence
+
+
+ java is call by value  there is no call by refrence in java
+
+
+
+public class Call_By_Value {
+
+    public static void change(int x , int b)
+    {
+        int sum = x+b;
+        x=sum;
+        b=sum;
+    }
+
+    public static void main(String[] args) {
+        int a = 100;
+        int b=10;
+
+
+
+        change(a,b);
+
+        System.out.println(a);
+    }
+}
+ 
+//original a change nhi hoga uski copy funcntion m pass hogi
+
+//but in object ..unme andr ka data change ho skta h like  [10 ,20,30] h toh [10,30,40] ye ho skta h pr m aise krdu ki   
+
+ a (refrence varible) = new Student();
+ a.khchu bhi filed
+
+change kru toh yaha a refrence ki copy bnegi or jb m orint krvauga niche toh vo original wala data hi dikhega muje mtlb call by valye 
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<
+
+Static and final keyword
+
+College name same---->
+
+in many object so I creates static varible / function in class so there has one copy which were sharing by all object
+
+Static method rule
+
+> only call another static method
+
+why there has not another function inside static 
+
+s1(object)    
+s2
+s3            those all object has print() instance 
+s4             Method
+
+and one static method pointing to those all like 
+stay() .....when I call instance method inside this static method  ...jvm confuse like konse object ka print() call kru bhai  m ambiguity aajati h 
+
+
+>same by varibles also
+              
+>does not have access to this and super
+
+static block is for initializing static varible ....for instance varible there has constructor
+
+static String college;
+ 
+static{
+  college = "IIT GHUWATI"
+ }
+ 
+>>class run hote hi static block run hota h then after our object creates and other works happens
+
+
+>>is in parameter did we provide static like
+
+ void print(static int a , static int b)
+
+No we only apply static on class level type kyuki method toh stack m store h pura ho ajyega
+
+>>did we provide class name as static no (because class is part of package) 
+  but if is nested then yes
+
+ 
+Final>>>>>>>>>>>>>>>>
+
+----->> constant varible if we apply final keyword on varible
+
+ final pi = 3.14 ;  (allowed)
+
+
+ 
+final pi;
+ pi=3.12 ;   (not allowed) at instance it not allowed
+             because object wants it
+
+
+
+final pi;
+ pi=3.12 ;   it allowed in any method becuse it is local        and when we want to set set it only one time not more then one
+
+
+
+final int pi ;
+
+Student()                 (Allowed)
+{
+  this.pi = pi ;
+}
+
+
+
+because first constructor calls in
+
+----->>  
+  we put final keyword in front of ...variable,method,class ,parameter of function also
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+
+class Test {
+
+    static {
+        System.out.println("Static block 1");
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Main method");
+    }
+
+    static {
+        System.out.println("Static block 2");
+    }
+}
+
+Static block 1
+Static block 2
+Main method
+
+
+static run first
+
+>>>>Main method only took static method directly
+
+
+static final>>>>>>>>
+
+static final (constant bhi or same bhi)
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+String[] args   user input dene k lie
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<
+
+Pillers of OOPS
+
+1>
+Encapsulation  
+
+We follow 50% of encapsulation like....we have a class and all our behaviour(Method) and data
+
+class Student
+{
+ int a ;
+ int b ;
+
+ void print()
+  {
+  }
+ 
+ void study()
+ {
+ }
+
+}
+here all the data and behaviour were binded in class
+
+
+>>>We should not provide unrestricted access of our data
+
+>>Example
+
+class BankBalance
+{
+ double balance;
+ string bankBalance;
+ string ifsc;
+}
+class main
+{
+ psvm()
+ {
+   BankBalance b = new Bankbalance();
+   b.balance = 1000;   
+ }
+}
+
+means any one can change our data unrestricted person also
+>>but real life m deposite or withdraw krna pdta h 
+
+>>By following encapsulation only accessible user change data by access modifiers
+
+public(any where in project)
+private (only in class)
+protected (anywhere in pacakage and in child class of  sub package)
+default (only in same pacakage)
+
+
+D_Encapsulation_Only_focus on encapsulation code
+
+>>>>Ek .java file m ek hi public class hoskti h like
+Student.java h toh vhi public hogi entry pint class or class h vo nhi hogi 
+>>ek pakage m multiple public class ho skti h 
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<
+
+access Modifer in class
+
+public (class khi bhi accessible h)
+
+private or ptrotected  because for whome ,,,is se upr koi parent class toh honi chahiye na jo private or protected rkhe isse 
+
+private and protected eligible for nested class
+
+>>>>>>>>>>>>>>>>>>>>>>>>..
+
+encapsulation now
+
+class BankAccount
+{
+ private double balance;
+ 
+ public void deposit(int amount)
+ {
+  balance = balance+amount; 
+ }
+
+ public void deposit (int amount)
+ {
+ balance = balance-amout;
+ }
+}
+
+or condition bhi lga skte h if(amount>=balance) thbi aise toh this is encapsulation
+
+
+>>>>>>>>>>>>>>>>>>>>>>
+
+College(package)
+  Student.java(college student)
+
+
+Scholl(package)
+  Student.java(student student)
+
+other(package)
+   Demo.java
+
+ psvm
+{
+
+}
+
+//which one package i import that student class were called or if i wanr both then
+
+College.Student st=new College.Student();
+
+School.Student sc=new School.Student();
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<
+
+Pacakges
+
+if i add ArrayList package then what is internal working is
+
+import java.util.ArrayList;
+
+public class Demo
+{
+ psvm()
+  {
+    ArrayList<String> a = new ArrayList<>();
+    a.add("Harshal"); 
+   }
+}
+
+internal  ....jvm makes .class file of Demo and .class file of all the import file which were using all if download and do functionality
+
+
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<
+
+Inheritance
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<
+
+Abstraction
+
+>>>
+static method are not override mtlb kr skte hh override pr overridden nhi ho skta unpr overload ho skta h 
+ 
+>>>
+private also not over ridden 
+
+>>>
+final in front of function they it also can'nt overridden
+
+>>>
+fields and varible bhi polymorphis m participate nhi krte ...A class m khuch varible h toh jiska refrce bnega vhi classs access kr skti h unhe
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<
+
+Why one public class per file name and why name of that public class should be same as filename
+
+>>>>
+Autoboxing and Unboxing
+
+
+ek case could took null pointer exception
+
+Integer x = null;
+int y = x;
+
+here our null pointer exception occurs
+
+>>>>
+
+Integer a =10;
+Integer b=10;
+
+sout(a==b) ; //false
+
+sout(a.equals(y)) //true 
+
+here equals is an object class function
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<
+
+Nested class
+
+>For logically grouping
+
+class Outer
+{
+ class Innner
+  {
+   
+  }
+}
+
+//it access parent class private access modifiers also
+
+>Static nested class (inner class is static)
+
+ class Outer 
+  {
+    static Inner
+    {
+    }
+  }
+
+
+//static means it belongs to class ....all object share it
+
+
+
+
+
+

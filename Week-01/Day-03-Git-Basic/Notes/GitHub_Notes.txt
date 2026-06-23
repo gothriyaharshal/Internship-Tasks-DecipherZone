@@ -190,7 +190,7 @@ main branch and by cloning it I make tow other branch
 
 >>git checkout <branch name>  to navigate
 
->>git branch -d <branch name>  to delete
+>>git branch -D <branch name>  to delete
 
 
 >>git checkout -b feature  (create a new branch and move on this one)

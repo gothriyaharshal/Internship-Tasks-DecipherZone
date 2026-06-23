@@ -1,0 +1,61 @@
+import java.util.Scanner;
+
+//bydefault value of instance varibles
+
+public class D_Class_and_Encapsulation
+{
+public static void main(String[] args)
+{
+Student st = new Student();
+st.setAge(19);
+System.out.println( "Age is " + st.getAge());
+}
+}
+
+class Student
+{
+private int age ;
+int Roll_no;
+float salary;
+String name;
+
+public int getAge()
+{
+  return this.age;
+}
+
+
+public void setAge(int age)
+{
+if(age>18)
+{
+this.age = age;
+} 
+// System.out.println(this.age);
+}
+
+Student()
+{
+this(30);
+System.out.println("default constructor");
+}
+
+Student(int age)
+{
+this(30,234,2423,"Harry");
+System.out.println("only age constructor"+age);
+}
+
+
+
+Student(int age,int Roll_no,float salary,String name)
+{
+System.out.println("calling final constructor");
+
+this.age = age;
+this.Roll_no=Roll_no;
+this.salary = salary;
+this.name = name;
+}
+}
+
