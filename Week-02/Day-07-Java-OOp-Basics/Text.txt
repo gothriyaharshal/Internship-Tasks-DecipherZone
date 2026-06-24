@@ -1,0 +1,467 @@
+I/O >>
+
+They are of many types 
+
+>
+console io ....file io .....network io ....Memory io
+
+>
+console io (Scanner or BufferReader)
+
+
+ System.out.print();
+ 
+Means System class having static out varible and out has print method
+
+>>System. class imported in lang pacakge
+
+class System
+ {
+   static PrintStream out ;
+ }
+
+//this out is an refrence of other class which providing us print method 
+
+class PrintStream
+{
+   void print() {};
+}
+
+
+>>>>>
+
+System.err.println("Invalid age");
+
+>>>
+
+Java i/o based on Stream by which it reads data from 
+
+memory , file , console , Network
+
+All of they are flow in byte formate 
+
+>>>>
+
+Obejct class Equal methods
+
+bydefault it compares refrence of object if they are not same then it return false like
+
+Student s1 = new Student();
+Student s2 = new Student();
+
+s1.equals(s2);   //false
+
+but if
+
+String s1 = new String("Hello");
+String s2 = new String("Hello");
+ 
+in String class there has equals method overridden and form like as it compares charactes
+
+Integer , string , char type class iverrides equals method and give there own implementation for 
+Student class we have also provide implementation so it check data then give us update 
+
+>>Like in student class We wont to compare on the basis of id like two object id are equal or not
+
+class Student {
+
+    int id;
+
+    Student(int id) {
+        this.id = id;
+    }
+
+    public boolean equals(Object obj) {
+        Student s = (Student)obj;
+        return this.id == s.id;
+    }
+}
+
+then if i do .....s1.equal(s2) ....on the basis of id it check if both are same it return true either return false
+
+
+s1.equal(s2)   
+
+here s1 is this....part .....s2 is obj
+
+>>
+like this.....equals(Object obj)  in equal parameter obj were going 
+
+>>
+We converts this obj into Student type 
+
+Student s = (Student)obj ;
+
+return this.id == s.id ;
+
+>>if this.id == s.id then return true  
+
+ means my s1 and s2 refrence are same then they are equal na  
+
+>> if obj instanceof Student this condition is false then return false because if s2 is not part of Student then it not means to comparing those
+
+public boolean equals(Object obj) {
+
+    if(this == obj)                  //this mean both oject refering to same location
+        return true;
+
+    if(!(obj instanceof Student))
+        return false;
+
+    Student s = (Student)obj;
+
+    return this.id == s.id;
+}
+
+also remember this also
+
+>>All wrapper classes is pre overridden an equal methods
+
+>>Check out in A_Equal_Programm.java
+
+
+
+import java.util.Scanner;
+import java.util.*;
+
+
+public class A_HashCode_Programm
+{
+
+int id ;
+
+String name ; 
+
+
+public int hashCode()
+{
+return this.id;
+}
+
+
+public boolean equals(Object obj)
+{
+   if(this == obj)
+{
+  return true;
+}
+
+ if(!(obj instanceof A_HashCode_Programm
+))
+{
+return false;
+}
+
+A_HashCode_Programm a = (A_HashCode_Programm)obj;
+
+if((this.id == a.id) && (this.name == a.name))
+{
+return true;
+}
+
+else
+{
+return false;
+}
+
+}
+
+
+A_HashCode_Programm
+(int id , String name)
+{
+  this.id = id ;
+  this.name = name;
+}
+
+
+public static void main(String[] args)
+{
+
+A_HashCode_Programm a1 = new A_HashCode_Programm(1,"harshal");
+A_HashCode_Programm a2 = new A_HashCode_Programm(1,"harshal");
+
+
+HashSet<A_HashCode_Programm>  s = new HashSet<>();
+
+s.add(a1);
+s.add(a2);
+
+
+System.out.println(s.size());
+
+}
+}
+
+
+>>>>>>>
+
+public int hascode()
+{
+ int result = 17;
+ result = result *31 +age;
+ result = result *31 +name.hashcode();   //name is string and string override hashcode
+
+ return result;
+}
+
+
+what happens here like if some one age and name is same then there result means hashcode also same 
+
+//null pointer exception na aaye islie 
+
+(name == null ) ? 0 : name.hashcode() );
+
+
+
+>>>>
+nya trika
+
+public int hashcode()
+{
+  return Objects.hash(name,age);
+}
+
+
+
+>>>>>>getClass() ....in object class
+
+Student s1 = new Student();
+
+s1.getClass();
+
+>>>>>>>>clone()   (copy of an object)
+
+koi bhi class clone ko thbi override kr pati h jb vo clonable ko implement krke rkhi hui ho
+
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+Enumaration
+
+why this come
+
+>>Suppose payment status is in three state --->> success , failed , pending
+
+>>How did i represent those constent value in java (by final keyword)
+
+public static final int success = 1;
+public static final int failed = 2;
+public static final int pending = 3;
+
+
+>call them all by classname...
+>
+>>>>Problems which come from this
+
+1> type safety ()
+
+class PaymentStatus
+{
+
+public static final int success = 1;
+public static final int failed = 2;
+public static final int pending = 3;
+
+}
+
+class main
+{
+ psvm()
+ {
+  PaymentStatus p = new PaymentStatus();
+  
+  int status = p.success;
+  
+  int status = 100;
+
+  }
+}
+
+
+https://github.com/adityatandon15/Java-Full-Course/blob/main/Lecture%2023/notes.pdf  
+
+>>go and read notes
+
+
+Interfac>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+
+all varible in interface are 
+public statib and final  (static becuse interface has no relation with object)
+
+>>We lso override default method in interface
+
+>>we also make an static method in interface
+
+>>java 9 
+
+i also create private method in java ....
+
+private void run()
+{
+  sout("hy");
+}
+
+ab isse bs us interface k andr hi call kr skte h bahar access nhi kr skte 
+
+>>Diamond problem resolve by interface
+
+
+
+Class A (fun method)
+
+class B extend A      and      class C extend A  
+
+both gives there definition
+
+class D extend A , B
+{
+   D d = new D();
+
+  d.fun();          //here confusion creates
+}
+
+
+which fun() were called
+
+
+>>interface solve it by 
+
+A , B , C all are interface and has fun method declation of those were given in 
+
+child class
+
+
+>>>but in default method there has body then what we do here  
+
+
+1 option>>
+
+interface  a has fun default method
+
+interface b has fun default method
+
+class c implements a,b   
+
+first option is override fun method give your own implementtatio
+
+2 option>>
+
+if i want that a ya b m se kisi ek ka chle 
+
+toh m override toh kruga hi uske andr likhna hoga 
+
+
+interface_name.super.function_name();
+
+
+@Override
+public void fun()
+{
+  B.super.fun();
+} 
+
+
+
+>>>java Resolution Rule
+
+if any class Implement interface and extend class and those 2 have same name of function ....and when i create object then java give priority to class function
+
+interface A
+{
+  default void()
+  {
+   sout("inside interfave");
+  }
+}
+
+class B
+{
+ void fun()
+ {
+   sout();
+ }
+}
+
+class D extend B implements A
+{
+   
+}
+
+class main {
+psvm()
+{
+ D n = new D();
+ n.fun();        //always class one calls
+
+}
+}
+
+
+//or if i wwant my own implementation then override that method in child class
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+Strings
+
+seq of char  internally char[] ch = [h , e,l,l,o]
+
+but if we have char array then why we use String because ther has more functionality provided by it like comparision and etc.  in char[] muje algorithm likhna pdta 
+
+
+>>copile time data store in scp and runtime data store in heap
+
+String s1 = "java" ;    it store in scp
+
+String s2 = s1+"World"  ;   at runtime we took analyze what is in s1 so it store in heap
+
+
+and "world" goes into scp  becuse every literals goes into scp 
+
+
+>>
+String s1 = "java";
+String s2 = s1;
+
+assignment wali chize compile time pr hi ho jati h dono scp m 
+
+
+>>
+String s1 = "java" ;    //it stores in scp
+
+String s2 = new String("java");  //first this is litera; then java store it into scp 
+
+then this new keyword force it to store into heap memory....java is already ther in scp 
+
+
+>>
+String s = new String("Hello");
+
+first it goes into scp because it is litral then new force it to heap memory
+
+Sring method in 26 lecture
+
+
+>>AbstractStringBuilde child class are StringBuilder and StringBuffer
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+Generic
+
+in class Box if private int a ; ; .....and passing its value from constructor then i am only able to pass normal int value here not other type
+
+in java if i want to strore all type of data so i took type as Object
+
+private Object a ;
+
+provife getter and setter 
+
+and when i ...call function like
+
+Box b1 = new Box(1);   //here i pass any type of data 
+
+
+
+
