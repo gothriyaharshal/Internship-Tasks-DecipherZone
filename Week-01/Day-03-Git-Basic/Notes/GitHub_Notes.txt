@@ -304,6 +304,116 @@ git commit -m "sjj"
 then push
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+Yes, your understanding is correct. In a company workflow, you usually do not merge your feature into main directly. A senior developer or maintainer does that through a Pull Request.
+
+Your flow would be like this:
+
+1. Create feature branch from main
+git checkout main
+git pull origin main
+
+git checkout -b feature/login
+
+Now you work on:
+
+main
+ |
+ A---B---C
+      \
+       D---E feature
+2. Do your changes
+git add .
+git commit -m "added login feature"
+3. Before pushing, take latest main updates into your feature
+
+You can do:
+
+git checkout feature/login
+
+git pull origin main
+
+This means:
+
+"Take latest main code and merge it into my current feature branch."
+
+It is equivalent to:
+
+git fetch origin
+git merge origin/main
+
+Now:
+
+main:
+A---B---C---F
+
+feature:
+        \---D---E
+             \
+              M
+
+Your feature now contains latest main.
+
+4. If conflict comes
+
+Example:
+
+Git says:
+
+CONFLICT in UserService.java
+
+You edit the file:
+
+Before:
+
+<<<<<<< HEAD
+main code
+=======
+your feature code
+>>>>>>> feature
+
+After fixing:
+
+final code
+
+Then:
+
+git add .
+git commit -m "resolved merge conflict"
+5. Push ONLY your feature branch
+git push origin feature/login
+
+NOT:
+
+git push origin main
+
+Because main belongs to the team.
+
+6. Create Pull Request
+
+On GitHub:
+
+feature/login  --->  main
+
+Senior reviews it.
+
+If approved:
+
+main
+ |
+ A---B---C---F---D---E
+
+gets merged.
+
+So your understanding is right:
+
+Developer:
+
+feature → update from main → resolve → push feature → PR
+
+Senior:
+
+review PR → merge feature into main
+
 git checkout feature
 git fetch origin
 git rebase origin/main

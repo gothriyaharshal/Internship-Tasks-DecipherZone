@@ -299,3 +299,6 @@ and constructor of parent class calls automatically because bydefaul there has s
 
 practise thode keywords in deep
 >>>>byte Enum strictfp volatile native yield const goto
+
+
+>>Enum stores varible inside it
