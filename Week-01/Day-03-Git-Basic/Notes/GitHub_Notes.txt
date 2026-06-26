@@ -414,6 +414,8 @@ Senior:
 
 review PR → merge feature into main
 
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 git checkout feature
 git fetch origin
 git rebase origin/main

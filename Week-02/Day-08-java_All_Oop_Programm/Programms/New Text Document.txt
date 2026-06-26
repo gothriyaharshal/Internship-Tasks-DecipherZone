@@ -1,0 +1,58 @@
+public class Encapsulation
+{
+public static void main(String[] args)
+
+{
+  Normal n = new Normal();
+  n.setA(1);
+  n.setB(2);
+  n.setC(3);
+
+  n.getA(1);
+  n.getB(2);
+  n.getC(3);
+}
+
+}
+
+class Normal
+{
+private int a ;
+
+private int b;
+
+private int c ;
+
+public void setA(int a)
+{
+   this.a = a;
+}
+
+public int getA()
+{
+  return this.a;
+}
+
+public void setB()
+{
+this.b = b;
+}
+
+
+public int getB()
+{
+  return this.b;
+}
+
+
+public void setC()
+{
+this.c = c;
+}
+
+public void getC()
+{
+ return this.c;
+}
+
+}
