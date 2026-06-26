@@ -302,3 +302,4 @@ practise thode keywords in deep
 
 
 >>Enum stores varible inside it
+
