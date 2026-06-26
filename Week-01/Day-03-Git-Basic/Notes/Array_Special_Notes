@@ -1,0 +1,155 @@
+package Decision_Making;
+
+import java.util.Scanner;
+
+public class Creating_Array_Of_Class {
+     int id = 10;
+     String name = "Ravi";
+
+    Creating_Array_Of_Class(int id , String name)
+    {
+        this.id = id ;
+        this.name = name;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the exact length of your array you want");
+        int n =  sc.nextInt();
+
+        Creating_Array_Of_Class[] arr = new Creating_Array_Of_Class[n];
+
+
+        //Remember this concept also in your mind that when i want to insert in class
+        //type array then always refrence were pass on that array
+
+        /*
+        System.out.println( creatingArrayOfClasses.length);
+
+        creatingArrayOfClasses[0].id = 1;
+        creatingArrayOfClasses[0].name="Harshal";
+
+        Creating_Array_Of_Class c = new Creating_Array_Of_Class(2,"Rohan");
+        creatingArrayOfClasses[1]=c;
+        */
+
+
+        //if i want that user insert value on those then ok we applying for loops
+
+         for(int j = 0 ; j<n ; j++)
+         {
+             System.out.println("Enter your id sir-->");
+            int id= sc.nextInt();
+
+            sc.nextLine();
+
+             System.out.println("Enter your name sir-->");
+             String name= sc.nextLine();
+
+             arr[j] = new Creating_Array_Of_Class(id,name);
+
+         }
+
+         for (int i  =0 ; i<arr.length ; i++)
+         {
+             System.out.println("This is our data store in class array-->"+ arr[i].id + "---->"+arr[i].name);
+         }
+    }
+}
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+
+By using getter and setter
+
+package Decision_Making;
+
+import java.util.Scanner;
+
+public class Creating_Array_Of_Class {
+    private int id = 10;
+     private String name = "Ravi";
+
+    /*Creating_Array_Of_Class(int id , String name)
+    {
+        this.id = id ;
+        this.name = name;
+    }*/
+
+    public int getId()
+    {
+        return this.id;
+    }
+
+    public String getName()
+    {
+        return this.name;
+    }
+
+    public void setId(int id)
+    {
+        if(id>0)
+        {
+            this.id = id;
+        }
+    }
+
+    public void setName(String name)
+    {
+        if(name.length()>2)
+        {
+           this.name = name;
+        }
+    }
+}
+
+class SubClass
+{
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the exact length of your array you want");
+        int n =  sc.nextInt();
+
+        Creating_Array_Of_Class[] arr = new Creating_Array_Of_Class[n];
+
+
+        //Remember this concept also in your mind that when i want to insert in class
+        //type array then always refrence were pass on that array
+
+        /*
+        System.out.println( creatingArrayOfClasses.length);
+
+        creatingArrayOfClasses[0].id = 1;
+        creatingArrayOfClasses[0].name="Harshal";
+
+        Creating_Array_Of_Class c = new Creating_Array_Of_Class(2,"Rohan");
+        creatingArrayOfClasses[1]=c;
+        */
+
+
+        //if i want that user insert value on those then ok we applying for loops
+
+        for(int j = 0 ; j<n ; j++)
+        {
+            System.out.println("Enter your id sir-->");
+            int id= sc.nextInt();
+
+            sc.nextLine();
+
+            System.out.println("Enter your name sir-->");
+            String name= sc.nextLine();
+
+            arr[j] = new Creating_Array_Of_Class();
+            arr[j].setId(id);
+            arr[j].setName(name);
+        }
+
+        for (int i  =0 ; i<arr.length ; i++)
+        {
+            System.out.println("This is our data store in class array-->"+ arr[i].getId() + "---->"+arr[i].getName());
+        }
+    }
+}
+
+
+

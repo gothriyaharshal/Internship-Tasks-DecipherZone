@@ -44,6 +44,37 @@ toString()	Converts wrapper object into a String	String s = Integer.toString(10)
 
 
 compareTo(Xxx obj)	Compares two wrapper objects	a.compareTo(b);
+it only works when an class implements comparable interface
+all those wrapper classes by default implementing comparable interface
+
+if i have a normal class and i want comparable type property in my clas then what i do
+
+ @Override
+    public int compareTo(Student other) {
+
+        if(this.id > other.id)
+            return 1;
+
+        if(this.id < other.id)
+            return -1;
+
+        return 0;
+    }
+
+    for name i do like
+
+    @Override
+    public int compareTo(Student other) {
+        return this.name.compareTo(other.name);
+    }
+
+
+compare use for sorti
+
+
+
+
+
 
 
 equals(Object obj)	Compares values, not 
@@ -77,3 +108,6 @@ decode(String s)	Decodes decimal, hex, or octal string	Integer.decode("0xA");
 
 
 parseBoolean(String s)	Converts string to boolean	Boolean.parseBoolean("true");
+
+
+
