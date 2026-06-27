@@ -270,3 +270,66 @@ Car never knows about PetrolEngine or ElectricEngine
 It only knows Engine
 This is loose coupling + runtime polymorphism working together.
 
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Loose ly coupling not only  achieve interface 
+
+only we want parent class and its child class and then we change by own which i want 
+
+class Engine {
+
+    void start() {
+        System.out.println("Engine started");
+    }
+}
+
+
+class PetrolEngine extends Engine {
+
+    @Override
+    void start() {
+        System.out.println("Petrol engine started");
+    }
+}
+
+
+class ElectricEngine extends Engine {
+
+    @Override
+    void start() {
+        System.out.println("Electric engine started");
+    }
+}
+
+
+class Car {
+
+    private Engine engine;
+
+
+    Car(Engine engine) {
+        this.engine = engine;
+    }
+
+
+    void drive() {
+        engine.start();
+    }
+}
+
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Car car1 = new Car(new PetrolEngine());
+        car1.drive();
+
+
+        Car car2 = new Car(new ElectricEngine());
+        car2.drive();
+
+    }
+} 
+
