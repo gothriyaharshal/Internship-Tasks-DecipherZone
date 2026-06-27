@@ -1,0 +1,272 @@
+Tight Coupling portion where if i want to create diffrent type of car which gonna be made from diffrent egine then i have to create many class and many engine 
+
+
+class PetrolEngine {
+
+    void start() {
+        System.out.println("Petrol engine started");
+    }
+}
+
+class ElectricEngine {
+
+    void start() {
+        System.out.println("Electric engine started");
+    }
+}
+
+
+class PetrolCar {
+
+    PetrolEngine engine = new PetrolEngine();  // tight coupling
+
+    void drive() {
+        engine.start();
+        System.out.println("Petrol car is running");
+    }
+}
+
+
+class ElectricCar {
+
+    ElectricEngine engine = new ElectricEngine(); // tight coupling
+
+    void drive() {
+        engine.start();
+        System.out.println("Electric car is running");
+    }
+}
+
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        PetrolCar car1 = new PetrolCar();
+        car1.drive();
+
+        ElectricCar car2 = new ElectricCar();
+        car2.drive();
+    }
+}
+
+>>>>>>>>>>>>>>>>
+Yes, exactly. In tight coupling, usually for every different engine type you create a separate class (or modify the existing class).
+
+Example:
+
+class PetrolCar {
+    PetrolEngine engine = new PetrolEngine();
+}
+
+class ElectricCar {
+    ElectricEngine engine = new ElectricEngine();
+}
+
+class DieselCar {
+    DieselEngine engine = new DieselEngine();
+}
+
+
+>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+But in loose coupling i create only one car class and one engine inteface ....and makes diffrenct classes of Engine that i want like 
+
+i want pertrolEngine then i extend Engine interface our there and 
+implements method and if i want electricEngine then also do same
+
+and passes in its constructor
+
+
+2. Loose Coupling
+
+When classes have less dependency on each other, it is called loose coupling.
+
+Usually achieved using:
+
+Interfaces
+Dependency Injection
+Abstraction
+
+Example:
+
+interface Engine {
+    void start();
+}
+
+class PetrolEngine implements Engine {
+    public void start() {
+        System.out.println("Petrol engine started");
+    }
+}
+
+class ElectricEngine implements Engine {
+    public void start() {
+        System.out.println("Electric engine started");
+    }
+}
+
+class Car {
+
+    private Engine engine;
+
+    Car(Engine engine) {   // dependency injection
+        this.engine = engine;
+    }
+
+    void drive() {
+        engine.start();
+    }
+}
+
+Usage:
+
+public class Main {
+    public static void main(String[] args) {
+
+        Car car = new Car(new PetrolEngine());
+        car.drive();
+
+        Car car2 = new Car(new ElectricEngine());
+        car2.drive();
+    }
+}
+
+Now Car does not care which engine is used.
+
+Advantages:
+
+Easy to change
+Easy testing
+More reusable code
+
+
+
+
+>>>>but here when i have private field and in futre i want ....first car
+    it has petrol engine and i want in future it to be set as Electric engine but by constrote we only set at object creation we did not access it outside class then we create setter and getters
+
+Let's make a complete Java program exactly as you described:
+
+Engine → interface
+PetrolEngine → implements Engine
+ElectricEngine → implements Engine
+Car → has private Engine field
+First create car with PetrolEngine using constructor
+Later change it to ElectricEngine using setter
+Access using getter
+interface Engine {
+
+    void start();
+
+}
+
+
+// Petrol engine class
+class PetrolEngine implements Engine {
+
+    public void start() {
+        System.out.println("Petrol engine started");
+    }
+}
+
+
+// Electric engine class
+class ElectricEngine implements Engine {
+
+    public void start() {
+        System.out.println("Electric engine started");
+    }
+}
+
+
+// Car class
+class Car {
+
+    private Engine engine;
+
+
+    // constructor injection
+    Car(Engine engine) {
+        this.engine = engine;
+    }
+
+
+    void drive() {
+        engine.start();
+    }
+
+
+    // setter
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+
+
+    // getter
+    public Engine getEngine() {
+        return engine;
+    }
+}
+
+
+// Main class
+public class Main {
+
+    public static void main(String[] args) {
+
+
+        // 1. Creating car with Petrol Engine
+        Car car = new Car(new PetrolEngine());
+
+
+        car.drive();
+
+
+        // 2. Changing engine to Electric Engine
+        car.setEngine(new ElectricEngine());
+
+
+        car.drive();
+
+
+        // 3. Accessing current engine object
+        Engine currentEngine = car.getEngine();
+
+        currentEngine.start();
+
+    }
+}
+
+Output:
+
+Petrol engine started
+Electric engine started
+Electric engine started
+
+Memory view:
+
+First:
+
+Car
+ |
+ | private Engine engine
+ |
+ ↓
+PetrolEngine object
+
+After setter:
+
+Car
+ |
+ | private Engine engine
+ |
+ ↓
+ElectricEngine object
+
+Notice:
+
+Car never knows about PetrolEngine or ElectricEngine
+It only knows Engine
+This is loose coupling + runtime polymorphism working together.
+
