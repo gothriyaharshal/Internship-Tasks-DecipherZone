@@ -24,7 +24,8 @@ instance varible and static varible has bydefault value but local varible didn't
 
 >>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-Making constructor and calling each one by this keyword constructor chaining(calling one construort from another)/overloading also there
+Making constructor and calling each one by this keyword constructor chaining(calling one construort from another)/overloading
+also there
 
 >C_class_Constuctor
 
@@ -104,7 +105,8 @@ s3            those all object has print() instance
 s4             Method
 
 and one static method pointing to those all like 
-stay() .....when I call instance method inside this static method  ...jvm confuse like konse object ka print() call kru bhai  m ambiguity aajati h 
+stay() .....when I call instance method inside this static method  ...
+jvm confuse like konse object ka print() call kru bhai  m ambiguity aajati h
 
 
 >same by varibles also
@@ -338,7 +340,8 @@ public class Demo
    }
 }
 
-internal  ....jvm makes .class file of Demo and .class file of all the import file which were using all if download and do functionality
+internal  ....jvm makes .class file of Demo and .class file of all the import file which were using all if download
+and do functionality
 
 
 
@@ -362,7 +365,8 @@ private also not over ridden
 final in front of function they it also can'nt overridden
 
 >>>
-fields and varible bhi polymorphis m participate nhi krte ...A class m khuch varible h toh jiska refrce bnega vhi classs access kr skti h unhe
+fields and varible bhi polymorphis m participate nhi krte ...
+A class m khuch varible h toh jiska refrce bnega vhi classs access kr skti h unhe
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<
 

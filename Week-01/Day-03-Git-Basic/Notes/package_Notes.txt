@@ -8,7 +8,8 @@ user defined --->>Student etc...,
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-In Java, switch case is a conditional control statement used when you want to execute one block of code from many options based on a single value.
+In Java, switch case is a conditional control statement used when you want to execute one block of code from many options
+ based on a single value.
 
 Syntax (traditional switch)
 switch(expression)
@@ -104,6 +105,7 @@ Output:
 
 Two
 Three
+4
 
 Because after finding case 2, Java continues running next cases (fall-through) until it finds break or switch ends.
 
@@ -175,7 +177,8 @@ switch is basically a cleaner alternative to many if-else if conditions.
 
 Could you please deppely explain switch case in latest java
 
-In latest Java (Java 14+), switch has evolved. Earlier switch was mainly a statement with case, break, and fall-through behavior. Now Java introduced switch expressions which are safer and can return values.
+In latest Java (Java 14+), switch has evolved. Earlier switch was mainly a statement with case, break, and fall-through behavior.
+ Now Java introduced switch expressions which are safer and can return values.
 
 Let's understand deeply.
 

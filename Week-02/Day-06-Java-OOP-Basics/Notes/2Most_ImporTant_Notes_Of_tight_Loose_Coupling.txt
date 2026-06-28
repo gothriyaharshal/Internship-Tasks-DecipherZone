@@ -1,4 +1,5 @@
-Tight Coupling portion where if i want to create diffrent type of car which gonna be made from diffrent egine then i have to create many class and many engine 
+Tight Coupling portion where if i want to create diffrent type of car which gonna be made from
+ diffrent egine then i have to create many class and many engine
 
 
 class PetrolEngine {
@@ -37,6 +38,8 @@ class ElectricCar {
     }
 }
 
+//or if there has only car class then we make petrolEngine or Electric engine or both of there
+//object in car class but in future if there new engine came then we have to do change in our car class so it is tight coupling
 
 public class Main {
 
@@ -51,7 +54,8 @@ public class Main {
 }
 
 >>>>>>>>>>>>>>>>
-Yes, exactly. In tight coupling, usually for every different engine type you create a separate class (or modify the existing class).
+Yes, exactly. In tight coupling, usually for every different engine type you create a separate class
+ (or modify the existing class).
 
 Example:
 

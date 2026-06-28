@@ -224,7 +224,8 @@ merge pull request...confirm merge
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-when I do change In my feature branch and push code on main branch and then...on main branch compare and pull those change it shows me updation on my git hub
+when I do change In my feature branch and push code on main branch and then...
+on main branch compare and pull those change it shows me updation on my git hub
 
 >>but on local when I checkout on main branch I didn't see any updation there so how did I took those by pull command
 

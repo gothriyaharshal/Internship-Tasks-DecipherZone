@@ -585,7 +585,8 @@ then we provide Archetype id ....group id....artifact id and at last press yes t
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-Now we have full structure Maven application and write code in java file and compile that code we go into that particular project ....and switch onto cmd
+Now we have full structure Maven application and write code in java file and compile that code we go into that particular project ....
+and switch onto cmd
 
 >> Mvn complie   (it tooks all the dependency and process them set them into our project )
 
@@ -654,7 +655,8 @@ It removes temporary build files created by Maven
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-if I want to make web application of maven then I ....generate maven  then five number of that partivular that I want like webApp j2ee14 ...in front of code I pass and maven generate template for me 
+if I want to make web application of maven then I ....generate maven  then five number of that partivular that I want like webApp j2ee14
+ ...in front of code I pass and maven generate template for me
 
 how we run it first make its package and then instal tomcat ....and at tomcat there has deploye section deploye it then it runs smoothly
 

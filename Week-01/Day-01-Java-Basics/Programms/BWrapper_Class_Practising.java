@@ -22,6 +22,7 @@ public class Wrapper_Class_Practising {
         //When i  want to convert from wrapper to primitvw then
         Integer e = 1000;
         int ee = e.intValue();
+
         System.out.println("Converting from wrapper to primitive" + ee);
 
 

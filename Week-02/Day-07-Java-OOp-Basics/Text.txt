@@ -98,7 +98,8 @@ return this.id == s.id ;
 
  means my s1 and s2 refrence are same then they are equal na  
 
->> if obj instanceof Student this condition is false then return false because if s2 is not part of Student then it not means to comparing those
+>> if obj instanceof Student this condition is false then return false because
+if s2 is not part of Student then it not means to comparing those
 
 public boolean equals(Object obj) {
 
@@ -286,7 +287,7 @@ https://github.com/adityatandon15/Java-Full-Course/blob/main/Lecture%2023/notes.
 Interfac>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
 all varible in interface are 
-public statib and final  (static becuse interface has no relation with object)
+public statib and final  (static becuse interface has no relation with object and if there has no relation with object we also not pass varivle value in constructor also)
 
 >>We lso override default method in interface
 
@@ -364,7 +365,8 @@ public void fun()
 
 >>>java Resolution Rule
 
-if any class Implement interface and extend class and those 2 have same name of function ....and when i create object then java give priority to class function
+if any class Implement interface and extend class and those 2 have same name of function .
+...and when i create object then java give priority to class function
 
 interface A
 {
@@ -406,7 +408,8 @@ Strings
 
 seq of char  internally char[] ch = [h , e,l,l,o]
 
-but if we have char array then why we use String because ther has more functionality provided by it like comparision and etc.  in char[] muje algorithm likhna pdta 
+but if we have char array then why we use String because ther has more functionality provided by it like comparision and etc.
+  in char[] muje algorithm likhna pdta for spliting reversing sorting and etc and string provide them by defaultly
 
 
 >>copile time data store in scp and runtime data store in heap
@@ -450,7 +453,8 @@ Sring method in 26 lecture
 
 Generic
 
-in class Box if private int a ; ; .....and passing its value from constructor then i am only able to pass normal int value here not other type
+in class Box if private int a ; ; .....and passing its value from constructor then i am only able to pass normal int value here
+not other type
 
 in java if i want to strore all type of data so i took type as Object
 
@@ -467,7 +471,8 @@ Box b1 = new Box(1);   //here i pass any type of data
 
 like if id do..........  sout(b1.getValue() + 5 ) ; ............. then here i face error
 
->>here jvm gets confused that which type of data you were adding in which so here we have to do downcasting(Explicit type)
+>>here jvm gets confused that which type of data you were adding in
+ which so here we have to do downcasting(Explicit type)
 
 
  
@@ -498,9 +503,11 @@ when i create its object then i write it as
 
 i able to pass Any type of data and perform opration on them also
 
-//yaha m aisa operation nhi perform kr skta jo runtime pr aaaye muje compile time pr hi pta chl jayega kya error h like
+//yaha m aisa operation nhi perform kr skta jo runtime pr aaaye muje compile time pr hi pta chl jayega
+kya error h like
 
-if i do ......sout(b1.getValue() + 5);.........then it is ok but if i do it didn't identifies exact object it give us value of b1.getValue Also Store int value in it but when i do operation on that it confuses because it it object type and jvm not accept that you do any type of operation on any type
+if i do ......sout(b1.getValue() + 5);.........then it is ok but if i do it didn't identifies exact object it give us value of b1.getValue
+ Also Store int value in it but when i do operation on that it confuses because it it object type and jvm not accept that you do any type of operation on any type
 
 sou(b1.getValue() + substring(9));   //here compiler show error
 
@@ -644,7 +651,8 @@ class Box<T>
   T value ;    
 }
 
-i know that when i create object of that class then i pass any type of data here but i want to apply  some type of restriction our there only Number type of data Stores like int ,double,float that type of data
+i know that when i create object of that class then i pass any type of data here but i want to apply
+  some type of restriction our there only Number type of data Stores like int ,double,float that type of data
 
 class Box<T extends Number>
 {
