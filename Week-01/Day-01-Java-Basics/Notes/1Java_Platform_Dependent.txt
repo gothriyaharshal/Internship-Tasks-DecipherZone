@@ -9,11 +9,14 @@ code --->Interpreter(JVM)
 Java program only be executed by jvm not by any operating system
 
 >>
-JIt stand for just in time compiler jit is part of jvm it compiles java byte code into native machine code at run time jit improves the performance of jvm and tries to optimize the code
+JIt stand for just in time compiler jit is part of jvm it compiles java byte code
+into native machine code at run time jit improves the performance of jvm and
+tries to optimize the code
 
 .class--->class loader--->Byte verification--->interpreter
 
-If in my .class file there has multiple repeated lines then jit inform to interpreter and did not do repeated interpretation
+If in my .class file there has multiple repeated lines then jit inform to interpreter
+and did not do repeated interpretation
  
 Interpreter executes first
         ↓
@@ -26,7 +29,9 @@ Optimized native code is stored
 Future executions use native code
 
 >>
-Varible an naming provide for storing data Scope of variblee inside block ....instance varible are part of class not an method or block they were created when object of that class were made and destroyes when object is destroys
+Varible an naming provide for storing data Scope of variblee inside block .
+...instance varible are part of class not an method or block
+they were created when object of that class were made and destroyes when object is destroys
 
 >>Access Modifier
 
@@ -34,9 +39,9 @@ public ...accessasible in all our project
 
 private ...accessible only in that particular class
 
-default ....
+default ....accesasible only in package
 
-protected ... 
+protected ... accesible in pacakage or outside package as child class
 
 
 >>Wrapper class 
@@ -68,7 +73,8 @@ this is also is an refrence varible which refer object
 
 Why this keyword>>>>>>>
  
-Suppose we have Class test having field I ,,,and when I setValue of I by giving same varible name then jvm confuses it look that particular varible same as local varible not instance varible of that particular class
+Suppose we have Class test having field I ,,,and when I setValue of I
+by giving same varible name then jvm confuses it look that particular varible same as local varible not instance varible of that particular class
 
 by applying this it refers current class I.
 class Test
@@ -303,3 +309,32 @@ practise thode keywords in deep
 
 >>Enum stores varible inside it
 
+>>in left shift formula is
+
+ a<<b = a*2power b
+
+ a>>b = a/2 power b
+
+ >>there has one more shift operator (>>>)
+
+ thise works normally for positive value like an right shift
+
+ for negative one.... like
+
+ -5 >>> 2
+
+ first step :___>
+   convert it into binary formate which is (1 0  1)
+    store int 32 bit formation ......   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1
+
+    as like this revert all 1 to 0......
+
+  Second step :====>
+   then after apply shiftng then it become an large number
+
+
+   >>>in switch case we directly using break in switch case but if i use continue our there
+     then if shows compile time error to me
+
+     >>becuse continue only works in loops ....but if i put my switch into loop then i able to achive that
+        that
