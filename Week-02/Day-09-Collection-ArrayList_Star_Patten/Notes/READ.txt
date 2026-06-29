@@ -1,0 +1,145 @@
+Ye confusion normal hai. ArrayList<ArrayList<String>> pehli baar dekhne me ajeeb lagta hai, but isko tod ke samjho.
+
+Tum jaante ho:
+
+ArrayList<String> list = new ArrayList<>();
+
+Iska matlab:
+
+Ek ArrayList hai jiske andar String values store hongi.
+
+Example:
+
+list.add("*");
+list.add("java");
+
+Structure:
+
+list
+ |
+ |-- "*"
+ |-- "java"
+
+Ab agar likha:
+
+ArrayList<Integer> list = new ArrayList<>();
+
+Matlab:
+
+ArrayList ke andar Integer objects honge.
+
+list
+ |
+ |-- 10
+ |-- 20
+
+Ab aao:
+
+ArrayList<ArrayList<String>> pattern = new ArrayList<>();
+
+Isko read karo right se:
+
+Inner part:
+ArrayList<String>
+
+Matlab:
+
+Ek chhoti list jisme Strings hongi.
+
+Example:
+
+ArrayList<String> row1 = new ArrayList<>();
+
+row1.add("*");
+row1.add("*");
+row1.add("*");
+
+Ye ban gaya:
+
+row1
+
+"*"
+"*"
+"*"
+
+Ab outer:
+
+ArrayList< ArrayList<String> >
+
+Matlab:
+
+Ek badi list jisme chhoti-chhoti String wali lists hongi.
+
+Example:
+
+ArrayList<String> row1 = new ArrayList<>();
+row1.add("*");
+row1.add("*");
+
+ArrayList<String> row2 = new ArrayList<>();
+row2.add("*");
+row2.add("*");
+
+
+ArrayList<ArrayList<String>> pattern = new ArrayList<>();
+
+pattern.add(row1);
+pattern.add(row2);
+
+Memory:
+
+pattern
+ |
+ |--- row1
+ |      |
+ |      |-- "*"
+ |      |-- "*"
+ |
+ |--- row2
+        |
+        |-- "*"
+        |-- "*"
+
+Output:
+
+* *
+* *
+
+Real life example:
+
+School:
+
+ArrayList<Student> students
+
+means:
+
+students
+ |
+ |-- Student object
+ |-- Student object
+
+Now class ke andar students:
+
+ArrayList<ArrayList<Student>>
+
+means:
+
+School
+ |
+ |-- Class 1
+ |      |
+ |      |-- Student
+ |      |-- Student
+ |
+ |-- Class 2
+        |
+        |-- Student
+        |-- Student
+
+Bas yahi concept hai.
+
+ArrayList<ArrayList<String>>
+
+= ArrayList ke andar ArrayList hai, aur un inner ArrayList ke andar String hai.
+
+Isko generally nested ArrayList bolte hain. DSA me 2D array ke replacement ke liye bahut use hota hai.
