@@ -337,3 +337,55 @@ public class Main {
     }
 } 
 
+>>>>>>>>>>>>>>>>>>>>
+
+composition and agreegation both is has a relation ship
+
+in composition there has ....tight coupling like if i have field of engine in car class then there i create object our there but in .....
+agreegation we create outside
+
+
+1. Composition (Strong relationship / Tight coupling)
+
+👉 “Child object cannot exist without parent”
+
+Example: Car → Engine
+class Engine {
+}
+class Car {
+    private Engine engine = new Engine(); // created inside
+}
+
+
+
+🔥 2. Aggregation (Weak relationship / Loose coupling)
+
+👉 “Child can exist independently”
+
+Example: Student → Address
+class Address {
+}
+class Student {
+    private Address address;
+
+    Student(Address address) {
+        this.address = address; // created outside
+    }
+}
+
+
+//composition is an tight colupling
+
+
+//lets have a look on is a or has a relationship
+
+like Having many diffrennt diffrent element then ......dog is a animal ....inheritance
+
+and car has a engine here has a realtionship
+
+
+
+Relationship	Coupling
+IS-A (Inheritance)	🔥 Tight coupling
+HAS-A (Composition)	Strong / tight coupling (if created inside)
+HAS-A (Aggregation)	🟢 Loose coupling

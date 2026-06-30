@@ -287,7 +287,8 @@ https://github.com/adityatandon15/Java-Full-Course/blob/main/Lecture%2023/notes.
 Interfac>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
 all varible in interface are 
-public statib and final  (static becuse interface has no relation with object and if there has no relation with object we also not pass varivle value in constructor also)
+public statib and final
+ (static becuse interface has no relation with object and if there has no relation with object we also not pass varivle value in constructor also)
 
 >>We lso override default method in interface
 

@@ -1,0 +1,448 @@
+Let's do a deep analysis of Overloading in Java. Overloading is one of the most important OOP concepts.
+
+1. What is Method Overloading?
+
+Method Overloading means:
+
+Having multiple methods with the same name but different parameters in the same class.
+
+The compiler decides which method to call based on the method signature.
+
+Method Signature contains:
+Method name
+Number of parameters
+Type of parameters
+Order of parameters
+
+Return type is NOT part of method signature.
+
+Example:
+
+class Calculator {
+
+    void add(int a, int b) {
+        System.out.println(a + b);
+    }
+
+    void add(double a, double b) {
+        System.out.println(a + b);
+    }
+
+    void add(int a, int b, int c) {
+        System.out.println(a + b + c);
+    }
+}
+
+Here add() is overloaded 3 times.
+
+2. Why do we use Overloading?
+
+Suppose we don't have overloading:
+
+addTwoNumbers()
+addThreeNumbers()
+addDoubleNumbers()
+
+Many different names.
+
+With overloading:
+
+add()
+add()
+add()
+
+Same operation, different inputs.
+
+It improves:
+
+readability
+maintainability
+compile-time polymorphism
+3. Rules for Method Overloading
+Rule 1: Parameters must change
+
+Allowed:
+
+Different number of parameters
+void show(int a)
+
+void show(int a, int b)
+
+✔ Valid
+
+Different type of parameters
+void show(int a)
+
+void show(String a)
+
+✔ Valid
+
+Different order of parameters
+void show(int a, String b)
+
+void show(String b, int a)
+
+✔ Valid
+
+4. What is NOT allowed?
+Only changing return type
+
+Wrong:
+
+int add(int a,int b)
+{
+ return a+b;
+}
+
+
+double add(int a,int b)
+{
+ return a+b;
+}
+
+Compiler error.
+
+Because:
+
+method signature same
+
+Return type doesn't matter.
+
+Only changing access modifier
+
+Wrong:
+
+public void show(int a)
+
+private void show(int a)
+
+Not allowed.
+
+Only changing static keyword
+
+Wrong:
+
+static void show(int a)
+
+void show(int a)
+
+Not allowed.
+
+5. Access Modifiers in Overloading
+
+Any access modifier is allowed:
+
+class Test {
+
+
+public void display(int a)
+{
+
+}
+
+
+private void display(String s)
+{
+
+}
+
+
+protected void display(double d)
+{
+
+}
+
+
+void display(boolean b)
+{
+
+}
+
+}
+
+All valid.
+
+Because parameters are different.
+
+6. Can static methods be overloaded?
+
+YES.
+
+Example:
+
+class Demo {
+
+
+static void show(int a)
+{
+System.out.println(a);
+}
+
+
+static void show(String s)
+{
+System.out.println(s);
+}
+
+}
+
+Call:
+
+Demo.show(10);
+Demo.show("Hello");
+
+Works.
+
+7. Can constructor be overloaded?
+
+YES.
+
+Very common.
+
+Example:
+
+class Student {
+
+
+Student()
+{
+System.out.println("Default");
+}
+
+
+Student(String name)
+{
+System.out.println(name);
+}
+
+
+Student(String name,int age)
+{
+System.out.println(name+" "+age);
+}
+
+}
+
+Creating objects:
+
+Student s1 = new Student();
+
+Student s2 = new Student("Akash");
+
+Student s3 = new Student("Akash",22);
+8. Constructor Overloading Rules
+
+Same rules apply.
+
+Allowed:
+
+Student(int id)
+
+Student(String name)
+
+Allowed.
+
+Not allowed:
+
+Student(int id)
+
+public Student(int id)
+
+No.
+
+Because same parameter list.
+
+9. Can main() be overloaded?
+
+YES.
+
+Example:
+
+class Test {
+
+
+public static void main(String[] args)
+{
+System.out.println("normal");
+}
+
+
+public static void main(int a)
+{
+System.out.println(a);
+}
+
+
+}
+
+Allowed.
+
+But JVM only calls:
+
+main(String[] args)
+10. Same type or different type parameters?
+
+Both allowed.
+
+Same type
+void add(int a,int b)
+
+void add(int a,int b,int c)
+
+same type, different count.
+
+✔
+
+Different type
+void add(int a,int b)
+
+void add(double a,double b)
+
+✔
+
+Mixed type
+void show(int a,String b)
+
+void show(String a,int b)
+
+✔
+
+11. Overloading with Inheritance
+
+Example:
+
+class Parent {
+
+void show(int a)
+{
+}
+
+}
+
+
+class Child extends Parent {
+
+
+void show(String s)
+{
+
+}
+
+}
+
+Child has overloaded method.
+
+12. Varargs and Overloading
+
+Example:
+
+void display(int... a)
+{
+
+}
+
+
+void display(int a,int b)
+{
+
+}
+
+Allowed.
+
+But:
+
+void display(int... a)
+
+void display(int[] a)
+
+Not allowed.
+
+Because varargs internally becomes array.
+
+13. Ambiguous Overloading
+
+Important case:
+
+class Demo{
+
+
+void show(int a)
+{
+}
+
+
+void show(float a)
+{
+}
+
+
+public static void main(String args[])
+{
+
+Demo d=new Demo();
+
+d.show(10);
+
+}
+
+}
+
+Which runs?
+
+int version
+
+because exact match.
+
+Another:
+
+void show(Integer a)
+
+void show(String a)
+
+
+show(null);
+
+Compiler error.
+
+Why?
+
+Both can accept null.
+
+14. Overloading vs Overriding
+Overloading	Overriding
+Same class	Parent-child
+Same name	Same name
+Different parameters	Same parameters
+Compile time	Runtime
+Return type can differ	Return type same/covariant
+15. Real Example
+
+ArrayList:
+
+list.add(10);
+
+list.add("hello");
+
+list.add(0,"Akash");
+
+add() is overloaded.
+
+Different parameters.
+
+Final Summary
+
+For overloading:
+
+✅ Same method name
+✅ Same class
+✅ Different parameters
+✅ Any access modifier allowed
+✅ static allowed
+✅ constructor allowed
+✅ return type can change but not alone
+✅ final method can overload
+❌ Only changing return type not allowed
+❌ Only changing access modifier not allowed
+❌ Only changing static not allowed
+
+This is compile-time polymorphism.

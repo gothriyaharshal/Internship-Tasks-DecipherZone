@@ -1,0 +1,104 @@
+before it one comman thing is that ...static method we able to create local varible eassyli .....but in any method we did not create an varible or method with public protected and private keyword they were always have to independently makes at top level ...we access them in instance method or in static if they also is static and .....that all
+
+example
+   void print()
+    {
+      private/public/protect int a ; //not acceptable
+     }
+
+and also any type of access modifier method also not created in any method
+
+example
+   void print()
+   {
+   public /protected / private void p()  //not acceptable
+     {
+      }
+
+
+
+
+
+>>>one more thing is that in static method only static varible and method were accesible but if
+   i want that i also access then .....in static method i also able to create object of class
+   and with refrence varible i easyli access those instance
+
+class Test {
+
+    void hello() {
+        System.out.println("hello");
+    }
+
+
+    static void show() {
+
+        Test obj = new Test();
+
+        obj.hello();
+
+    }
+}
+
+and in static method i also able to create an class like
+
+static void show(){
+
+    class Demo {
+
+        void test(){
+            System.out.println("hi");
+        }
+    }
+
+    Demo d = new Demo();
+    d.test();
+}
+
+
+
+
+if i have an Array and if i chage its refrence or full object in class it acceptable
+
+
+{{{{{{{{{{{{{{{{{{{
+
+
+array is mutubable like if i have an array
+arr = {1,2,3,4} ;
+
+and i do .....arr[0] = 10 ; ...then it change the element
+
+But this:
+int[] arr = {1,2,3,4};
+
+arr = new int[]{1};
+
+This is not modifying the old array.
+
+You created a new array and changed the reference.
+
+}}}}}}}}}}}}}}}}}}
+
+public class
+{
+ public static void main(String[] args)
+ {
+
+int arr[] = {1,2,3,4};
+arr[] = new int[]{1,2};  //array points to new object and
+
+but if i pass this array in method
+
+arrayprinting(arr);
+
+sout ( arr[0] );
+ }
+ }
+
+ //and in that particular method if i do like ....change object of array
+
+ arrayPrinting(int[] arr)
+ {
+  arr = new int[] {18};
+  sout[arr[0]];    //it gives 18  and that i gives 1....ye method k lie hi h bs method khtm ye bhi khtm pr real wala vhi h accli ....know as call by value
+  }

@@ -152,4 +152,26 @@ class SubClass
 }
 
 
+___________________________
+
+package oops.Arrays;
+
+import java.util.Arrays;
+
+public class Testting_array {
+    public static void main(String[] args) {
+        int[] arr = new int[]{1,2,3};
+
+        arr = new int[]{1,2};
+
+        System.out.println(Arrays.toString(arr));
+    }
+}
+here i change the refrence of array easyli ....
+
+but if i pass if in any method then ttherre call by value apply in
+that particular method we update the element but ...if we change refrence
+
+then it does not affect on real array affect only in particular method
+
 

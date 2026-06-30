@@ -1,0 +1,116 @@
+Good question. You are asking about what can be written inside method parameters (()) and whether modifiers like static, private, public are allowed there.
+
+Short answer:
+
+Inside method parameters, you cannot use access modifiers or static.
+
+Valid:
+
+class Demo {
+
+    void show(int a) {
+        System.out.println(a);
+    }
+
+    void test(String name, int age) {
+        System.out.println(name);
+    }
+}
+
+Here parameters are only:
+
+datatype
+variable name
+❌ Not allowed:
+void show(public int a) {
+
+}
+
+Error.
+
+void show(private int a) {
+
+}
+
+Error.
+
+void show(static int a) {
+
+}
+
+Error.
+
+Because public, private, static are method/class modifiers, not parameter modifiers.
+
+What can be used in parameters?
+1. Normal data types
+void print(int a)
+void print(double b)
+void print(String s)
+2. Object types
+class Student {}
+
+void display(Student s) {
+
+}
+3. Arrays
+void show(int[] arr) {
+
+}
+4. varargs
+void sum(int... numbers) {
+
+}
+
+Means internally an array.
+
+5. final (only modifier allowed)
+void show(final int a) {
+
+}
+
+Valid.
+
+Why?
+
+final means you cannot reassign that parameter:
+
+void show(final int a){
+
+    a = 20; // ❌ error
+}
+
+But you can use it:
+
+void show(final int a){
+
+    System.out.println(a); // ✅
+}
+One more important point for overloading:
+
+These are considered different:
+
+void show(int a)
+void show(String a)
+
+But these are NOT:
+
+void show(int a)
+void show(final int a)
+
+Because final does not change the signature.
+
+So remember:
+
+Method parameter = only type + name (+ final allowed)
+
+No:
+
+public ❌
+private ❌
+protected ❌
+static ❌
+abstract ❌
+synchronized ❌
+
+Those belong to methods/classes, not parameters.

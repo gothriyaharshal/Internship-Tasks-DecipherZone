@@ -145,3 +145,68 @@ access modifiers
 Agar tum 40-50 chhote programs is order me kar loge, OOPs ke doubts kaafi had tak khud clear ho jayenge.
 
 Senior ka approach sahi hai: code likhte waqt hi samajh aata hai ki private kyu hai, protected kab use hota hai, override kaise hota hai.
+
+_________________________________________________________________________>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+compareTo method here what is in it ...it compare two data and then perform sorting .....
+
+
+import java.util.*;
+import java.util.List;
+
+        public class CompareTo_User_Defined implements Comparable<CompareTo_User_Defined>{
+        int id ;
+        String name;
+
+
+        CompareTo_User_Defined(int id, String name)
+        {
+            this.id = id;
+            this.name = name;
+        }
+
+        @Override
+        public int compareTo(CompareTo_User_Defined o) {
+            return this.id-o.id;
+        }
+
+
+        @Override
+        public String toString() {
+            return "Our id is---->"+this.id+"our name is"+this.name;
+        }
+
+        public static void main(String[] args) {
+
+            CompareTo_User_Defined userDefinedComparble = new CompareTo_User_Defined(10000,"ram");
+            CompareTo_User_Defined userDefinedComparble1 = new CompareTo_User_Defined(1,"Shyam");
+
+
+            List<CompareTo_User_Defined> list = new ArrayList<>();
+            list.add(userDefinedComparble);
+            list.add(userDefinedComparble1);
+
+
+            Collections.sort(list);
+
+            for (CompareTo_User_Defined a: list)
+            {
+                System.out.println(a);
+            }
+        }
+    }
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+functional interface have one abstract method and many static or default method
+
+we call it by ...
+
+Function func = new Function()
+{
+   here our override were done of interface
+};
+
+>>>>>>>
+int java 9 we decalre private method ..for internal use
+
+interface there no allowed protected method because we did not override them

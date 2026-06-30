@@ -1,0 +1,833 @@
+1. What is Nested Class?
+
+A nested class is a class declared inside another class.
+
+Example:
+
+class Outer {
+
+    class Inner {
+
+    }
+
+}
+
+Here:
+
+Outer = outer class
+Inner = nested class
+
+Why use it?
+
+Logical grouping
+Better encapsulation
+Inner class can access outer class members
+Helps hide implementation details
+2. Types of Nested Classes
+
+Java has 4 types:
+
+Nested Class
+|
+|---- 1. Static Nested Class
+|
+|---- 2. Non-static Inner Class
+|
+|---- 3. Local Inner Class
+|
+|---- 4. Anonymous Inner Class
+3. Static Nested Class
+
+A nested class with static keyword.
+
+Example:
+
+class Outer {
+
+
+    static class Inner {
+
+        void show(){
+            System.out.println("Hello");
+        }
+
+    }
+
+}
+How to create object?
+
+Important point:
+
+Static nested class does NOT need outer object.
+
+Create:
+
+Outer.Inner obj = new Outer.Inner();
+
+obj.show();
+
+Why?
+
+Because static belongs to class.
+
+Same as:
+
+Math.sqrt()
+
+You don't create Math object.
+
+>>>>>>>in static nested class only static data tooks not instance data if i want instance data also come then i make an object of thar particular class and then call them
+
+public static class Inner
+
+protected static class Inner
+
+private static class Inner
+
+static class Inner
+
+all are allowed becuse this inner class is private for its outer class.....and  protects for its outer class and public toh hota h i h
+
+Private class has no outside access like that
+
+Outer.inner obj ;
+
+
+
+
+Non-static Inner Class
+
+Normal class inside class.
+
+Example:
+
+class Outer {
+
+
+class Inner {
+
+
+void show(){
+
+System.out.println("Inner");
+
+}
+
+
+}
+
+
+}
+Object Creation
+
+First outer object required.
+
+Wrong:
+
+Outer.Inner obj = new Outer.Inner();
+
+Error.
+
+Correct:
+
+Outer outer = new Outer();
+
+Outer.Inner inner = outer.new Inner();
+
+inner.show();
+
+Syntax is important:
+
+outerObject.new Inner()
+
+
+
+
+
+
+
+
+
+
+
+
+Let's do a deep analysis of Nested Classes in Java from basic → intermediate → advanced in the same format.
+
+1. What is Nested Class?
+
+A nested class is a class declared inside another class.
+
+Example:
+
+class Outer {
+
+    class Inner {
+
+    }
+
+}
+
+Here:
+
+Outer = outer class
+Inner = nested class
+
+Why use it?
+
+Logical grouping
+Better encapsulation
+Inner class can access outer class members
+Helps hide implementation details
+2. Types of Nested Classes
+
+Java has 4 types:
+
+Nested Class
+|
+|---- 1. Static Nested Class
+|
+|---- 2. Non-static Inner Class
+|
+|---- 3. Local Inner Class
+|
+|---- 4. Anonymous Inner Class
+3. Static Nested Class
+
+A nested class with static keyword.
+
+Example:
+
+class Outer {
+
+
+    static class Inner {
+
+        void show(){
+            System.out.println("Hello");
+        }
+
+    }
+
+}
+How to create object?
+
+Important point:
+
+Static nested class does NOT need outer object.
+
+Create:
+
+Outer.Inner obj = new Outer.Inner();
+
+obj.show();
+
+Why?
+
+Because static belongs to class.
+
+Same as:
+
+Math.sqrt()
+
+You don't create Math object.
+
+4. Static Nested Class Access Rules
+
+Example:
+
+class Outer {
+
+static int x=100;
+
+int y=200;
+
+
+static class Inner {
+
+
+void display(){
+
+System.out.println(x);
+
+}
+
+}
+
+}
+
+Output:
+
+100
+
+Static inner class can access:
+
+✅ static members directly
+
+But:
+
+System.out.println(y);
+
+Error.
+
+Why?
+
+Because y belongs to object.
+
+No Outer object exists.
+
+To access non-static:
+
+class Outer {
+
+
+int y=200;
+
+
+static class Inner {
+
+
+void display(){
+
+Outer obj=new Outer();
+
+System.out.println(obj.y);
+
+}
+
+
+}
+
+
+}
+5. Access Modifiers in Static Nested Class
+
+Allowed:
+
+public static class Inner
+
+protected static class Inner
+
+private static class Inner
+
+static class Inner
+
+All allowed.
+
+Because nested class is a member of outer class.
+
+Example:
+
+class Outer {
+
+
+private static class Inner {
+
+
+}
+
+
+}
+
+Can outside access?
+
+No:
+
+Outer.Inner obj;
+
+Error.
+
+Because private.
+
+6. Non-static Inner Class
+
+Normal class inside class.
+
+Example:
+
+class Outer {
+
+
+class Inner {
+
+
+void show(){
+
+System.out.println("Inner");
+
+}
+
+
+}
+
+
+}
+Object Creation
+
+First outer object required.
+
+Wrong:
+
+Outer.Inner obj = new Outer.Inner();
+
+Error.
+
+Correct:
+
+Outer outer = new Outer();
+
+Outer.Inner inner = outer.new Inner();
+
+inner.show();
+
+Syntax is important:
+
+outerObject.new Inner()
+7. Why Outer Object Required?
+
+Because inner class automatically keeps reference of outer object.
+
+Internally:
+
+class Outer$Inner {
+
+    Outer this$0;
+
+}
+
+It knows:
+
+"which Outer object created me"
+
+Example:
+
+class Outer {
+
+
+int value=50;
+
+
+class Inner {
+
+
+void show(){
+
+System.out.println(value);
+
+}
+
+
+}
+
+
+}
+
+Works.
+
+Because inner class has outer reference.
+
+8. Access Rules of Inner Class
+
+Inner class can access everything:
+
+class Outer {
+
+
+private int a=10;
+
+protected int b=20;
+
+public int c=30;
+
+
+class Inner{
+
+
+void test(){
+
+System.out.println(a);
+System.out.println(b);
+System.out.println(c);
+
+}
+
+
+}
+
+
+}
+
+All works.
+
+Because inner class is part of outer class.
+
+9. Can Inner Class have static members?
+
+Before Java 16:
+
+Only static final constants allowed.
+
+Example:
+
+class Outer {
+
+
+class Inner {
+
+
+static final int x=10;
+
+
+}
+
+
+}
+
+Allowed.
+
+Modern Java (Java 16+):
+
+Static members allowed.
+
+class Outer {
+
+
+class Inner {
+
+
+static int x=10;
+
+
+}
+
+
+}
+
+Allowed.
+
+10. Static Method inside Nested Class
+
+Example:
+
+class Outer {
+
+
+static class Inner{
+
+
+static void display(){
+
+System.out.println("Hello");
+
+}
+
+
+}
+
+
+}
+
+Call:
+
+Outer.Inner.display();
+
+No object.
+
+Because:
+
+static → class level.
+
+11. Non-static Method inside Nested Class
+
+Example:
+
+class Outer {
+
+
+static class Inner{
+
+
+void display(){
+
+}
+
+
+}
+
+
+}
+
+Call:
+
+Outer.Inner obj = new Outer.Inner();
+
+obj.display();
+
+Because method is object level.
+
+12. Final Nested Class
+
+Example:
+
+class Outer {
+
+
+final class Inner {
+
+
+}
+
+
+}
+
+Meaning:
+
+Nobody can extend Inner.
+
+Example:
+
+class Child extends Outer.Inner
+{
+
+}
+
+Not allowed.
+
+13. Can Nested Class be Abstract?
+
+Yes.
+
+Example:
+
+class Outer {
+
+
+abstract class Inner {
+
+
+abstract void show();
+
+
+}
+
+
+}
+
+Child must implement.
+
+14. Can Nested Class be Interface?
+
+Yes.
+
+Example:
+
+class Outer {
+
+
+interface Inner {
+
+
+void show();
+
+
+}
+
+
+}
+15. Local Inner Class
+
+Class inside method.
+
+Example:
+
+class Outer {
+
+
+void display(){
+
+
+class Inner{
+
+
+void show(){
+
+System.out.println("Hi");
+
+}
+
+
+}
+
+
+Inner obj=new Inner();
+
+obj.show();
+
+
+}
+
+
+}
+
+Scope only inside method.
+
+Cannot access outside.
+
+16. Local Inner Class Access
+
+Can access:
+
+Local variables only if final/effectively final.
+
+Example:
+
+void test(){
+
+int x=10;
+
+
+class Inner{
+
+void show(){
+
+System.out.println(x);
+
+}
+
+}
+
+
+}
+
+Works.
+
+But:
+
+x=20;
+
+then error.
+
+17. Anonymous Inner Class
+
+No class name.
+
+Example:
+
+abstract class Animal {
+
+abstract void sound();
+
+}
+
+
+class Test {
+
+
+public static void main(String args[]){
+
+
+Animal a=new Animal(){
+
+
+void sound(){
+
+System.out.println("Dog");
+
+}
+
+
+};
+
+
+a.sound();
+
+
+}
+
+
+}
+
+Output:
+
+Dog
+18. Nested Class + Inheritance
+
+Example:
+
+class Outer {
+
+
+class Inner {
+
+
+}
+
+
+}
+
+
+class Child extends Outer.Inner
+{
+
+
+}
+
+Not directly possible.
+
+Need Outer object:
+
+Child(Outer o)
+{
+    o.super();
+}
+
+Advanced topic.
+
+19. Static vs Non-static Inner Difference
+Feature	Static Nested	Inner
+static keyword	yes	no
+Outer object required	no	yes
+Access outer instance variable	no direct	yes
+Memory reference	no	yes
+Creation	Outer.Inner	outer.new Inner
+20. Real Java Examples
+HashMap Node
+
+Internally:
+
+class HashMap {
+
+
+static class Node{
+
+
+}
+
+
+}
+
+Because Node does not need HashMap object.
+
+Iterator
+
+Uses inner classes for implementation.
+
+Final Memory Rules
+Static Nested Class
+Class level
+No outer object
+Call with Outer.Inner
+Static methods → Outer.Inner.method()
+Non-static methods → create object
+Inner Class
+Object level
+Need Outer object
+Call with outer.new Inner()
+Can access everything
+Local Inner
+Inside method
+Only method scope
+Anonymous
+One-time use class
+No name
+
+This covers nested classes from beginner to advanced level.
