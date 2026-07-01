@@ -1,0 +1,485 @@
+Collections is an class which provide some methods like add ...sort .....remove for collection interface because they extend that particular class
+
+Collection is an interface it which has other three interface List ....set .....queue.....  and map is not an part of collection interface but it has
+
+List interface
+>>
+ Where duplication of data were allowed ....insertion order maintains
+
+  ArrayList >>> (Implementing class of List interface)
+
+    > Dynamically size were changes ...it gives O(1) complexity in searching and ...its hard to insertion and deletion in thi
+
+    >if i want sorting in ArrayList.....then i use collection.sort()....
+
+     Example like>>>
+
+     i make an Arraylist where String or Integer were stored ....they directly implements Comparable interface so no need of this
+     like we have to implements comparable then ....we have to implements its compareTo method and give data
+
+    code of it....
+      public class A
+      {
+      psvm()
+      {
+      ArrayList<Integer> arrayList = new ArrayList<>();
+      arrayList.add(3);
+      arrayList.add(2);
+      arrayList.add(1);
+
+      //here wrapper class alredy implemets comparable interface so we do not have to manully implement them
+      //sorting happens directly when we do collection.sort
+
+      collection.sort(arrayList);
+
+      sout(arrayList);
+      }
+      }
+
+     it only happens if any class did not implements comparable like student class data and i want perform sorting in that then i have
+     to implement comparable interfacce and give body of it ....passes object refence so they sort in arraylist
+
+    code of this example>>>
+     class Student implements Comparable<Student>
+     {
+     int id;
+     String name;
+
+     public int compare(Student s)
+     {
+       return this.id-s.id;
+      }
+
+     Student(int  id , String name)
+     {
+     this.id = id;
+     this.name = name;
+     }
+     psvm
+     {
+       Student s1 = new Sudent(1,"Harshal");
+       Student s2 = new Student(2,"Ravi");
+
+       ArrayList<Student> arrayList = new ArrayList<>();
+       s1.add();
+       s2.add();
+                         //only sorting happens if i implenet comparable interface or provide comparator in ArrayList constructor
+                         //like example in comprator i make this whole in collection.sort(arrayList, here i do that code of comprator here i passes the c here)<>() ;
+                         //but it in treeMap or tree set i directly passes into constructor of there like Treeset<Student> t = new Treeset<>("Here");
+                         {
+                         Comparator c = new Comparator (
+                         {
+                          public int compare(Student s1 , Student s2)
+                          {
+                           return  s1.id-s2.id;
+                          }
+                         }
+                         );
+
+                         }   //i also impelment it with lamda expression
+       collection.sort(arrayList);
+
+       sout(arrayList);
+
+     }
+     }
+
+     or we also use comparator also
+
+    >>but in treeset or treemap ...what happens we do not have to perfrom collections.sort()....it directly
+
+     >>here equals and hashcode were work but in diffrent way like
+
+     here Hashcode did not work it only work in hashing type collection
+
+     but equal has uses like .  lets discuss with two example .........first is of primitive type and second is for non primitive type
+
+     Primitive type>>>>
+      if i store Interger data in ArrayList<Integer>  and i add some integer then if i do .... a1.contains(1); ....then it internally checks by equal method that is it there or not if it there then return true else false
+      but primitive automatically impelemts equal method
+
+     Non primitive Type>>>
+       i have student class and i insert data in id and name like (1,"Harshal") and when i check this data in arrayList or not hen it give me false becuse
+
+       ArrayList<Student> list = new ArrayList<>();
+
+       list.add(new Student(1,"Akash"));
+
+       System.out.println(
+               list.contains(new Student(1,"Akash"))
+       );
+
+       it treat two other obejct so it return false so we have to implements equal method our there
+
+
+       LinkedList<Same as ArrayList it  internally uses doubly linked list for storing data here insertion and deletion is easy but
+                 access is hard>
+                 [null][1][101] [100][2][102] [101][3][103] [102][4][null]
+                      100          101               102        103
+
+
+                      //here also those properties follow of soritng seraching ....equal and comparator comparable
+
+
+       Vector
+          it is not used in todays time ....its all method are syncronized
+        Stack
+           it is extens vector class ...and its all method also synchronized (it run in LIFO operation like last in first out)
+
+NOTESSSS>>>>
+
+Collections.sort() works only on List because only a List has an index (position of elements). Set and Map do not provide indexed access, so Java cannot rearrange their elements using Collections.sort().
+
+So how the sorting happens in ....Hashset , HashMap , LinkedHasSet , LinekdHashMap  ()
+
+For sorting set we have to convert it into .....List
+
+For sorting in map also we have convert into ....list
+
+{
+You first convert its entries to a List.
+
+Map<Integer,String> map = new HashMap<>();
+
+map.put(10,"Ram");
+map.put(5,"Amit");
+map.put(30,"Mohan");
+
+List<Map.Entry<Integer,String>> list =
+        new ArrayList<>(map.entrySet());
+
+Collections.sort(Map.Entry.comparingByKey());
+
+System.out.println(list);
+}
+
+In Treeset or TreeMap for sorting ....there i use comparable or comparator......and pass into constructor   ,,,,,,they do directly sorting
+
+     Set>>>>
+       it not allowed duplicate to store in (in primitve it is ok but in non primitive i have to override equals and hashcode here).....
+        make insertion order by LinkedHashset(non primitive hashcode and equals).......sorting by TreeSet(in non primtive hashcode equal or comprable or comparator)
+
+        Hashset>>>
+         Here insertion order were diffrent....internal process is data stored in map ....where key is its value which only and in value part some
+         object were goes there.....so key only null one time becasue if there has extra null key then one then ....duplicated data were there like two null are not allowed na
+
+         first it took hashcode then ....after ...check equal that it contains or not then after....it store data into bucket and it two data have same hashcode then and they are not equak the hascollision occureses and they sotre in linked list typed way
+
+         LinkedHasset>>
+          Here linked list occurs si insertion order maintains
+
+
+          TreeSet>>>
+           >>No null value allowed
+           Here Sorted order Were maintain + duplciated data not allowed
+
+     Map>>
+      Hashmap>> Stores data in Key value pair entrie type and ......insertion order not allowd ...sorting also not there for make them sorted converts them into list them do Collection.sort(); like that
+                one null key allowed and mant null value were allowed
+
+      LinkedHashMap >>> Here LinkedList or map were there
+                one null key allowed and many null values were allowed
+
+      TreeMap >>>> here null key not allowed ...beacuse for sorting we compare two values
+
+
+           For map we are using for Traver sing like
+           for(Map<String , Integer>.Entry : m.entrySet() )
+           {
+           }
+
+This is a great question because you're no longer asking "How do I use Queue?" You're asking "What concepts do I need to know for Queue, just like I know Comparable, Comparator, equals(), hashCode() for List, Set, and Map?"
+
+The answer is yes, every collection has its own important concepts.
+
+Think of the Collection Framework like this
+1. List (Ordered Collection)
+
+Main concepts you must know:
+
+✅ Index-based access
+✅ Duplicate elements allowed
+✅ Collections.sort()
+✅ Comparable
+✅ Comparator
+✅ equals()
+✅ Iterator
+✅ ListIterator
+✅ ArrayList internal working
+✅ LinkedList internal working
+✅ Time complexities
+2. Set (Unique Collection)
+
+Main concepts:
+
+✅ hashCode()
+✅ equals()
+✅ Comparable (for TreeSet)
+✅ Comparator (for TreeSet)
+✅ HashSet internal working
+✅ LinkedHashSet insertion order
+✅ TreeSet (Red-Black Tree)
+✅ Iterator
+✅ Time complexities
+3. Map (Key-Value Collection)
+
+Main concepts:
+
+✅ Key-Value pairs
+✅ Map.Entry
+✅ entrySet()
+✅ keySet()
+✅ values()
+✅ hashCode()
+✅ equals()
+✅ Comparable (for TreeMap keys)
+✅ Comparator (for TreeMap keys)
+✅ HashMap buckets
+✅ Hash collisions
+✅ Load factor
+✅ Resizing
+✅ Time complexities
+4. Queue (This is your next topic)
+
+Queue has a completely different purpose.
+
+Its main idea is processing order, not sorting.
+
+Think of people standing in a line at a ticket counter.
+
+Front
+
+A
+B
+C
+D
+
+Rear
+
+The first person to enter is the first person to leave.
+
+This is called:
+
+FIFO (First In, First Out).
+
+Queue concepts you should master
+A. FIFO
+offer(10);
+offer(20);
+offer(30);
+
+Queue:
+
+Front
+
+10
+20
+30
+
+Rear
+
+Remove:
+
+poll();
+
+Output:
+
+10
+
+Now:
+
+20
+30
+B. Queue methods
+
+Instead of add() and remove(), queues commonly use:
+
+offer()
+poll()
+peek()
+element()
+remove()
+add()
+
+You should know the difference between each pair:
+
+offer() vs add()
+poll() vs remove()
+peek() vs element()
+C. Queue implementations
+
+You need to understand:
+
+LinkedList
+PriorityQueue
+ArrayDeque
+
+Each works differently.
+
+D. PriorityQueue
+
+This is where Comparable and Comparator become important again.
+
+Example:
+
+PriorityQueue<Integer> pq = new PriorityQueue<>();
+
+Insert:
+
+pq.offer(50);
+pq.offer(10);
+pq.offer(40);
+pq.offer(20);
+
+Although you inserted:
+
+50
+10
+40
+20
+
+When removing:
+
+poll();
+
+Output:
+
+10
+20
+40
+50
+
+Why?
+
+Because PriorityQueue is based on a Heap, not FIFO.
+
+It orders elements according to priority.
+
+E. Comparable and Comparator in Queue
+For wrapper classes
+PriorityQueue<Integer> pq = new PriorityQueue<>();
+
+Integer already implements Comparable.
+
+No extra work is needed.
+
+For custom classes
+class Student {
+
+    int id;
+    String name;
+}
+
+This won't work by default:
+
+PriorityQueue<Student> pq = new PriorityQueue<>();
+
+Java doesn't know how to compare two Student objects.
+
+You must either:
+
+implement Comparable<Student>, or
+provide a Comparator<Student>.
+
+So the same comparison concepts you learned for sorting lists and TreeSet also apply to PriorityQueue.
+
+F. equals() and hashCode()
+
+Normal queues like:
+
+LinkedList
+ArrayDeque
+PriorityQueue
+
+do not use hashCode() internally to organize elements.
+
+Unlike HashSet and HashMap, they don't store data in hash buckets.
+
+However, your objects should still have correct equals() (and usually hashCode()) implementations if you want methods like contains() or remove(Object) to behave correctly for custom objects.
+
+G. Internal working
+
+You'll learn:
+
+LinkedList Queue
+Front
+
+↓
+
+10 → 20 → 30 → 40
+
+               ↑
+             Rear
+
+Insertion happens at the rear.
+
+Removal happens at the front.
+
+Both operations are O(1).
+
+PriorityQueue
+
+Internally it is a Binary Heap, not a linked list.
+
+You'll learn:
+
+Parent node
+Left child
+Right child
+Heapify up
+Heapify down
+
+This is one of the most common interview topics.
+
+ArrayDeque
+
+Internally it uses a resizable circular array.
+
+It supports insertion and deletion efficiently from both ends.
+
+H. Deque (Double Ended Queue)
+
+A Deque allows operations at both the front and the rear.
+
+Front <-------> Rear
+
+You can:
+
+addFirst()
+addLast()
+removeFirst()
+removeLast()
+I. Stack using Deque
+
+In modern Java, Deque is recommended instead of the older Stack class.
+
+Example:
+
+Deque<Integer> stack = new ArrayDeque<>();
+
+stack.push(10);
+stack.push(20);
+stack.push(30);
+
+System.out.println(stack.pop()); // 30
+
+Here, push() and pop() use one end of the deque, giving LIFO (Last In, First Out) behavior.
+
+Your Java Collection Roadmap
+✅ List (you're almost done)
+✅ Set
+✅ Map
+➜ Queue
+➜ Deque
+➜ PriorityQueue (Heap)
+➜ ArrayDeque
+➜ Stack using Deque
+➜ Internal implementations and time complexities
+➜ Interview questions and design decisions
+
+From what I've seen in your questions over the last few days, you're trying to understand why Java is designed this way, not just memorize methods. That's exactly the right approach.
+
+I would recommend learning Queue in the same style we covered Iterator and HashMap: starting from the real-world problem it solves, then its interface, implementations, internal data structures, time complexity, custom objects, Comparable/Comparator usage in PriorityQueue, and finally how Deque implements both queue and stack behavior. That sequence makes each concept build naturally on the previous one.
+
+
+In ArrayDeQue and LinkedList(Queue) there has no sorting haappens inly in priority queue we perfrom sorting if those are wrapper then automatic if those are not Wrapper then implement comprable and comprator
