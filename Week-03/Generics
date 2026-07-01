@@ -1,0 +1,407 @@
+
+Generic
+
+in class Box if private int a ; ; .....and passing its value from constructor then i am only able to pass normal int value here
+not other type
+
+in java if i want to strore all type of data so i took type as Object
+
+private Object a ;
+
+provife getter and setter
+
+and when i ...call function like
+
+Box b1 = new Box(1);   //here i pass any type of data
+
+
+>>>but here main problem is i didn't apply any operation on those
+
+like if id do..........  sout(b1.getValue() + 5 ) ; ............. then here i face error
+
+>>here jvm gets confused that which type of data you were adding in
+ which so here we have to do downcasting(Explicit type)
+
+
+
+>>If i known in my data i have Integer then i type cast it into Integer
+
+ Interger i = (Integer)b1.getValue();
+
+>>>>>So here i face problem while making an Object Class so overcome this problem we have
+generics
+
+>>
+
+  We are using ....Private Object a ;.......insted of it we use it like
+
+ private T a ; ..............here tree represents any type of data...and we can took
+                             any type of name here insted of T  and ...also apply
+                          syntax of generic class in front of class as like
+                                        class Box<T> ;
+
+
+
+when i create its object then i write it as
+
+---->>    Box<Integer> b1 = new Box<Integer>(10);
+
+
+---->>    Box<String> b2 = new Box<String>("10");
+
+i able to pass Any type of data and perform opration on them also
+
+//yaha m aisa operation nhi perform kr skta jo runtime pr aaaye muje compile time pr hi pta chl jayega
+kya error h like
+
+if i do ......sout(b1.getValue() + 5);.........then it is ok but if i do it didn't identifies exact object it give us value of b1.getValue
+ Also Store int value in it but when i do operation on that it confuses because it it object type and jvm not accept that you do any type of operation on any type
+
+sou(b1.getValue() + substring(9));   //here compiler show error
+
+
+______________>>>>
+
+public class Dem0
+{
+ psvm()
+ {
+  Pair<String> p1 = new Pair<>("Name" , "Aditya");
+
+  Pair<Integer> p1 = new Pair<>(1 , 123);
+
+ }
+}
+
+class Pair<T>
+{
+  T first ;
+  T second ;
+
+  Pair(T first , T second)
+  {
+   this.first = first;
+   this.second = second;
+  }
+}
+
+
+//here i disclose at creation of object that which type of data i want ....
+
+___________>>>>
+
+if i want that first parameter is different and second parameter is also different
+
+like first is of Integer type and Second is of double type then i pass at class levele
+
+
+
+public class Dem0
+{
+ psvm()
+ {
+  Pair<String , Interger> p1 = new Pair<>("Name" , 1);
+
+  Pair<Integer , String> p1 = new Pair<>(1 , "123");
+
+ }
+}
+
+class Pair<T , U>
+{
+  T first ;
+  U second ;
+
+  Pair(T first , U second)
+  {
+   this.first = first;
+   this.second = second;
+  }
+}
+
+_________>>>>>>>
+
+if i want to make my method also of generic type like first it has
+
+public static int getResult( int x)
+{
+   return x+5;
+}
+
+
+but i want i select it at runtime .....i also provide here Object type but same problem occurs by object that
+...if i do any String operation Type cast first it then i face problem
+like first i typecast it into String and then perfrom int function
+
+
+so here we were using generic
+
+
+    public static  <T>  T printing(T a)    // <T>  here T is general declaration return
+                                              typr is T
+    {
+        return a;
+    }
+
+
+EXAMPLE
+
+package Access_Modifier2;
+
+class Parent<T>
+{
+    private T a ;
+    private T b;
+    public T getValue()
+    {
+        return a;
+    }
+    public T getB()       //if there has static method Then there T is not allowed beacuse this T is an object level and Static class is of class level
+    {
+        return b;
+    }
+    Parent(T a , T b)
+    {
+        this.a = a;
+        this.b =b;
+    }
+
+    public static  <V>  V printing(V a)   //this V belong to only this class
+    {
+        return a;
+    }
+
+}
+public class Just_Testing_3 {
+
+
+    public static void main(String[] args) {
+        Parent<Integer> p = new Parent<>(10,20);
+
+        System.out.println(p.getValue() +5 );
+
+        Parent<String> s = new Parent<>("Harshal","Gothriya");
+
+        System.out.println(s.getValue().length() );
+
+        Integer a = Parent.printing(12);
+        System.out.println(a);
+
+        String b = Parent.printing("ASADA");
+        System.out.println(b);
+    }
+}
+
+
+__________________>>>>>
+
+class Box<T>
+{
+  T value ;
+}
+
+i know that when i create object of that class then i pass any type of data here but i want to apply
+  some type of restriction our there only Number type of data Stores like int ,double,float that type of data
+
+class Box<T extends Number>
+{
+T value;
+ }
+
+//now only Number class extends here only int float, double , long etc number type store here
+
+
+
+i want i also implement some interface here
+
+class Box<T extends Animal>   //this class work only with Animal or its sub class
+{
+
+}
+
+Valid:
+
+Box<Animal> b1;
+Box<Dog> b2;
+Box<Cat> b3;
+
+Invalid:
+
+Box<String> x; ❌
+
+class Animal {
+    void eat() {
+        System.out.println("Animal eats");
+    }
+}
+
+class Dog extends Animal {
+    void bark() {
+        System.out.println("Dog barks");
+    }
+}
+
+// Generic class
+class Box<T extends Animal> {
+    T obj;
+
+    Box(T obj) {
+        this.obj = obj;
+    }
+
+    void show() {
+        obj.eat(); // allowed because T is Animal or subclass
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+
+        Dog d = new Dog();
+
+        Box<Dog> box = new Box<>(d);
+        box.show();
+    }
+}
+
+___>
+class Box<T extends Animal & swin>   //this class work only with Animal or its sub class
+{                                   // and with interface swin
+                                    //here has and operator so Animal and Swin both were       there
+}
+
+____>
+
+<T extends class & Interface1 , Interface2>
+
+
+____________________________________________________________________________________________________________________________________________________ ________________________________
+
+Wilcard in Generics
+
+
+
+Generic break an rule of parent child relationship
+
+>> Animal a  = new Dog() ;
+
+ it is possible in java
+
+>> List<Dog> dogs = new ArrayList<>();
+
+  is is also possible in java
+
+>>
+   List<Animal> animals =  new Dog();
+
+it is not possible in java
+
+i say in java that ....Dog is a Animal ....but i didn't say that list of dog is a List
+
+of Animal in java
+
+
+
+Why this is not possible >>
+
+List<Dog> dogs = new Arraylist<>();
+
+List<Animal> li = dog;
+
+when i do ....
+
+li.add(new Animal()); ....then there in dog one more list were add of dog....like li.add(new Cat()) then in my dog list there has cat also
+
+>> Animal has two method ..eat() and...walk()  and dog has ....bark()
+
+[d,d,d,d,A]  or [d,d,d,d,cat]
+
+>>now here animal one come at last if i calls
+
+for(Dog d : li)
+{
+  d.bark();
+}
+
+
+then at last A there has no bark method ...so here type safty break this is known as
+
+invariant in java
+
+
+>>>in java if i have two array
+dog and animal
+
+Dog[] dogs = new Dog[10];
+
+Animal[] animal = dogs;
+
+animal[3] = new Animal();
+
+then i face runtime error here
+
+
+dogs and animal pointing two similar dogs array if i d0.....this then i am adding new Animal at dogs array then java so allow this
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+
+void printAnimal (List<Animal> a)
+{
+
+  for(Animal n : a)
+ {
+  sout(n);
+}
+}
+
+List<Dog> dog = new List<>();
+
+printAnimal(dog)
+
+this is not possible in java generic
+
+>>>>
+
+void printAnimal (Animal a)
+{
+
+  for(Animal n : a)
+ {
+  sout(n);
+}
+}
+
+List<Dog> dog = new List<>();
+
+printAnimal(dog)
+
+
+but this is allowed
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+for overcome this problem there has wildcard in javq
+
+List<?> list = new ArrayLis<Integer / String / boolean> ();
+
+any type of data i able to pass here
+
+so in this method
+println(List<Animal> a)   when i doing like println(dog)  ...dog of list then it is arent accepting
+
+but if i make this like  println(List<?> a)  ...then at runtime i decide which type i give
+
+>>>>>
+  Void fun(List<?> list)
+   {
+    list.add("Hello");
+    }    if in list i pass String then it is run but if i pass integer or some else then i throw error so at coding we are not deciding what type of data were goes in
+
+    //list m add nhi kr skte bs read kr skte h ....or read kr skte h toh collect keise krege tyope hi nhi pta.....bs object k alawa kis m read nhi kr skte aon
+
+
+
+
+

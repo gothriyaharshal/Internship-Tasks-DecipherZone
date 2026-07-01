@@ -1,0 +1,244 @@
+Lamda Expressiion is applied on functional interfacess like if i have
+
+interface R{
+  void fun() ;
+  }
+  public class implements R
+  {
+    R r = new R()
+    {
+      @Override
+      void fun()
+      {
+       sout("dfgdfgsg");
+      }
+    }
+    or with lamda one......  R r = ()->{""};  and call it r.fun().............
+    sout(r.fun());
+  }
+
+  >>>>>>>>>>Method refrence
+
+  >>>>>>>>>>>Stream Api
+
+Data processing .....is known as Streams
+
+Before Streams........if i have a Employee class and i perform data processing our there
+
+class Employee
+{
+ int empid;
+ String name;
+ }
+
+ //i want to fecth names of employess whose salry is greater then 50000 then first i took an result list
+
+ List<String> result = new ArrayList<>();
+
+ for(Employee e : emp)
+ {
+  if(e.getSalary > 500000)
+   {
+     result.add(e.getname());
+
+   }
+   }
+   //if i peerfome sorting then i do collection.sort(result);
+
+//if this code if i want to written in stream then
+
+//collection interface provide two method Stream and parrelle Streams
+
+
+employee.stream()              [source]
+        .filter(x->x>50000)    [
+        .map(x->x.getName)         intermediate operations
+        .sorted()                ]
+        .toList();  // or .forEach(sout)     [Terminal operation ] without it strean functionalittied did not perform
+
+        it comes into to list to in front of it i also apply like that ....List<String> result
+
+
+//those intermediate operation like filter,,,,,map and sorted like they
+there return type is stream
+//suppose i apply filter then after i apply map so ....this return me Stream na thbi toh m map wala method use kr ska vo Stream Api ka hi toh h
+
+//termianl operation.....it print or terminated the data
+
+forEach()......toList().......collect().......count().......findfirst()
+
+so here .... they did not return data in stream
+
+//Stream is lazyy loading
+ beacuse jb tk m terminal operation nhi lgauga stream kaam hi nhi kregi lgauga tb hi kregi
+
+  stream ek baar terminal hone k baad nyi hi stream bnao vo use nhi hogi
+
+
+//here i do vertical processing how
+
+list = [5,12,7,20]
+
+List<String> result = list.stream().filter(x -> x>10).map(x -> x*2).tolist();
+
+//here what happend 5 full process then stores into .....result then after 12  then 7
+//it dont go like first full list filter and full list map then full list return in to list
+
+Stream source How we make an Stream>>>>>>>>>>>>>>>>>
+
+By collection
+by Array            i have String array  ...and in my Arrays class i have stream method were there  and those stream method also return me stream
+by stream.of()
+infinite Stream
+   jo khbi khtm  nhi hogi......stream.iterate(1 , x-> x+1); or iski limit bhi set kr skte h like .limit(10) .foreaach(sout);
+    by iterate it depende and generate value by previous one
+
+    stream.generate(supplire)  it generate nor from previous one it autmoatically generates new value
+
+
+Primitive Stream
+
+suppose i have Stream<Integer> [10,3,4,5] what happend if i run
+list.stream().filter(x->x>10).map();
+
+internally working done on int data then after convertion in Integer then after convertion in list so it makes slow our process
+
+>>we want fast then ..... Stream provide IntStream....DoubleStrean,,,LongStrean for convertion and there emthod
+
+
+                       Base Stream
+stream   Intstream    LongStream     doubleStream
+
+
+>>if i want to convert my Stream into IntStreeam primitve stream type
+
+object to Primitive
+
+Stream<Integer> s = list.stream();
+
+IntStream s2 = s.mapToInt();    //so this method convet it
+
+Primitve ---> object
+
+intStream s = intstream.of(1,3,4);
+Stream<Integer> s2 = s.boxed();
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+List of intermediate function>>>>
+
+ filter()     > it filter the data ..kitne bhi filter map etc lga skta hu m
+ map()     >> i want to multiple with 2 ...to all those element present in list
+
+
+if i have data like multidimentional list like
+
+ List<List<Integer>> list2 = List.of(
+     List.of(1,2) ,
+     List.of(3,4)
+    );
+
+here i have multidimentational list so if i perform like map(x-->x*2) then it give me error becuase it is not
+number it is an list....so i have to do that like
+
+list2.stream().map(x->x.stram().map(y--->y*2)).foreach(sout)
+
+output comes but output in the form of some address not the form of data...
+...so this is an big problem here....so we use flatMap...which flat all our data
+
+
+list2.stream().flatmap(x->x.stram().map(y--->y*2)).foreach(sout)
+
+means ,,,,x element is an list then after ....from this list we apply map and from it one another element comes and we map and print it
+
+
+>>>> only sorted fucntion in and many other like is stateful like....it want all data for sotrint all index like that
+
+
+  we also provide comprator also in sorted like
+
+   list.stream()
+   .filter(x -> x>10)
+   .map(x -> x*2)
+   .sorted((a,b) -> b-a)
+   .foreach(sout);
+
+   like that
+
+
+
+>>>distinct it only keeps unique value
+
+>>skip()  if i want to skip
+
+Stream.iterator(1 , x->x+1)
+       .limit(10);
+       .skip(5);
+       .forEach(sout);
+
+>>>> peek(sout)
+
+it is for debugging that i want to know how my elements were seen before sorting
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+List of Terminal operation>>>>
+
+ Collection Data by >>> tolist() or collect()
+
+ Reducing data by >>>  reduce() , sum() , max() , count() , average() like that they give a particular to us
+
+ searching/macthing  >> FindFirst() , FindAny() , anyMatch() , allMatch()  (last two returns boolens)
+
+ Iteration >> ForEach() , ForEachOrdered()
+
+
+Example
+
+ List<integer> list = new ArrayList<>(list.of(1,13,11,9));
+
+ List<Integer> list2 = list.stream()
+                           .map(x -> x+1)
+                           .forEach(sout);
+
+
+     >>toList return List and the list which return to mee is an immutable
+     m change nhi kr skta usme khuch ....list i did not .... change anything
+
+     like ......  =>   list2.add(4); ......so there has some exception
+
+     >>i have collect method internally which take data .... like
+
+       List<Integer> list2 = list.stream()
+                                 .map(x -> x+1)
+                                 .collect(Collectors.toList());
+      and now this list2 is not an immutable i add change it easyly
+
+      infect collecting in list i also collect this into set also
+
+
+
+      >>>>>reduce (combine into single value)
+
+       [1,2,3,4]  so internally if i perform sum then there has 1+2=3 then 3+3=6 like that
+
+       and it return data into Optional
+
+       Optional<Integer> sum  = list.stream()
+                                    .reduce((a,b) -> a+b );
+
+       sout(sum.get);
+
+
+
+       if i dont want Optional class here then i pass identity here like
+
+
+       int sum  = list.stream()
+                      .reduce(0,(a,b) -> a+b );
+
+       sout(sum);
+
+
+    //identiy means base sum is 0  and isi m chize add hoti jayegi

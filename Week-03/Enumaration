@@ -1,0 +1,165 @@
+
+Enumaration
+
+why this come
+
+>>Suppose payment status is in three state --->> success , failed , pending
+
+>>How did i represent those constent value in java (by final keyword)
+
+public static final int success = 1;
+public static final int failed = 2;
+public static final int pending = 3;
+
+
+>call them all by classname...
+>
+>>>>Problems which come from this
+
+1> type safety ()
+
+class PaymentStatus
+{
+
+public static final int success = 1;
+public static final int failed = 2;
+public static final int pending = 3;
+
+}
+
+class main
+{
+ psvm()
+ {
+  PaymentStatus p = new PaymentStatus();
+
+  int status = p.success;
+
+  int status = 100;
+
+  }
+}
+
+
+https://github.com/adityatandon15/Java-Full-Course/blob/main/Lecture%2023/notes.pdf
+
+>>go and read notes
+
+
+Interfac>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+
+all varible in interface are
+public statib and final
+ (static becuse interface has no relation with object and if there has no relation with object we also not pass varivle value in constructor also)
+
+>>We lso override default method in interface
+
+>>we also make an static method in interface
+
+>>java 9
+
+i also create private method in java ....
+
+private void run()
+{
+  sout("hy");
+}
+
+ab isse bs us interface k andr hi call kr skte h bahar access nhi kr skte
+
+>>Diamond problem resolve by interface
+
+
+
+Class A (fun method)
+
+class B extend A      and      class C extend A
+
+both gives there definition
+
+class D extend A , B
+{
+   D d = new D();
+
+  d.fun();          //here confusion creates
+}
+
+
+which fun() were called
+
+
+>>interface solve it by
+
+A , B , C all are interface and has fun method declation of those were given in
+
+child class
+
+
+>>>but in default method there has body then what we do here
+
+
+1 option>>
+
+interface  a has fun default method
+
+interface b has fun default method
+
+class c implements a,b
+
+first option is override fun method give your own implementtatio
+
+2 option>>
+
+if i want that a ya b m se kisi ek ka chle
+
+toh m override toh kruga hi uske andr likhna hoga
+
+
+interface_name.super.function_name();
+
+
+@Override
+public void fun()
+{
+  B.super.fun();
+}
+
+
+
+>>>java Resolution Rule
+
+if any class Implement interface and extend class and those 2 have same name of function .
+...and when i create object then java give priority to class function
+
+interface A
+{
+  default void()
+  {
+   sout("inside interfave");
+  }
+}
+
+class B
+{
+ void fun()
+ {
+   sout();
+ }
+}
+
+class D extend B implements A
+{
+
+}
+
+class main {
+psvm()
+{
+ D n = new D();
+ n.fun();        //always class one calls
+
+}
+}
+
+
+//or if i wwant my own implementation then override that method in child class
