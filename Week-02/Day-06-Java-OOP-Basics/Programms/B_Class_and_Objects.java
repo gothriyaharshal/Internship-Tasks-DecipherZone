@@ -18,7 +18,10 @@ System.out.println(st.Roll_no);
 System.out.println(st.salary);
 System.out.println(st.name);
 
-/*
+
+
+    /*
+
 
 //but what happens when we took local varible lets //took
 

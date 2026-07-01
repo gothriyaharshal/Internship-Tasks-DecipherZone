@@ -23,7 +23,9 @@ public class A_Student_Class {
 
     @Override
     public String toString() {
-        return super.toString();
+
+        return "The name is---> "+ this.name+" the age is "+ this.age +" the marks is " +this.marks;
+
     }
 
     public static void main(String[] args) {
@@ -39,9 +41,9 @@ public class A_Student_Class {
         Float marks=scanner.nextFloat();
 
         A_Student_Class aStudentClass=new A_Student_Class(age,name,marks);
-       // aStudentClass.toString();
-
-        aStudentClass.display();
+     //  aStudentClass.toString();
+        System.out.println(aStudentClass);
+       // aStudentClass.display();
     }
 
 }

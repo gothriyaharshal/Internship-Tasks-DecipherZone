@@ -32,9 +32,7 @@ public boolean equals(Object obj)
 
   //converting obj into Student type
   
-A_Equal_Programm
- s = (A_Equal_Programm
-)obj;
+A_Equal_Programm s = (A_Equal_Programm)obj;
 
 if(this.id == s.id)
 { 
@@ -114,7 +112,8 @@ s1.equals(s2);    //if this is true then there hashcode must be same
 
 this uses in hash type 
 
-first we calculate hashcode (usually we took id as hashcode) ...if hashcode is equal then we run equal method it ....check data obejct is equal or not if it give true like eqal then we not add
+first we calculate hashcode (usually we took id as hashcode) ...if hashcode is equal then we run equal method it
+....check data obejct is equal or not if it give true like eqal then we not add
 
 2 Rule>>
 
@@ -204,4 +203,5 @@ So your statement is correct:
 
 >>>>>>>>>>>>>>>>>>>
 
-Means like that...... s1.equals(s2);.......both pointing to same data then ...there hashcode must be same becuse we dont want duplicate value so vo store it only one 
+Means like that...... s1.equals(s2);.......both pointing to same data then ...
+there hashcode must be same becuse we dont want duplicate value so vo store it only one

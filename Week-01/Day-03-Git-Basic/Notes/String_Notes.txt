@@ -1,11 +1,8 @@
 public final class String
 {
     private final byte[] value;
-
     private final byte coder;
-
     private int hash;
-
     // methods...
 }
 

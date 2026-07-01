@@ -1,0 +1,313 @@
+first of all one thing
+
+String s = "Hello" ;
+
+s.concate("java");
+
+Herre two object were created .....but Hello has ... s that refencing to it ...
+but....Hellojava ...has no referce which poinitng to it so ...Garbage collector remove it in future
+
+//if i do like .....String s2 = s.concate("java");...then it has refrence
+
+Second thing>>>>>>>>>>>>>>>>>>>>>.
+
+ String s = "Hello" ;
+
+ s = s.concate("java");   // then refrence of s point to "Hello java" and "Hello" has no refrence ready for garbage collector
+
+ Third thing>>>>>>>>>>>>>>>>>>>>>>>>
+
+ immutable menas if i create an object then it state did not ever change like
+
+ String s = "hello" ;  this object is fixed if i want updation then i make new object and make refrence to it
+
+ s = s.concate("java"); //here new object were made up and s refrence pointing to it
+
+ Fourth thing>>>>>>>>>>>
+
+ String class is final because no other class extend ....pr agr String final nhi hoti toh kya hota
+ internally all varible of string are private and no child class access them...but what if string is not final
+
+ then public and protected method of String class can be access and overrided in child class
+
+ Example:===>
+   String = "hy" ; when i calculate its length then it give me ans 2
+
+   but if String class is not final i extend it in my child class and change implementation of this length public method ad like this
+
+   class MyString extends String {
+
+       public int length() {
+           return 1000;
+       }
+   }
+
+   Ab:
+
+   String s = new MyString("hello");
+
+   System.out.println(s.length());
+
+   Output kya aana chahiye?
+
+   5 ya 1000?
+
+   Ye confusion create karta.
+
+   >>>5 th thing is that....
+
+   why my varible in String class is private and final
+
+   like if they are not private final then what happens
+
+   Suppose String aisi hoti:
+
+   final class String {
+
+       char[] value;   // not private
+   }
+
+   Class final hai, toh koi extend nahi kar sakta. Lekin problem ab bhi hai:
+
+   String s = "hello";
+
+   s.value[0] = 'j';
+
+   Agar value accessible hota toh koi directly data change kar sakta tha.
+
+   Ab:
+
+   System.out.println(s);
+
+   Output:
+
+   jello
+
+  >>> but here only we understand why varible is private ...but now we understood why they are final
+
+  final means refrence were never ever change Example
+
+  final int a = 10;
+
+Haan, pehli baat tumne sahi pakdi:
+
+private final byte[] value;
+
+ka matlab:
+
+private → class ke bahar directly access nahi kar sakte.
+final → value reference ek baar kisi array ko point karne ke baad doosre array ko point nahi karega.
+
+(But yaad rakho: final array ke andar ke elements ko lock nahi karta, reference ko lock karta hai.)
+
+
+>>>>>>>>>>>>>>>>>>>.
+
+
+4) Immutable class banate kaise hain?
+
+Interview me agar bole "immutable class banao":
+
+Tum ye rules follow karoge:
+
+Rule 1: Class ko final karo
+final class Student {
+
+}
+
+Taaki koi extend na kare.
+
+Rule 2: Fields private + final
+private final int id;
+private final String name;
+
+Kyu?
+
+Private:
+
+direct access nahi
+
+Final:
+
+reference change nahi
+Rule 3: Constructor se value set karo
+Student(int id, String name){
+    this.id = id;
+    this.name = name;
+}
+Rule 4: Setter mat banao
+
+Ye nahi:
+
+setName()
+setId()
+
+Kyunki setter state change kar deta hai.
+
+Complete immutable class:
+
+final class Student {
+
+    private final int id;
+    private final String name;
+
+
+    public Student(int id, String name){
+        this.id = id;
+        this.name = name;
+    }
+
+
+    public int getId(){
+        return id;
+    }
+
+
+    public String getName(){
+        return name;
+    }
+}
+
+Ab object banne ke baad change nahi hoga.
+
+
+>>>>>>final rule is
+
+final int a = 10;
+a = 20 ;     ///never possible
+
+//lets understand in object formate also
+
+final String s = "Hello";
+s.concate("java");      //not possible
+
+//but if my object is possible like
+
+Final Student s = new Student("harry");
+s.setName("rohna");   //that psosible beacuse internal ....state were change not refrence ...and in imutable field are set to be final
+
+
+
+At last>>>
+
+String is immutable because its class is final, its internal state is private and final, there are no setters, and any modification creates a new object. Immutability provides security, thread safety, caching in String Pool, and hashcode stability.
+
+
+
+Exactly, you caught the hidden problem. This is one of the most important points in immutability.
+
+final does not make the object immutable. It only makes the reference fixed.
+
+Example:
+
+class Address {
+    String city;
+
+    Address(String city) {
+        this.city = city;
+    }
+
+    void setCity(String city) {
+        this.city = city;
+    }
+}
+
+
+final class Student {
+
+    private final Address address;
+
+    Student(Address address) {
+        this.address = address;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+}
+
+Now:
+
+Address a = new Address("Jaipur");
+
+Student s = new Student(a);
+
+s.getAddress().setCity("Delhi");
+
+System.out.println(s.getAddress().city);
+
+Output:
+
+Delhi
+
+But we said Student is immutable? 😅
+Actually it is not truly immutable.
+
+Why?
+
+Because:
+
+private final Address address;
+
+means:
+
+Student
+  |
+  v
+Address object
+
+The arrow cannot move.
+
+This is not allowed:
+
+address = new Address("Mumbai"); // ❌
+
+But the object that arrow points to can still change:
+
+Before:
+
+Student
+   |
+   v
+Address("Jaipur")
+
+
+After:
+
+Student
+   |
+   v
+Address("Delhi")
+Solution: Defensive Copying
+
+Immutable class should not give the original mutable object.
+
+final class Student {
+
+    private final Address address;
+
+    Student(Address address) {
+        this.address = new Address(address.city);
+    }
+
+
+    public Address getAddress() {
+        return new Address(address.city);
+    }
+}
+
+Now:
+
+Address a = new Address("Jaipur");
+
+Student s = new Student(a);
+
+a.setCity("Delhi");
+
+System.out.println(s.getAddress().city);
+
+Output:
+
+Jaipur
+
+Because Student has its own copy.

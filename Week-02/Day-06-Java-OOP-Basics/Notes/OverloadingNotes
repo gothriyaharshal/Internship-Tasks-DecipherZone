@@ -1,0 +1,616 @@
+
+Let's do a deep analysis of Method Overriding in Java.
+
+1. What is Method Overriding?
+
+Method Overriding means:
+
+When a child class provides its own implementation of a method that is already defined in the parent class.
+
+It is used for runtime polymorphism.
+
+Example:
+
+class Animal {
+
+    void sound() {
+        System.out.println("Animal makes sound");
+    }
+
+}
+
+
+class Dog extends Animal {
+
+    void sound() {
+        System.out.println("Dog barks");
+    }
+
+}
+
+Here:
+
+Animal has sound()
+
+Dog changes the implementation of sound()
+
+This is overriding.
+
+2. Why do we use Overriding?
+
+Suppose parent has general behavior:
+
+Animal
+    sound()
+
+Different animals have different sounds:
+
+Dog → Bark
+Cat → Meow
+Lion → Roar
+
+So child classes override the same method.
+
+It provides:
+
+Runtime polymorphism
+Dynamic method dispatch
+Specific implementation
+3. Basic Rules of Method Overriding
+Rule 1: Parent-child relationship required
+
+Example:
+
+class A {
+
+void show()
+{
+
+}
+
+}
+
+
+class B extends A {
+
+void show()
+{
+
+}
+
+}
+
+✔ Valid
+
+But:
+
+class A {
+
+void show()
+{
+
+}
+
+}
+
+
+class B {
+
+void show()
+{
+
+}
+
+}
+
+❌ Not overriding
+
+It is just two separate methods.
+
+4. Method Signature Must Be Same
+
+Parent:
+
+class Parent {
+
+void display(int a)
+{
+
+}
+
+}
+
+Child:
+
+class Child extends Parent {
+
+void display(int a)
+{
+
+}
+
+}
+
+✔ Overriding
+
+Different parameter:
+
+void display(String a)
+
+❌ Not overriding
+
+That becomes overloading.
+
+5. Return Type Rules
+
+Return type must be:
+
+Same
+class Parent {
+
+int getValue()
+{
+return 10;
+}
+
+}
+
+
+class Child extends Parent {
+
+
+int getValue()
+{
+return 20;
+}
+
+}
+
+✔
+
+Covariant return type allowed
+
+Child can return subclass object.
+
+Example:
+
+class Animal
+{
+
+}
+
+
+class Dog extends Animal
+{
+
+}
+
+
+class Parent {
+
+Animal getAnimal()
+{
+return new Animal();
+}
+
+}
+
+
+class Child extends Parent {
+
+
+Dog getAnimal()
+{
+return new Dog();
+}
+
+}
+
+✔ Allowed
+
+Because:
+
+Dog IS-A Animal
+
+6. Access Modifier Rules
+
+Child cannot reduce visibility.
+
+Example:
+
+Parent:
+
+public void show()
+{
+
+}
+
+Child:
+
+protected void show()
+{
+
+}
+
+❌ Error
+
+Because child is giving less access.
+
+Allowed:
+
+Parent:
+
+protected void show()
+
+Child:
+
+public void show()
+
+✔
+
+Increasing access is allowed.
+
+Access table:
+
+Parent	Child
+private	❌
+default	default/protected/public
+protected	protected/public
+public	public
+7. Can static methods be overridden?
+
+No.
+
+Static methods belong to class, not object.
+
+Example:
+
+class Parent {
+
+static void show()
+{
+System.out.println("Parent");
+}
+
+}
+
+
+class Child extends Parent {
+
+static void show()
+{
+System.out.println("Child");
+}
+
+}
+
+This is method hiding, not overriding.
+
+8. Can private methods be overridden?
+
+No.
+
+Example:
+
+class Parent {
+
+private void display()
+{
+
+}
+
+}
+
+
+class Child extends Parent {
+
+private void display()
+{
+
+}
+
+}
+
+Not overriding.
+
+Because child cannot see parent's private method.
+
+9. Can final methods be overridden?
+
+No.
+
+Example:
+
+class Parent {
+
+final void show()
+{
+
+}
+
+}
+
+
+class Child extends Parent {
+
+void show()
+{
+
+}
+
+}
+
+Error.
+
+final means cannot change.
+
+10. Can constructors be overridden?
+
+No.
+
+Because constructor is not inherited.
+
+Example:
+
+class Parent {
+
+Parent()
+{
+
+}
+
+}
+
+
+class Child extends Parent {
+
+Child()
+{
+
+}
+
+}
+
+These are different constructors.
+
+Not overriding.
+
+11. Can main() be overridden?
+
+Technically no.
+
+Because:
+
+public static void main(String args[])
+
+is static.
+
+Static methods are hidden.
+
+12. Using @Override Annotation
+
+Recommended:
+
+class Parent {
+
+void show()
+{
+
+}
+
+}
+
+
+class Child extends Parent {
+
+
+@Override
+void show()
+{
+
+}
+
+}
+
+Compiler checks if you are really overriding.
+
+If mistake:
+
+@Override
+void sho()
+{
+
+}
+
+Compiler error.
+
+13. Runtime Polymorphism
+
+Most important.
+
+Example:
+
+class Animal {
+
+void sound()
+{
+System.out.println("Animal sound");
+}
+
+}
+
+
+class Dog extends Animal {
+
+void sound()
+{
+System.out.println("Dog bark");
+}
+
+}
+
+
+public class Main {
+
+public static void main(String args[])
+{
+
+Animal a = new Dog();
+
+a.sound();
+
+}
+
+}
+
+Output:
+
+Dog bark
+
+Why?
+
+Reference is Animal.
+
+Object is Dog.
+
+JVM chooses method at runtime.
+
+14. Overloading vs Overriding
+Overloading	Overriding
+Same class	Parent-child
+Same method name	Same method name
+Different parameters	Same parameters
+Compile time	Runtime
+Inheritance not required	Inheritance required
+Return type can change	Same/covariant only
+Constructors allowed	Constructors not allowed
+15. Real Example in Java
+
+ArrayList:
+
+class Animal {
+
+void eat()
+{
+
+}
+
+}
+
+
+class Dog extends Animal {
+
+void eat()
+{
+
+}
+
+}
+
+Child changes behavior.
+
+Final Rules Remember:
+
+For Overriding:
+
+✅ Parent-child relation required
+✅ Same method name
+✅ Same parameters
+✅ Same or covariant return type
+✅ Child access cannot be more restrictive
+✅ final/private/static cannot be overridden
+✅ Constructor cannot be overridden
+✅ Runtime polymorphism
+
+Overloading = same name, different input
+Overriding = same method, different implementation
+
+
+
+ /*before java 5 there must be same return type in overriding but after
+    we also use covarient type also
+
+            like in parent class there has Obejct return type in child class
+    we use either Object or either Integer String like child of it
+
+    */
+
+
+
+You are thinking in the right direction. Let's clear the exact rule of covariant return type.
+
+In method overriding:
+
+Parent method return type = Parent class type
+Child overridden method return type can be:
+Same type ✅
+Child class type (subclass of parent return type) ✅
+
+But not any random type ❌
+
+Example:
+
+class Animal {
+
+    Animal print() {
+        return new Animal();
+    }
+}
+
+
+class Dog extends Animal {
+
+    // Same return type
+    Animal print() {
+        return new Animal();
+    }
+}
+
+Valid.
+
+Now covariant:
+
+class Animal {
+
+    Animal print() {
+        return new Animal();
+    }
+}
+
+
+class Dog extends Animal {
+
+    // Dog is child of Animal
+    Dog print() {
+        return new Dog();
+    }
+}
+
+Also valid ✅
+
+Because:
+
+Dog IS-A Animal
+
+So Java allows narrowing the return type.
+
+Now your Object → Integer example:
+
+class Parent {
+
+    Object getValue() {
+        return new Object();
+    }
+}
+
+
+class Child extends Parent {
+
+    Integer getValue() {
+        return 10;
+    }
+}
+
+Valid because:
+
+Integer extends Object
