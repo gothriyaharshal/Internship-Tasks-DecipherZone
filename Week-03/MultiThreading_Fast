@@ -1,0 +1,455 @@
+//main Thread....
+
+Lets suppose in our ide code Wrtitng and error checking happens at same time then those are Threads
+Multiple task happens in one programm at a time is non as multithreading
+
+//programm means suppose i wrtie my java program and compile it by javac
+
+//process means ....a program that currently in executing state...
+  whne my java code copiled and goes into cpu...that time its processing happens like in java memory management done by jvm ...
+  like classloading memory allocation but in other coding language,,procesing done by os...
+  simple means then progeam goes into cpu for execution
+
+//Thread ....smalleest sequece of instructions executes by cpo independently it is lightweight
+
+
+//like i have Demo.java when i run it ....there has 3 threas 1 is main and two more
+other threads ...when i run program....first jvm loads our process into memory .....jvm uses class loader
+...then jvm create an main theread.......For each and Every therad there has Seprated Stack and pc becuse if
+context swtiching happnes then we know that currently from wehre we have to start....by pc and by stack how much data is updated
+
+//code start executon from main method and there has main stack frame
+
+
+//if i have multiple thread there has multiple stack and pc for them and Heap and Method area constant...
+
+//previously there has only one cpu so ......context switching happens one by one....in threading like one runs .5 sec one run .5 second like that
+
+//but if i have multiple thread know days there hs alsop 2 or 3 cpu in system so our workd became easy....like  process one has 3 thread
+ process 2 has 5 therad so.....these 2 cpu took those thread run them ,,,,,by swtcihnign by help of stack and pc we maintain history and data
+
+ //for or deeper digramatic view  https://github.com/adityatandon15/Java-Full-Course/blob/main/Lecture%2047/notes.pdf
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+i alos make Thread by Thread class or Runnable interface .....
+
+--> By Extending Thread Class my particular class automatically become that thread to directly i call start method our there
+
+--> By implementing runnable interfacce there..i have to also Make Object of thread class then in constructor of it i havve to push that code
+
+     MyNew m = new MyNew();
+     Thread t = new Thread(m);
+
+     >>or one more method like i also done this whole process in this way like
+
+    Thread t = new Thread(()->{sout});      //here we passes the Runnable interface Body direct then also my this thread beacome an therad also
+
+
+    >>> Thread lifeCycle
+
+    New---->runnable---->Running------>Terminated
+
+    Between them there has ....also other state like ....if i do stop() then whole thread is terminated so usaually we do not have to run this
+
+    >>Blocked waiting TimeWaiting(sleed)
+
+>>Start means Creation of new thread and Run means running state
+
+>>Locak state means if i want to change name ....then my first thread change it by "Aditya" and my Second Thread change it by "ravi"
+  so this situtation not occur so i lock my state then after one by one operation performs
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+ Thread.sleep() >  it throws an Exception inttruptedException
+
+ Runnable--->time waiting ---->Runnable  (this flow goes on this way)
+
+psvm throws intteruptedException
+{
+  sosut("Main thread started");
+
+  Thread t1 = new Thread(() ->
+
+  {
+    try{
+
+     Thread.sleep(2000);           //sleep for 2 second
+     }
+     catch(InterruptedException e){}
+     sout(Thread-0strarts");
+  }
+
+  );
+
+ t1.start();
+
+ t1.join();      //means first t1 fully finished then after other thread run s
+                //if i want i als apply here t1.join(1000);   1 sec m khtm ho jaye toh thik vrna dusri thread chlado
+}
+
+
+>>> yield
+    Thread.yeild() >>> i am wiilling to give my cpu time to someone else with same priority and that want to run it
+                       in production it did not used....and and os isse reject bhi kr skta h or acept bhi
+
+
+
+>>> thread_name.interrupt
+
+ when i do this then i send signle to my thread that whatever you the wrok currently you are doing .....stop only signle ......
+ In our Thread class there has a interrupt varible it is bydefault false but ...by this it set true
+
+ Thread t1 = new Thread(
+
+ ()->
+ {
+    while(true)
+    {
+       sout(1);                  infinite loop  by intterupt we stop our programm like
+    }                     while(!Thread.currenctThread().isIntrrupted() ){sout} like this
+ }
+ );
+
+
+//there are two method ....isIntrupted() and intrupted() ....
+
+isintrupped give boolean value and intrupted also give boolean value and then set back to in false again
+
+
+
+//isAlive  ----> it only alive between start----> hone se terminate hone k bich
+
+//currentThread() ----> it provides me refrence of Cuttrent thread and by it we getName and setName also
+
+
+// Thread Priority..... it gives me integer value....in java there has
+
+
+maxpriotrotu 10.....min 1..... norm 5
+
+in java bydefault norm is there all thread
+
+
+we also set Priority in thread ...like  t1.setPriority(10);
+
+// Daemon Thread  .... backgroud running thread are deamon Thread
+
+  ///suppose i make an infinite running Thread  in main thread ...so denom thread are those which run in backgroud if my Parent Thread stop they also automatically stops
+
+
+psvm()
+{
+ Thread t1 = new Thread(
+
+ ()->
+ {
+    while(true)
+    {
+       sout(1);
+        }
+
+        }
+ );
+
+ t1.setDemon(true);
+ t1.start();
+
+ return ;
+
+}
+
+this infinite running thread run backgroundgly now and when main thread stops it also stops
+
+//like if i sleep my main thread for sleep 2 second then my this demon thread runs in background and when i stop if it automatically stops
+//Example garbase collection it runs on demon thread
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+                                Problems in Multithreading
+
+Race-Condition>>>>
+
+critical section an method ....jisko multiple thread were using
+
+void increament()
+ {
+   count++;
+ }
+
+ and here this is an critical section if multiple thread using it and .....count++ is an shared resource means multiple thread sharing it
+
+
+ >> so we make such operation as like atomicity like either they do not do or either they complety run
+
+  Synchornized blocked and atomic integer by these we ....remove race condition
+
+
+  Which operation are atomic and which are not atomic in java
+
+  Atomic>>>>
+   int x = 2;
+   Student s1 = new Student();
+
+    those operation are atomic like fix h ye ki hoge ya nhi hoge
+
+    Non-Atomic ===>
+     x++;
+
+
+Race condition examples
+
+
+     or check then act type oprtation like .....
+     checking balanace then acting like increasing or deducting amout those are non atomic in java
+
+     Real-Life Example
+
+     Imagine two people are using the same bank account.
+
+     Balance = ₹1000
+
+     Both try to withdraw ₹500 at the same time.
+
+     Thread 1
+     Reads balance = ₹1000
+     Calculates new balance = ₹500
+     Thread 2
+     Also reads balance = ₹1000
+     Calculates new balance = ₹500
+
+     Now both write ₹500.
+
+     Final Balance:
+
+     ₹500
+
+     But it should have been:
+
+     ₹0
+
+     This happened because both threads raced to update the same data.
+
+     This is called a Race Condition.
+
+     Java Example (Without Synchronization)
+     class Counter {
+         int count = 0;
+
+         void increment() {
+             count++;
+         }
+     }
+
+     public class Main {
+         public static void main(String[] args) throws Exception {
+
+             Counter c = new Counter();
+
+             Thread t1 = new Thread(() -> {
+                 for (int i = 0; i < 100000; i++)
+                     c.increment();
+             });
+
+             Thread t2 = new Thread(() -> {
+                 for (int i = 0; i < 100000; i++)
+                     c.increment();
+             });
+
+             t1.start();
+             t2.start();
+
+             t1.join();
+             t2.join();
+
+             System.out.println(c.count);
+         }
+     }
+     Expected Output
+     200000
+     Actual Output (may vary)
+     183456
+
+     or
+
+     197842
+
+     or
+
+     199999
+
+     The output changes every run because of a race condition.
+
+     Why does this happen?
+
+     Many beginners think:
+
+     count++;
+
+     is one operation.
+
+     It is not.
+
+     Internally it is approximately:
+
+     int temp = count;   // Read
+     temp = temp + 1;    // Modify
+     count = temp;       // Write
+
+     Suppose:
+
+     Initial value
+
+     count = 5
+     Thread 1
+
+     Reads
+
+     5
+     Thread 2
+
+     Also reads
+
+     5
+
+     Thread 1 writes
+
+     6
+
+     Thread 2 also writes
+
+     6
+
+     Expected:
+
+     7
+
+     Actual:
+
+     6
+
+     One increment is lost.
+
+
+>>>>>Volatile keyword means read and Write operation perform from Ram not from data
+
+>>>>>Synchronized keyword used for loacking
+
+>>Ordering
+  the sequece in which instruction are executed
+
+
+  for protecting our multithreaded enviourment from Race condition ,  orderring and non atomitcity
+
+  there has Synchronization .....Volatile keyword that data read wwrite from ram memory not from thread directly ...memeory m jake dekhuga ab kya value h uski ......Atomic integer(By it manage atomitcity).....Proper laocking
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+  Synchronized means at a time one thread goes into critical section and run then after one by one
+
+    >>>>> it locks my critical section..........
+
+
+   means at first suppose t1 therad ...goes in critical section our t1 thread goes into lock state like it fully finishees first then after other another thread comes
+   so that another thread goes into block state ...........
+
+  >>>t1 will perform task ...then t2 perform
+
+  >>>what synchronized do ....to potrotec shared data.....to make any operation atomic......to ensure visibiltiy(reading data from ram actual data).....to prent ordering
+
+
+>>>>>>>Synchronized internally uses (Monitor locks and Object Locks)
+
+>>>>>Lock means (an permission token for entering in critical section but loack only gives permission if there has no other therd in critical section)
+
+>>>>>in java every object has internal lock which means any new thread comes aquire and another theread goes into block state
+
+>>>>but if i have two object of one class then ....there is we aquire two thread
+
+   like i have t1 thread and t2 thread but if there has one object then only run one by one ......but if i have two object then parrellay run possible
+
+    Test test = new Test();
+    Test test2 = new Test();
+
+    Thread t1 = new Thread(() -> test.m1()) ; synchronized method m1
+    Thread t2 = new Thread(() -> test2.m1()) ;
+
+        these both run in parrelly
+
+
+>>>>>>synchronized block{}  like there has only critical situation
+
+>>>>>static method have synchronized then what haappend......iska mtlb h class k uoer lock lena static method belongs to class level
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+Inter thread commiunication>>>
+
+  Synchronized hr chiz ko handle nhi kr skta like.....
+
+>>  Producer and consumer Problem in MultiThreading........
+
+>>  producer produce and fill in box and consumer consume from box......
+
+  if consumer try to consume data from box but ...produce did not produce it then what happen....
+  if producer produce but consumer did not consume then also problem happens
+
+  [producer] ------>  [data] ----> [consumer]
+
+>>so this is nessacry to commiunication between two threads
+
+>>So why synchronized also not wrking here because ....suppose first consumer method run then it return null na like that
+
+ when we apply Synchornized then there has....deadlock situtation
+
+
+>>>Watinign state (wait() , notify() , notifyAll())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

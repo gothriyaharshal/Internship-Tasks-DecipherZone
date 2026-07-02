@@ -242,3 +242,134 @@ Example
 
 
     //identiy means base sum is 0  and isi m chize add hoti jayegi
+
+    //There has also Some more Terminal method in Stream lets have an breif idea about all of them in deep
+
+    .count [couting total elements and returning value into long]
+
+    .Findfirst [finding first element from Stream]
+
+    /findAny[for use of parelle streams]
+
+    //anyMatch [give boolean value if there any match of data]
+
+    //allMatch [if alll elment data were matched then give boolean true otherwise false]
+
+    //nonmatch(if i apply filter or map condition and want that there has no match of this condition then it return true otherwise it returns false)
+
+    //there has also some function like sum() ....avg() for those calculation Stream did not provide us data becuse it returnn in Stream
+      for performing those operation we want primitive stream()
+
+      int sum = list.stream().filter(x -> x>10).mapToInt(x->x);
+
+     //Collector is an interfacee
+
+     when i do Stream.collect();  <----it want in its parameter like Collector type interface
+
+     and Collectors Class utility class gives us Collector object here .....
+
+     list.stream.filter(x-->x>10).collect(Collectors.toList());
+
+
+     //toList and toSet is ok but when we want data into Map then there we want to stay ....effective
+
+     map<Integer , String> mp = list.stream().collect(Collectors.toMap(x->x.length) , x-->x) ) } ;
+
+     what happens here like ...in map integer ...length of those particulaar data were present and aside it those elements presents
+
+
+     //one more is Grouping by
+
+     map<Integer , List<String> > mp = list.stream().collect(Collectors.groupingBy(x->x.length()));
+
+     here in my integer part of map same lenght were stored ....like 3 , 4 , 5 and for those length grouped data were stored
+     like  mom , tea are in group beacuse it is length of 3
+
+     //partition by it return in Boolean type like in my this ...did i recived group data if yes then return true if false then return false
+
+     Map<Integer , List<String>> mp = list.stream().collect(Collectors.groupingBy(x->x.length()) , Collectors.mapping(x -> x.toLowwerCase , Collctor.toList()));
+
+     #>>>
+     Collectors.joining("_"); added betwwen all aelments
+
+
+     Optional class means
+
+     >First in Java there has some problem of null like if i type ....String s = "" ;  and i search data like sout(s.lenght()); it throws an exception of null pinter to me
+
+     >>So many other langugues wewre generated...so overcome this problem like kotlin and etc....
+
+     >>in java we handle it by
+        if(s.length ! = null) then print this.....but those all goes in nested checking type ,,,,,like if not null then do this if internal not nul then do this
+
+     >> So overcome this probleme there has Optional class were present it says
+
+     String s = getName(); //we did not use in this way we use Optional class
+
+     Optional<String> name = getName();
+     name.ifPresent(system.out::println);  //if present took data in lamda exprestion if data present then it print or if not then it skip that
+
+     >>Creation o optional
+
+     Optional<String> op = Optional.of("Aditya");
+
+     Optional<String> op = Optional.ofNullable("");  //here i also insert nul or String type value
+
+     >>orElse
+
+      Optional<String> op = getName();
+      String s = name.orElse("unknow") ;   //if i get String then i print this or else unknown were prints
+
+
+      >>Stream perform stateless operation like one by one .....but Optional perform stateful like it want all data
+
+
+      Parrelle Stream>>>>>>>>>>>>
+
+      It perform operation in parelley ....like multiple Thread execute at the particular time....[1,2,3,4,5] ...for doing operation on this
+      Stream do one by one by Parrelle Stream do Thread wise ....so no order of out fix of it....
+
+      internallly it useess multithreading where ...fork into pool algorithm runs
+
+      >>and internally using splitOterator for iterating so fastly
+      splitItratoe internally using ....tryAdvance for checking there has next element or not or TrySplit for spliting internal data
+
+      >>but here some how race condition also occur beacuse there has multiple threads
+
+      List<Integer> l = {1,2,3,4};
+      List<Integer> result = [];
+
+      list.paralleStream().forEach(s->result.add(s));
+
+      we were adding data but here at same time two thread run and insert data on particular position ther data loss happens like
+      first 3 add then 5 added then 3 were loss
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
