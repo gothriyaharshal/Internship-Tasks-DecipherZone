@@ -1,0 +1,32 @@
+File means storing data in some file by input output ....
+
+When we do like .... int a  = 10 ;  then our data only store in Ram for temporary basis...so i want to store my data for permanent in some formate
+
+Class	Purpose
+File	Represents a file or directory (create, delete, check existence, etc.)
+
+FileReader	Reads text files character by character
+
+BufferedReader	Reads text efficiently, line by line
+
+FileWriter	Writes characters to a text file
+
+BufferedWriter	Writes text efficiently using buffering
+
+PrintWriter	Easy formatted text output
+
+Scanner	Reads text from files or keyboard
+
+FileInputStream	Reads binary data (images, PDFs, etc.)
+
+FileOutputStream	Writes binary data
+
+BufferReaderInputStream Reads binary data
+
+BufferReaderOutputStream Write binary data
+
+
+ObjectInputStream	Reads serialized Java objects
+
+ObjectOutputStream	Writes serialized Java objects
+
