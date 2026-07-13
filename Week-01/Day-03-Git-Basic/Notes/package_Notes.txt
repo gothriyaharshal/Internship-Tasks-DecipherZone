@@ -468,7 +468,8 @@ Modern Java switch is closer to a value-producing expression rather than just a 
 Could you also explain me package topic in java in deep dive formate
 Package in Java (Deep Dive)
 
-A package in Java is a mechanism used to group related classes, interfaces, enums, etc. together. It works like a folder/directory structure and helps in:
+A package in Java is a mechanism used to group related classes, interfaces, enums, etc. together.
+ It works like a folder/directory structure and helps in:
 
 Organizing code
 Avoiding name conflicts
@@ -809,6 +810,9 @@ Example:
 com.amazon.payment
 com.facebook.login
 12. Static import
+
+
+Static import are those in which if a normal class has a static member and i want to access them in another class then i do static import of it
 
 Normally:
 

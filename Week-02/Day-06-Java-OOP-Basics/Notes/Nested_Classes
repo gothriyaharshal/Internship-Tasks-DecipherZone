@@ -1,7 +1,5 @@
 1. What is Nested Class?
-
 A nested class is a class declared inside another class.
-
 Example:
 
 class Outer {
@@ -76,7 +74,8 @@ Math.sqrt()
 
 You don't create Math object.
 
->>>>>>>in static nested class only static data tooks not instance data if i want instance data also come then i make an object of thar particular class and then call them
+>>>>>>>in static nested class only static data tooks not instance data if i want instance data also come then
+i make an object of thar particular class and then call them
 
 public static class Inner
 
@@ -92,6 +91,8 @@ Private class has no outside access like that
 
 Outer.inner obj ;
 
+
+shrikant.sharma@decipherzone.com
 
 
 

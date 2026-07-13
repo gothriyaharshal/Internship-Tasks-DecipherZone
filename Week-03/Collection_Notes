@@ -161,9 +161,11 @@ In Treeset or TreeMap for sorting ....there i use comparable or comparator......
 
         Hashset>>>
          Here insertion order were diffrent....internal process is data stored in map ....where key is its value which only and in value part some
-         object were goes there.....so key only null one time becasue if there has extra null key then one then ....duplicated data were there like two null are not allowed na
+         object were goes there.....so key only null one time becasue if there has extra null key then one then ....
+         duplicated data were there like two null are not allowed na
 
-         first it took hashcode then ....after ...check equal that it contains or not then after....it store data into bucket and it two data have same hashcode then and they are not equak the hascollision occureses and they sotre in linked list typed way
+         first it took hashcode then ....after ...check equal that it contains or not then after....it store data into bucket and it two data have same hashcode
+          then and they are not equak the hascollision occureses and they sotre in linked list typed way
 
          LinkedHasset>>
           Here linked list occurs si insertion order maintains
@@ -174,7 +176,8 @@ In Treeset or TreeMap for sorting ....there i use comparable or comparator......
            Here Sorted order Were maintain + duplciated data not allowed
 
      Map>>
-      Hashmap>> Stores data in Key value pair entrie type and ......insertion order not allowd ...sorting also not there for make them sorted converts them into list them do Collection.sort(); like that
+      Hashmap>> Stores data in Key value pair entrie type and ......insertion order not allowd ...sorting also not there for make them sorted converts
+      them into list them do Collection.sort(); like that
                 one null key allowed and mant null value were allowed
 
       LinkedHashMap >>> Here LinkedList or map were there

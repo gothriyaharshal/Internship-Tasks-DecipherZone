@@ -571,7 +571,7 @@ In short:
 Term	Meaning
 Archetype	Project template
 Archetype ID	Template name
-Group ID	Owner/organization
+Group ID	Owner/organization()
 Artifact ID	Project/library name
 Version	Release number
 Package	Java package name
@@ -585,17 +585,18 @@ then we provide Archetype id ....group id....artifact id and at last press yes t
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-Now we have full structure Maven application and write code in java file and compile that code we go into that particular project ....
-and switch onto cmd
+Now we have full structure Maven application and write code in java file and compile that code we go into
+that particular project ....and switch onto cmd
 
 >> Mvn complie   (it tooks all the dependency and process them set them into our project )
 
->>After compilation I want to collect it into package then I run (it pacakage it into jar file)   into target folder automatically
+>>After compilation I want to collect it into package
+ then I run (it pacakage it into jar file)   into target folder automatically
 
   mvn pacakage 
 
 
->>Maven also run all over test cases automatically so we don have to worry about running those test cases
+>>Maven also run all over test cases automatically so we don't have to worry about running those test cases
  
 >>>Now we have jar we run that jar which is in target folder 
 
@@ -630,7 +631,8 @@ Maven contain >>   Archetype info  and  Dependency Info
 --->> for simple java application we made jar file ....for web application we made war file
       for enterprise application we made ear file
 
----->>if I want to add this whole project into another project then I make its jar ...in pom.xm provide its dependency with group id artifact id etc
+---->>if I want to add this whole project into another project then I make its jar
+...in pom.xm provide its dependency with group id artifact id etc
 
 Maven loop in local first is there has any repository if there then it took from local other wise it took from online
 
@@ -640,7 +642,8 @@ Maven every build there has lifecycle
 
 >>like compile run in package etc
 
-compile ----> test ----> package(internal class run) ---->install(if there has no dependency then installing those into local)----->deploy(deploying it into Remote repo)
+compile ----> test ----> package(internal class run) ---->
+install(if there has no dependency then installing those into local)----->deploy(deploying it into Remote repo)
 
 >>Mvn clean install means installing it all dependendy were installes
 
@@ -651,6 +654,11 @@ It removes compiled .class files
 It removes generated JAR/WAR files
 It removes temporary build files created by Maven
 
+>>>>>>>>>>
+
+mvn clean
+Mvn install
+java -cp target/jar file groupid.foldername.classname
 
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

@@ -31,6 +31,7 @@ public class E_Super_ extends B {
     }
 
     E_Super_()
+
     {
         System.out.println("first B then me");
     }

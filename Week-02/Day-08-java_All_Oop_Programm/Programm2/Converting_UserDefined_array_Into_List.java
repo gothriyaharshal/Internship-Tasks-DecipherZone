@@ -5,7 +5,7 @@ public class Converting_UserDefined_array_Into_List {
         arr = new Student(1,"Harsal");
        /* arr = new Student(2,"Jerry");
         arr = new Student(3,"merry");
-*/
+       */
         for(Student s : arr)
         {
             System.out.println(s);

@@ -341,8 +341,8 @@ public class Main {
 
 composition and agreegation both is has a relation ship
 
-in composition there has ....tight coupling like if i have field of engine in car class then there i create object our there but in .....
-agreegation we create outside
+in composition there has ....tight coupling like if i have field of engine in car class
+then there i create object our there but in .....agreegation we create outside
 
 
 1. Composition (Strong relationship / Tight coupling)

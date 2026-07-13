@@ -49,10 +49,7 @@ Deep Obejct
 
 Call by value and Call by Refrence
 
-
  java is call by value  there is no call by refrence in java
-
-
 
 public class Call_By_Value {
 
@@ -273,7 +270,8 @@ access Modifer in class
 
 public (class khi bhi accessible h)
 
-private or ptrotected  because for whome ,,,is se upr koi parent class toh honi chahiye na jo private or protected rkhe isse 
+private or ptrotected  because for whome ,,,
+is se upr koi parent class toh honi chahiye na jo private or protected rkhe isse
 
 private and protected eligible for nested class
 
@@ -388,9 +386,9 @@ here our null pointer exception occurs
 Integer a =10;
 Integer b=10;
 
-sout(a==b) ; //false
+sout(a==b) ; //false          it compares refrence
 
-sout(a.equals(y)) //true 
+sout(a.equals(y)) //true      it compares the value becuse there has ....overidden implementation of it
 
 here equals is an object class function
 

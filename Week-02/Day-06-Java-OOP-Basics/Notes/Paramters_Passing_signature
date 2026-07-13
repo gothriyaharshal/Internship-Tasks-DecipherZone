@@ -1,4 +1,5 @@
-Good question. You are asking about what can be written inside method parameters (()) and whether modifiers like static, private, public are allowed there.
+Good question. You are asking about what can be written inside method parameters (()) and whether modifiers like
+static, private, public are allowed there.
 
 Short answer:
 

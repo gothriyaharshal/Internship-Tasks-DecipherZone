@@ -80,7 +80,8 @@ git push origin main
 (
  >meaning of this particular line git push means we want to push our commit
  
->origin (by default all repos are Remote repo on my GitHub when I clone it and make it   local repo then I want if I do any change it goes into Remote Repo)
+>origin (by default all repos are Remote repo on my GitHub when I clone it and make it
+ local repo then I want if I do any change it goes into Remote Repo)
  )
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -89,7 +90,8 @@ git push origin main
  project then ....run an git init command over there
 
 >>Connecting my local repos to Remote repo 
-  (I make local repo by init command push changes but when I want to upload those all changes then I have to make an remote branch on git hub then after push whole code of local brach to remote branch  )
+  (I make local repo by init command push changes but when I want to upload those all changes
+  then I have to make an remote branch on git hub then after push whole code of local brach to remote branch  )
 
 >>mkdir localRepo  (Make an new Folder(directory) in our local machine)
 
@@ -171,6 +173,7 @@ git push -u origin Create-adv
 
 Now GitHub gets your new branch.
 
+
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 Git branchs
@@ -210,14 +213,16 @@ Suppose I create an child branch feature of main branch then push it like
 
 all difference were there comparing them all...
 
->>git merge main  (when I run this command then my feature branch raise mr in main branch)
+>>git merge main  (checkout onto main branch and then merge on main branch this feature branch
+                    when I run this command then my feature branch raise mr in main branch)
 
 >>Second way by using GitHub (Pull Request request)
  
 when I do changes in feature branch  then Main brach holder review my pull request then they give there reviews then 
 
  Example>>
-I make changes in feature branch then run.... git push origin main......then senior developer which handle main branch review code do comment on it.....then
+I make changes in feature branch then push feature branch then merge into main branch then .....
+git push origin main......then senior developer which handle main branch review code do comment on it.....then
 
 On main branch ....compare and pull request were there.....then create pull request .....
 merge pull request...confirm merge
@@ -294,7 +299,9 @@ Merge conflicts only comes when ..on my main branch some other developer do chan
 i push then i face merge conflicts
 
 >>>
-Means if i clone master branch then i have some code make another child branch of it if i do same line changes and merge them then i did not face any confilits but .......if on my main branch some other person do chnages on those line and whrn i go to merge i found merge confkitcs
+Means if i clone master branch then i have some code make another child branch of it
+ if i do same line changes and merge them then i did not face any confilits but .......
+ if on my main branch some other person do chnages on those line and whrn i go to merge i found merge confkitcs
 
 after resolving merge conflict do 
 
@@ -305,7 +312,8 @@ git commit -m "sjj"
 then push
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-Yes, your understanding is correct. In a company workflow, you usually do not merge your feature into main directly. A senior developer or maintainer does that through a Pull Request.
+Yes, your understanding is correct. In a company workflow, you usually do not merge your feature into main directly.
+A senior developer or maintainer does that through a Pull Request.
 
 Your flow would be like this:
 

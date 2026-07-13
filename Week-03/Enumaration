@@ -1,56 +1,768 @@
+at is an Enum?
 
-Enumaration
+An enum is a special data type that represents a fixed set of constants.
 
-why this come
+Instead of writing:
 
->>Suppose payment status is in three state --->> success , failed , pending
+String day = "Monday";
 
->>How did i represent those constent value in java (by final keyword)
+someone might accidentally write:
 
-public static final int success = 1;
-public static final int failed = 2;
-public static final int pending = 3;
+day = "Mondy";
 
+The compiler won't catch the typo.
 
->call them all by classname...
->
->>>>Problems which come from this
+Instead, use an enum:
 
-1> type safety ()
+enum Day {
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY
+}
 
-class PaymentStatus
-{
+Now:
 
-public static final int success = 1;
-public static final int failed = 2;
-public static final int pending = 3;
+Day day = Day.MONDAY;
+
+Only the defined values are allowed.
+
+Why do we use Enums?
+
+Suppose you're creating an order system.
+
+Without enum:
+
+String status = "Pending";
+status = "Pendding";   // Typo
+status = "Finished";   // Invalid
+
+With enum:
+
+enum OrderStatus {
+    PENDING,
+    SHIPPED,
+    DELIVERED,
+    CANCELLED
+}
+
+Now:
+
+OrderStatus status = OrderStatus.PENDING;
+
+Only valid values can be assigned.
+
+Syntax
+enum Day {
+
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY,
+    SUNDAY
 
 }
 
-class main
-{
- psvm()
- {
-  PaymentStatus p = new PaymentStatus();
+Use it like this:
 
-  int status = p.success;
+Day today = Day.FRIDAY;
+What actually happens behind the scenes?
 
-  int status = 100;
+When you write:
 
-  }
+enum Day {
+    MONDAY,
+    TUESDAY
 }
 
+The compiler roughly creates something like:
 
-https://github.com/adityatandon15/Java-Full-Course/blob/main/Lecture%2023/notes.pdf
+final class Day extends Enum<Day> {
 
->>go and read notes
+    public static final Day MONDAY = new Day();
 
+    public static final Day TUESDAY = new Day();
+
+    private Day() {}
+}
+
+Notice:
+
+It's a class.
+Constructor is private.
+Objects are created automatically.
+You cannot create new enum objects.
+
+This is illegal:
+
+new Day();    // Error
+Enum Objects
+
+Every constant is actually an object.
+
+Day.MONDAY
+
+is an object.
+
+Day.TUESDAY
+
+is another object.
+
+Enum Methods
+
+Java provides several useful methods.
+
+values()
+
+Returns all constants.
+
+for (Day d : Day.values()) {
+    System.out.println(d);
+}
+
+Output:
+
+MONDAY
+TUESDAY
+WEDNESDAY
+...
+valueOf()
+
+Convert String to enum.
+
+Day day = Day.valueOf("MONDAY");
+
+System.out.println(day);
+
+Output:
+
+MONDAY
+
+Wrong value:
+
+Day.valueOf("Monday");
+
+Throws:
+
+IllegalArgumentException
+
+because enums are case-sensitive.
+
+ordinal()
+
+Returns the position.
+
+System.out.println(Day.MONDAY.ordinal());
+
+Output
+
+0
+MONDAY -> 0
+TUESDAY -> 1
+WEDNESDAY -> 2
+
+Don't store ordinal() values in a database, because changing the enum order changes the ordinals.
+
+name()
+
+Returns the constant name.
+
+System.out.println(Day.FRIDAY.name());
+
+Output
+
+FRIDAY
+Enum in switch
+
+One of the most common uses.
+
+Day day = Day.MONDAY;
+
+switch(day){
+
+case MONDAY:
+    System.out.println("Start");
+    break;
+
+case FRIDAY:
+    System.out.println("Weekend coming");
+    break;
+
+default:
+    System.out.println("Normal Day");
+
+}
+Can Enum Have Variables?
+
+Yes.
+
+enum Laptop {
+
+    HP(50000),
+    DELL(60000),
+    ASUS(70000);
+
+    private int price;
+
+    Laptop(int price){
+        this.price = price;
+    }
+
+    public int getPrice(){
+        return price;
+    }
+
+}
+
+Use:
+
+System.out.println(Laptop.HP.getPrice());
+
+Output
+
+50000
+Enum Constructors
+
+Constructors are allowed.
+
+enum Car {
+
+    BMW(80),
+    AUDI(90);
+
+    int speed;
+
+    Car(int speed){
+        this.speed = speed;
+    }
+
+}
+
+Constructor is automatically called when constants are created.
+
+Can Enum Have Methods?
+
+Absolutely.
+
+enum Operation {
+
+    ADD,
+    SUBTRACT;
+
+    public void display(){
+
+        System.out.println("Calculator");
+
+    }
+
+}
+
+Use:
+
+Operation.ADD.display();
+Enum with Multiple Variables
+enum EmployeeRole {
+
+    ADMIN(1,"Full Access"),
+    USER(2,"Limited Access"),
+    GUEST(3,"Read Only");
+
+    private int id;
+    private String description;
+
+    EmployeeRole(int id,String description){
+
+        this.id=id;
+        this.description=description;
+
+    }
+
+    public int getId(){
+        return id;
+    }
+
+    public String getDescription(){
+        return description;
+    }
+
+}
+Can Enum Implement Interface?
+
+Yes.
+
+interface Printable{
+
+    void print();
+
+}
+
+enum Color implements Printable{
+
+    RED,
+    GREEN;
+
+    public void print(){
+
+        System.out.println("Printing");
+
+    }
+
+}
+Can Enum Extend Another Class?
+
+No.
+
+class Animal{}
+
+enum Dog extends Animal{}
+
+Not allowed.
+
+Reason:
+
+Enums already extend:
+
+Enum<E>
+
+Java doesn't support multiple inheritance of classes.
+
+Can Enum Be Inherited?
+
+No.
+
+enum A{}
+
+enum B extends A{}
+
+Not allowed.
+
+Enums are implicitly final.
+
+Abstract Methods in Enum
+
+Yes.
+
+enum Operation {
+
+    ADD{
+        public int calculate(int a,int b){
+            return a+b;
+        }
+    },
+
+    MULTIPLY{
+        public int calculate(int a,int b){
+            return a*b;
+        }
+    };
+
+    public abstract int calculate(int a,int b);
+
+}
+
+Use:
+
+System.out.println(Operation.ADD.calculate(10,20));
+
+Output
+
+30
+
+Each enum constant provides its own implementation.
+
+Enum in Collections
+Set<Day> holidays = EnumSet.of(
+        Day.SATURDAY,
+        Day.SUNDAY
+);
+
+EnumSet is extremely fast because it's optimized specifically for enums.
+
+Similarly:
+
+Map<Day,String> map = new EnumMap<>(Day.class);
+Enums in Spring Boot
+
+Suppose you have:
+
+enum Role {
+
+    ADMIN,
+    USER
+
+}
+
+Entity:
+
+@Entity
+class User{
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+}
+
+Database:
+
+ADMIN
+
+Instead of
+
+0
+
+Using EnumType.STRING is usually recommended because it's more readable and doesn't break if you reorder enum constants.
+
+Real-world Uses
+
+Enums are commonly used for:
+
+User roles (ADMIN, USER)
+Order status (PENDING, SHIPPED, DELIVERED)
+Payment status (SUCCESS, FAILED, REFUNDED)
+Days of the week
+Months
+HTTP methods (GET, POST, PUT, DELETE)
+Traffic lights
+Game states
+Directions (NORTH, SOUTH, EAST, WEST)
+Interview Questions
+1. Is an enum a class?
+
+Yes. It is a special type of class that extends java.lang.Enum.
+
+2. Can an enum have constructors?
+
+Yes, but they are implicitly private. You cannot create enum instances yourself.
+
+3. Can an enum have methods?
+
+Yes. Both instance methods and abstract methods are supported.
+
+4. Can an enum implement interfaces?
+
+Yes.
+
+5. Can an enum extend another class?
+
+No. It already extends java.lang.Enum.
+
+6. Are enum constants objects?
+
+Yes. Every constant is a singleton object created by the JVM.
+
+7. Why use EnumType.STRING in JPA?
+
+Because storing names like ADMIN is stable and readable, whereas storing ordinals like 0 can cause bugs if you reorder the enum constants.
+
+Summary
+Feature	Supported?
+Constants	✅ Yes
+Variables (fields)	✅ Yes
+Constructors	✅ Yes (implicitly private)
+Instance methods	✅ Yes
+Static methods	✅ Yes
+Abstract methods	✅ Yes
+Implements interfaces	✅ Yes
+Extends another class	❌ No
+Can be inherited	❌ No
+switch support	✅ Yes
+values()	✅ Yes
+valueOf()	✅ Yes
+ordinal()	✅ Yes (avoid persisting it)
+name()	✅ Yes
+
+The key idea to remember is that an enum is not just a list of constants—it is a fully featured class with a fixed number of pre-created singleton instances. This is why enums are so powerful for representing well-defined sets of values in Java applications, including Spring Boot projects.
+
+final class Day extends Enum<Day> {
+
+    public static final Day MONDAY = new Day();
+
+    public static final Day TUESDAY = new Day();
+
+    private Day() {}
+} i did not understand this internal class of enum
+
+Excellent question. This is the point where many Java learners get confused. Let's break it down step by step.
+
+When you write:
+
+enum Day {
+    MONDAY,
+    TUESDAY
+}
+
+you only see 2 lines, but the Java compiler generates something similar (not exactly identical) to this:
+
+final class Day extends Enum<Day> {
+
+    public static final Day MONDAY = new Day();
+
+    public static final Day TUESDAY = new Day();
+
+    private Day() {}
+}
+
+Let's understand every line.
+
+1. final class Day
+final class Day
+
+This means the enum is actually a class.
+
+It is final because Java does not allow inheritance from an enum.
+
+For example:
+
+enum Day {}
+
+class MyDay extends Day {}   // ❌ Error
+2. extends Enum<Day>
+extends Enum<Day>
+
+Every enum automatically extends Java's built-in class:
+
+java.lang.Enum
+
+That is why every enum already has methods like
+
+name()
+ordinal()
+compareTo()
+
+You never wrote them.
+
+Example:
+
+Day.MONDAY.name();
+
+works because Day extends Enum.
+
+3. public static final Day MONDAY
+
+This is the most important line.
+
+public static final Day MONDAY = new Day();
+
+This means
+
+MONDAY is actually an object.
+
+Think about a normal class.
+
+class Student {
+
+}
+
+Create objects:
+
+Student s1 = new Student();
+Student s2 = new Student();
+
+Exactly the same thing happens internally.
+
+Java creates
+
+Day MONDAY = new Day();
+
+and
+
+Day TUESDAY = new Day();
+
+So when you write
+
+Day.MONDAY
+
+you are accessing an object.
+
+Visualize it
+Heap Memory
+
++------------------+
+| Day Object       |
+| (MONDAY)         |
++------------------+
+
++------------------+
+| Day Object       |
+| (TUESDAY)        |
++------------------+
+
+There are only these two objects.
+
+4. Why static?
+public static final Day MONDAY
+
+Static means
+
+"There is only one copy."
+
+You don't need an object to access it.
+
+You simply write
+
+Day.MONDAY
+
+instead of
+
+new Day().MONDAY
+5. Why final?
+public static final Day MONDAY
+
+Final means
+
+You cannot change it.
+
+Imagine
+
+Day.MONDAY = Day.TUESDAY;
+
+Not allowed.
+
+The constant always refers to the same object.
+
+6. Why is the constructor private?
+private Day(){}
+
+Suppose it were public.
+
+Then you could do
+
+Day d = new Day();
+
+Now there would be a third object.
+
+Java doesn't want that.
+
+Enums should only have the predefined constants.
+
+So Java hides the constructor.
+
+Only the JVM creates
+
+MONDAY
+TUESDAY
+
+Nobody else can.
+
+Think of it like this
+
+Suppose you wrote
+
+class Day {
+
+}
+
+You could create
+
+new Day();
+new Day();
+new Day();
+new Day();
+
+Unlimited objects.
+
+But with an enum
+
+enum Day {
+    MONDAY,
+    TUESDAY
+}
+
+Java says
+
+"Only these objects exist."
+
+MONDAY ✅
+
+TUESDAY ✅
+
+WEDNESDAY ❌
+
+new Day() ❌
+Why does Day.MONDAY work?
+
+Because internally Java has
+
+public static final Day MONDAY = new Day();
+
+So
+
+Day.MONDAY
+
+is simply accessing that static object.
+
+Just like
+
+class Math {
+
+    public static final double PI = 3.14;
+
+}
+
+You write
+
+Math.PI
+
+Similarly,
+
+Day.MONDAY
+
+accesses the static enum object.
+
+A more realistic picture
+
+Internally, Java's generated code is closer to this:
+
+final class Day extends Enum<Day> {
+
+    public static final Day MONDAY = new Day("MONDAY", 0);
+    public static final Day TUESDAY = new Day("TUESDAY", 1);
+
+    private Day(String name, int ordinal) {
+        super(name, ordinal);
+    }
+
+    public static Day[] values() {
+        return new Day[]{MONDAY, TUESDAY};
+    }
+
+    public static Day valueOf(String name) {
+        // Returns the matching enum constant
+    }
+}
+
+Notice that each constant has:
+
+A name ("MONDAY")
+An ordinal (0)
+
+That's why these work:
+
+System.out.println(Day.MONDAY.name());     // MONDAY
+System.out.println(Day.MONDAY.ordinal());  // 0
+The most important thing to remember
+
+An enum like:
+
+enum Day {
+    MONDAY,
+    TUESDAY
+}
+
+is not just a list of words. It behaves like a class that already contains a fixed set of pre-created objects:
+
+Day.MONDAY  // Object #1
+Day.TUESDAY // Object #2
+
+There are only these objects, because the constructor is private and the fields are public static final. This design makes enums perfect for representing a fixed set of values.
 
 Interfac>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
 all varible in interface are
 public statib and final
- (static becuse interface has no relation with object and if there has no relation with object we also not pass varivle value in constructor also)
+ (static becuse interface has no relation with object and if there has no relation with object
+ we also not pass varivle value in constructor also)
 
 >>We lso override default method in interface
 

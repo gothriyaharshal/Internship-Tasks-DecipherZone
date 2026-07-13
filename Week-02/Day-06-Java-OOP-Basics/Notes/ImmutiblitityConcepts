@@ -190,11 +190,12 @@ s.setName("rohna");   //that psosible beacuse internal ....state were change not
 
 At last>>>
 
-String is immutable because its class is final, its internal state is private and final, there are no setters, and any modification creates a new object. Immutability provides security, thread safety, caching in String Pool, and hashcode stability.
+String is immutable because its class is final, its internal state is private and final, there are no setters,
+and any modification creates a new object. Immutability provides security, thread safety, caching in String Pool, and hashcode stability.
 
 
 
-Exactly, you caught the hidden problem. This is one of the most important points in immutability.
+Exactly, you caught the hidden problem . This is one of the most important points in immutability.
 
 final does not make the object immutable. It only makes the reference fixed.
 

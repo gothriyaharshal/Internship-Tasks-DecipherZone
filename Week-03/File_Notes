@@ -30,3 +30,577 @@ ObjectInputStream	Reads serialized Java objects
 
 ObjectOutputStream	Writes serialized Java objects
 
+Teach me File handling in java also in this way so i will never ever forgot
+
+I like this approach. Instead of memorizing methods, let's understand why file handling exists and what actually happens inside the computer. Once you understand the picture, you'll remember it for years.
+
+Imagine Your Computer
+
+Think of your computer like this:
+
+Computer
+│
+├── RAM (Temporary Memory)
+│
+└── Hard Disk / SSD (Permanent Storage)
+
+When your Java program runs,
+
+everything you create is stored in RAM.
+
+Example:
+
+String name = "Harshal";
+
+This lives in RAM.
+
+If your program stops...
+
+RAM
+↓
+
+Everything disappears.
+
+The value "Harshal" is gone.
+
+So where do files come in?
+
+Suppose you're making a Blogging Application.
+
+A user writes
+
+Title : Spring Boot
+Content : Spring Boot is awesome...
+
+If you only keep it in RAM,
+
+Program Ends
+
+↓
+
+Everything Lost
+
+That would be terrible.
+
+Instead, you save it to
+
+Hard Disk
+
+Now it remains even after the program exits.
+
+What is a File?
+
+A file is simply
+
+A named location on disk that stores data.
+
+Examples
+
+photo.jpg
+
+notes.txt
+
+resume.pdf
+
+video.mp4
+
+music.mp3
+
+data.json
+
+Everything is just a file.
+
+Java's Job
+
+Java's File Handling APIs let your program communicate with the operating system to:
+
+Create files
+Delete files
+Read files
+Write files
+Copy files
+Move files
+Rename files
+The File Class
+
+The first class you usually learn is
+
+import java.io.File;
+
+Many beginners think
+
+File contains the file.
+
+❌ Wrong.
+
+It doesn't contain the file's data.
+
+It only represents the path to a file.
+
+Think of it like Google Maps.
+
+Google Maps doesn't contain your house.
+
+It only knows
+
+House Address
+
+Similarly,
+
+File file = new File("notes.txt");
+
+means
+
+I know where the file is.
+
+Not
+
+I have opened the file.
+Creating a File Object
+File file = new File("notes.txt");
+
+Memory
+
+RAM
+
+file
+│
+▼
+Path → notes.txt
+
+Notice
+
+No file has been created yet.
+
+Only a File object exists.
+
+Actually Creating the File
+file.createNewFile();
+
+Now Java asks the OS
+
+Please create
+
+notes.txt
+
+Result
+
+Hard Disk
+
+notes.txt
+Checking if a File Exists
+file.exists();
+
+Java asks
+
+Operating System
+
+↓
+
+Does this file exist?
+
+Returns
+
+true
+
+or
+
+false
+Deleting a File
+file.delete();
+
+Java requests
+
+Operating System
+
+↓
+
+Delete notes.txt
+Why can't File read or write?
+
+Many beginners ask
+
+Why do we need FileReader and FileWriter?
+
+Because
+
+File only knows
+
+Location
+
+Imagine
+
+Your Home Address
+
+Knowing the address doesn't mean you can read the books inside the house.
+
+You must
+
+Open the door.
+
+Similarly,
+
+File
+
+↓
+
+Represents location
+FileReader
+
+↓
+
+Reads data
+FileWriter
+
+↓
+
+Writes data
+Writing into a File
+FileWriter writer = new FileWriter("notes.txt");
+
+Think of FileWriter as
+
+A Pen
+
+Now
+
+writer.write("Hello");
+
+means
+
+Pen
+
+↓
+
+Write
+
+↓
+
+notes.txt
+
+Finally
+
+writer.close();
+
+means
+
+Close the pen.
+
+Always close it so the data is flushed to disk and system resources are released.
+
+Reading from a File
+FileReader reader = new FileReader("notes.txt");
+
+Think of it as
+
+Open Book
+
+Then
+
+reader.read();
+
+reads one character at a time.
+
+Why does read() return int?
+
+This confuses everyone.
+
+Example
+
+Hello
+
+Computer stores
+
+H → 72
+
+e → 101
+
+l →108
+
+l →108
+
+o →111
+
+ASCII / Unicode values.
+
+So
+
+int ch = reader.read();
+
+actually returns
+
+72
+
+Convert it
+
+char c = (char) ch;
+
+Now
+
+72
+
+↓
+
+'H'
+Why does read() return -1?
+
+Imagine the file
+
+ABC
+
+Reading
+
+A
+
+↓
+
+B
+
+↓
+
+C
+
+↓
+
+Nothing Left
+
+How should Java tell you?
+
+It returns
+
+-1
+
+Meaning
+
+End Of File
+
+That's why we write
+
+while ((ch = reader.read()) != -1) {
+    System.out.print((char) ch);
+}
+BufferedReader
+
+Suppose your file is
+
+100 MB
+
+Reading one character at a time is slow.
+
+Instead
+
+BufferedReader
+
+creates a temporary buffer in RAM.
+
+Instead of
+
+Disk
+
+↓
+
+A
+
+↓
+
+Disk
+
+↓
+
+B
+
+↓
+
+Disk
+
+↓
+
+C
+
+it does
+
+Disk
+
+↓
+
+Loads many characters into memory
+
+↓
+
+Program reads from RAM
+
+Much faster.
+
+FileWriter vs BufferedWriter
+
+FileWriter
+
+Writes immediately
+
+BufferedWriter
+
+Stores data in memory first
+
+↓
+
+Writes in large chunks
+
+Faster.
+
+Binary Files
+
+Everything we've discussed so far is for text.
+
+For images, videos, PDFs, ZIP files, etc., you use byte streams.
+
+FileInputStream
+
+FileOutputStream
+
+instead of
+
+FileReader
+
+FileWriter
+Character Streams vs Byte Streams
+TEXT
+
+↓
+
+FileReader
+
+FileWriter
+IMAGE
+
+VIDEO
+
+PDF
+
+↓
+
+FileInputStream
+
+FileOutputStream
+Example
+
+Copy an image
+
+FileInputStream fis =
+        new FileInputStream("cat.jpg");
+
+FileOutputStream fos =
+        new FileOutputStream("copy.jpg");
+
+int data;
+
+while((data=fis.read())!=-1){
+
+    fos.write(data);
+
+}
+
+fis.close();
+fos.close();
+
+Here you're copying bytes, not characters.
+
+NIO (Modern Java)
+
+Nowadays, many developers use the java.nio.file package.
+
+Path path = Path.of("notes.txt");
+
+Read the whole file:
+
+String text = Files.readString(path);
+
+Write:
+
+Files.writeString(path, "Hello");
+
+Copy:
+
+Files.copy(source, destination);
+
+Delete:
+
+Files.delete(path);
+
+The Files utility class makes many common tasks simpler than the older java.io APIs.
+
+How this relates to Spring Boot
+
+Remember your image upload code?
+
+MultipartFile image
+
+When you did:
+
+image.getInputStream()
+
+you obtained a stream of the uploaded file's data.
+
+Then:
+
+Files.copy(
+    image.getInputStream(),
+    destinationPath
+);
+
+means:
+
+User Uploads Image
+
+↓
+
+MultipartFile
+
+↓
+
+InputStream
+
+↓
+
+Files.copy()
+
+↓
+
+Hard Disk
+
+That's real-world file handling.
+
+The Complete Mental Model
+               HARD DISK
+         +-------------------+
+         | notes.txt         |
+         | image.jpg         |
+         +-------------------+
+                  ▲
+                  │
+        Reads/Writes Through Streams
+                  │
+   +-----------------------------------+
+   | FileReader / FileWriter           |
+   | BufferedReader / BufferedWriter   |
+   | FileInputStream / FileOutputStream|
+   | Files (NIO)                       |
+   +-----------------------------------+
+                  ▲
+                  │
+        File / Path (Location Only)
+                  ▲
+                  │
+            Your Java Program
+The one sentence you'll never forget
+
+File (or Path) tells Java where the file is. Streams (FileReader, FileWriter, FileInputStream, FileOutputStream) and the Files class perform the actual reading and writing.
+
+Learning roadmap (in order)
+File – represent a file or directory path.
+FileReader / FileWriter – read and write text.
+BufferedReader / BufferedWriter – faster text I/O.
+FileInputStream / FileOutputStream – binary files.
+Path and Files (NIO) – modern, preferred API for many tasks.
+Try-with-resources – automatically closes files and is the recommended way to manage streams.
+
+If you master these six topics, you'll understand almost every file-handling scenario you'll encounter in Java interviews and Spring Boot applications.
