@@ -1,0 +1,388 @@
+This is an excellent interview topic. Interviewers often ask tricky questions on Varargs (...) and method overloading.
+
+What is Varargs?
+
+Varargs (Variable Arguments) allow a method to accept 0 or more arguments of the same type.
+
+Syntax
+
+dataType... variableName
+
+Example
+
+class Test {
+
+    static void add(int... numbers) {
+
+        for (int n : numbers) {
+            System.out.print(n + " ");
+        }
+    }
+
+    public static void main(String[] args) {
+
+        add();
+        add(10);
+        add(10,20,30);
+        add(10,20,30,40,50);
+    }
+}
+
+Output
+
+10
+10 20 30
+10 20 30 40 50
+Internally how does Varargs work?
+
+The compiler converts varargs into an array.
+
+You write
+
+add(10,20,30);
+
+Compiler converts it to
+
+add(new int[]{10,20,30});
+
+That's why inside the method you can use it like an array.
+
+static void add(int... arr){
+
+    System.out.println(arr.length);
+}
+Can we pass an array?
+
+Yes.
+
+int arr[] = {10,20,30};
+
+add(arr);
+
+Perfectly valid.
+
+Can varargs accept zero arguments?
+
+Yes.
+
+add();
+
+Inside
+
+numbers.length == 0
+Can we have normal parameters before varargs?
+
+Yes.
+
+static void display(String name, int... marks){
+
+}
+
+Call
+
+display("Harshal",90,95,98);
+Can we have parameters after varargs?
+
+❌ No
+
+static void display(int... marks,String name)
+
+Compile-time Error
+
+Reason:
+
+The compiler won't know where the varargs end and the next parameter begins.
+
+Can we have two varargs?
+
+❌ No
+
+void test(int... a,String... b)
+
+Compile-time Error.
+
+Only one varargs parameter is allowed.
+
+Varargs must always be last
+
+✔ Correct
+
+void display(int a,int b,int... c)
+
+❌ Wrong
+
+void display(int... a,int b)
+Is varargs mandatory?
+
+No.
+
+You can call
+
+display();
+
+or
+
+display(10);
+
+or
+
+display(10,20,30);
+Overloading with Varargs
+
+This is where interviewers ask tricky questions.
+
+Case 1
+void show(int a){
+
+    System.out.println("int");
+}
+
+void show(int... a){
+
+    System.out.println("varargs");
+}
+
+Call
+
+show(10);
+
+Output
+
+int
+
+Why?
+
+Exact match is always preferred over varargs.
+
+Case 2
+void show(Integer a){
+
+    System.out.println("Integer");
+}
+
+void show(int... a){
+
+    System.out.println("varargs");
+}
+
+Call
+
+show(10);
+
+Output
+
+Integer
+
+Reason
+
+10
+
+↓
+
+Autoboxing
+
+↓
+
+Integer
+
+Compiler prefers autoboxing over varargs.
+
+Priority
+
+Exact Match
+
+↓
+
+Widening
+
+↓
+
+Autoboxing
+
+↓
+
+Varargs
+Case 3
+void show(long a){
+
+    System.out.println("long");
+}
+
+void show(int... a){
+
+    System.out.println("varargs");
+}
+
+Call
+
+show(10);
+
+Output
+
+long
+
+Reason
+
+Widening (int → long) is preferred over varargs.
+
+Case 4
+void show(int... a){
+
+    System.out.println("Varargs");
+}
+
+void show(int b,int c){
+
+    System.out.println("Two Int");
+}
+
+Call
+
+show(10,20);
+
+Output
+
+Two Int
+
+Exact match wins.
+
+Case 5
+void show(int... a){
+
+    System.out.println("int");
+}
+
+void show(String... a){
+
+    System.out.println("String");
+}
+
+Call
+
+show();
+
+Compile-time Error
+
+Reference to show() is ambiguous
+
+Reason
+
+The compiler doesn't know whether the empty call should match int... or String....
+
+Case 6
+void show(Object... a){
+
+    System.out.println("Object");
+}
+
+void show(String... a){
+
+    System.out.println("String");
+}
+
+Call
+
+show("Harshal");
+
+Output
+
+String
+
+Reason
+
+String is more specific than Object.
+
+Can we overload only by varargs?
+
+Example
+
+void show(int... a){
+
+}
+
+and
+
+void show(int[] a){
+
+}
+
+❌ Compile-time Error
+
+Reason
+
+Varargs is internally an array.
+
+Compiler sees both as
+
+show(int[])
+
+Duplicate method.
+
+Limitations of Varargs
+1. Only one varargs parameter
+void test(int... a,String... b)
+
+❌
+
+2. Must be the last parameter
+void test(int... a,String name)
+
+❌
+
+3. Can make method calls ambiguous
+show();
+
+when
+
+show(int...)
+show(String...)
+
+Both match.
+
+4. Slight overhead
+
+Every varargs call creates (or uses) an array.
+
+show(1,2,3);
+
+Compiler creates
+
+new int[]{1,2,3}
+
+This has a small performance cost compared to a fixed-parameter method.
+
+Interview Priority Rule (Very Important)
+
+When multiple overloaded methods are available, Java chooses them in this order:
+
+Priority	Method Type
+1	Exact Match
+2	Primitive Widening
+3	Autoboxing
+4	Varargs
+
+Example:
+
+void show(int a){
+    System.out.println("int");
+}
+
+void show(long a){
+    System.out.println("long");
+}
+
+void show(Integer a){
+    System.out.println("Integer");
+}
+
+void show(int... a){
+    System.out.println("varargs");
+}
+
+public static void main(String[] args) {
+    show(10);
+}
+
+Output:
+
+int

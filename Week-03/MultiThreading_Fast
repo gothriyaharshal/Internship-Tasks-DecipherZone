@@ -409,7 +409,938 @@ Inter thread commiunication>>>
 >>>Watinign state (wait() , notify() , notifyAll())
 
 
+This is probably the hardest Java topic, but if you understand why threads exist, you'll never fear it again.
 
+Most people memorize:
+
+Thread
+Runnable
+synchronized
+wait()
+notify()
+
+without understanding what the CPU is actually doing.
+
+Let's build the picture from scratch.
+
+Step 1: Imagine You're the CPU
+
+Suppose you are the CPU.
+
+You receive this program.
+
+System.out.println("Start");
+
+calculate();
+
+downloadMovie();
+
+playMusic();
+
+System.out.println("End");
+
+You execute it like this.
+
+Start
+
+↓
+
+calculate()
+
+↓
+
+downloadMovie()
+
+↓
+
+playMusic()
+
+↓
+
+End
+
+One after another.
+
+This is called
+
+Single Thread Execution
+
+Only one task happens at a time.
+
+What is a Thread?
+
+A thread is simply
+
+A single path of execution inside a program.
+
+Imagine you're reading a book.
+
+Page 1
+
+↓
+
+Page 2
+
+↓
+
+Page 3
+
+↓
+
+Page 4
+
+There is only one flow.
+
+That's one thread.
+
+What is a Process?
+
+Suppose you open
+
+Chrome
+VS Code
+Spotify
+RAM
+
+├── Chrome
+├── VS Code
+└── Spotify
+
+Each one is called a Process.
+
+A process has
+
+its own memory
+its own resources
+
+Inside Chrome...
+
+Chrome Process
+
+├── UI Thread
+├── Rendering Thread
+├── Audio Thread
+├── Network Thread
+└── JavaScript Thread
+
+These are threads.
+
+So,
+
+Process
+    ↓
+Contains Threads
+Visual Picture
+Operating System
+
+│
+
+├── Process 1 (Chrome)
+
+│      ├── Thread A
+
+│      ├── Thread B
+
+│      └── Thread C
+
+│
+
+├── Process 2 (Spotify)
+
+│      ├── Thread A
+
+│      └── Thread B
+
+│
+
+└── Process 3 (Java Program)
+
+       └── Main Thread
+Your Java Program
+
+Suppose
+
+public static void main(String[] args)
+
+Who executes this?
+
+Java automatically creates
+
+Main Thread
+
+before your code starts.
+
+So
+
+JVM Starts
+
+↓
+
+Creates Main Thread
+
+↓
+
+Runs main()
+Why do we need multiple threads?
+
+Imagine downloading a movie.
+
+Download
+
+↓
+
+5 minutes
+
+During those 5 minutes,
+
+should your entire application freeze?
+
+No.
+
+Instead
+
+Main Thread
+
+↓
+
+Starts Download Thread
+
+↓
+
+Main Thread keeps working
+
+Now
+
+Downloading
+
++
+
+Playing Music
+
++
+
+Updating UI
+
+all happen together.
+
+Does the CPU really execute them simultaneously?
+
+Here's the biggest misunderstanding.
+
+Suppose you have
+
+Thread A
+
+Thread B
+
+If your CPU has
+
+one core
+
+it cannot execute both at exactly the same instant.
+
+Instead it does
+
+A
+
+↓
+
+B
+
+↓
+
+A
+
+↓
+
+B
+
+↓
+
+A
+
+↓
+
+B
+
+Very quickly.
+
+Maybe millions of switches every second.
+
+Your brain thinks
+
+Both together
+
+This is called
+
+Concurrency
+
+Multi-Core CPU
+
+Suppose your laptop has
+
+Core 1
+
+Core 2
+
+Core 3
+
+Core 4
+
+Now
+
+Thread A → Core 1
+
+Thread B → Core 2
+
+Thread C → Core 3
+
+Actually simultaneous.
+
+This is
+
+Parallelism
+
+Thread Scheduler
+
+Who decides which thread runs?
+
+Not Java.
+
+The
+
+Operating System Scheduler
+
+Example
+
+Threads
+
+A
+
+B
+
+C
+
+D
+
+Scheduler chooses
+
+A
+
+↓
+
+B
+
+↓
+
+A
+
+↓
+
+D
+
+↓
+
+C
+
+You don't control this order.
+
+Creating Threads
+
+Method 1
+
+Extend Thread.
+
+class MyThread extends Thread{
+
+    public void run(){
+
+        System.out.println("Running");
+
+    }
+
+}
+
+Start
+
+MyThread t = new MyThread();
+
+t.start();
+
+Notice
+
+start()
+
+NOT
+
+run()
+Why not call run()?
+
+This is another interview favorite.
+
+Suppose
+
+t.run();
+
+What happens?
+
+Main Thread
+
+↓
+
+run()
+
+No new thread.
+
+It's just a normal method call.
+
+When you call
+
+t.start();
+
+Java asks the JVM
+
+Please create another thread.
+
+Then JVM creates
+
+New Thread
+
+↓
+
+Calls run()
+
+This is why
+
+start()
+
+↓
+
+creates Thread
+
+↓
+
+calls run()
+Runnable
+
+Instead of
+
+extends Thread
+
+Java recommends
+
+implements Runnable
+
+Why?
+
+Because Java allows only one inheritance.
+
+Suppose
+
+class Dog extends Animal
+
+Now
+
+extends Thread
+
+Impossible.
+
+So Java separates
+
+What to do
+
+↓
+
+Runnable
+
+from
+
+Who runs it
+
+↓
+
+Thread
+
+Example
+
+class DownloadTask implements Runnable{
+
+    public void run(){
+
+    }
+
+}
+
+Then
+
+Thread t =
+new Thread(new DownloadTask());
+
+t.start();
+
+Think of it like
+
+Runnable
+
+↓
+
+Recipe
+
+Thread
+
+↓
+
+Cook
+Thread States
+
+Imagine a person.
+
+Born
+
+↓
+
+Ready
+
+↓
+
+Running
+
+↓
+
+Sleeping
+
+↓
+
+Running
+
+↓
+
+Dead
+
+Java threads are similar.
+
+NEW
+
+↓
+
+RUNNABLE
+
+↓
+
+RUNNING
+
+↓
+
+WAITING
+
+↓
+
+TIMED_WAITING
+
+↓
+
+TERMINATED
+Shared Memory
+
+Suppose
+
+Main Thread
+
+Worker Thread
+
+Both access
+
+int balance = 1000;
+
+Memory
+
+RAM
+
+balance =1000
+
+Both threads can modify it.
+
+Now problems begin.
+
+Race Condition
+
+Suppose
+
+Balance
+
+1000
+
+Thread A
+
+Withdraw 500
+
+Thread B
+
+Withdraw 700
+
+Both read
+
+1000
+
+Both think
+
+Enough money.
+
+Finally
+
+Balance
+
+500
+
+or
+
+300
+
+or
+
+Incorrect value
+
+depending on timing.
+
+This is
+
+Race Condition
+
+synchronized
+
+Java says
+
+Only one thread enters.
+
+Imagine a bathroom.
+
+Without lock
+
+Person A
+
+Person B
+
+Person C
+
+Chaos.
+
+With lock
+
+Door Locked
+
+↓
+
+Person A
+
+↓
+
+Leaves
+
+↓
+
+Person B
+
+That's exactly
+
+synchronized
+
+Example
+
+synchronized void withdraw(){
+
+}
+
+Only one thread executes it at a time.
+
+Monitor Lock
+
+Every Java object secretly owns a lock.
+
+Account Object
+
+│
+
+└── Monitor Lock
+
+When
+
+synchronized(account)
+
+Thread does
+
+Acquire Lock
+
+↓
+
+Execute
+
+↓
+
+Release Lock
+
+Other threads wait.
+
+Deadlock
+
+Imagine
+
+Person A
+
+has
+
+Lock 1
+
+needs
+
+Lock 2
+
+Person B
+
+has
+
+Lock 2
+
+needs
+
+Lock 1
+
+Both wait forever.
+
+A ←→ B
+
+Nobody moves.
+
+Deadlock.
+
+wait()
+
+Suppose a restaurant.
+
+Customer
+
+Orders Food
+
+↓
+
+Food not ready
+
+↓
+
+Wait
+
+Instead of standing,
+
+he sits.
+
+That's
+
+wait();
+
+Thread releases the lock and waits.
+
+notify()
+
+Chef says
+
+Food Ready
+
+Customer wakes up.
+
+notify()
+sleep()
+Thread.sleep(5000);
+
+Means
+
+Thread
+
+↓
+
+Sleep 5 seconds
+
+Important:
+
+sleep() DOES NOT release the lock.
+
+wait() vs sleep()
+wait()	sleep()
+Releases lock	Doesn't release lock
+Must be inside synchronized block	Can be called anywhere
+Wakes with notify()	Wakes after time
+Executor Framework
+
+Creating thousands of threads is expensive.
+
+Imagine hiring
+
+1000 workers
+
+for 1000 tasks.
+
+Instead
+
+10 Workers
+
+↓
+
+Reuse them
+
+That's a Thread Pool.
+
+ExecutorService executor =
+Executors.newFixedThreadPool(5);
+Future
+
+Suppose
+
+Calculate Salary
+
+takes
+
+10 seconds
+
+Instead of waiting,
+
+Java gives you
+
+Future
+
+Meaning
+
+"I'll give the result later."
+CompletableFuture
+
+Modern Java.
+
+Instead of
+
+Wait
+
+↓
+
+Wait
+
+↓
+
+Wait
+
+You write
+
+Task
+
+↓
+
+Automatically continue
+
+Much cleaner for asynchronous programming.
+
+Real Spring Boot Example
+
+Suppose your API uploads images.
+
+Without multithreading
+
+Request
+
+↓
+
+Upload Image
+
+↓
+
+Resize
+
+↓
+
+Send Email
+
+↓
+
+Return Response
+
+User waits 20 seconds.
+
+Better approach
+
+Main Thread
+
+↓
+
+Save Image
+
+↓
+
+Return Response
+
+Background thread
+
+Resize
+
+↓
+
+Send Email
+
+This is exactly why Spring provides @Async and task executors.
+
+Complete Mental Picture
+                JVM
+
+                 │
+
+          Main Thread
+
+                 │
+
+      ┌──────────┴──────────┐
+
+      │                     │
+
+ Download Thread      Email Thread
+
+      │                     │
+
+      └──────────┬──────────┘
+
+                 │
+
+          Shared Memory
+
+                 │
+
+         synchronized Lock
+
+                 │
+
+       Prevent Race Conditions
+Interview Summary
+Concept	Meaning
+Process	Independent running program
+Thread	Lightweight execution path inside a process
+start()	Creates a new thread and then calls run()
+run()	Contains the work to execute
+Runnable	Defines the task
+Thread	Executes the task
+synchronized	Allows only one thread at a time into a critical section
+Race Condition	Multiple threads modify shared data incorrectly
+Deadlock	Threads wait forever for each other's locks
+wait()	Releases lock and waits
+notify()	Wakes a waiting thread
+sleep()	Pauses execution but keeps any held locks
+ExecutorService	Manages a pool of reusable threads
+CompletableFuture	Modern asynchronous programming API
+The one sentence to remember forever
+
+Imagine your Java application as a restaurant:
+
+Threads are the waiters doing work.
+CPU cores are the kitchen stations where work gets done.
+The OS scheduler decides which waiter gets a station next.
+synchronized is the key to the pantry—only one waiter can use it at a time.
+wait() is a waiter stepping aside until ingredients arrive.
+notify() is the chef calling the waiter back.
+A thread pool is a fixed team of waiters that keeps serving customers instead of hiring and firing new waiters for every order.
+
+Once you see multithreading as multiple workers sharing the same restaurant, concepts like race conditions, locks, and thread pools become much more intuitive than memorizing API names.
 
 
 

@@ -1,0 +1,538 @@
+Level 1 (Startup/Fresher)
+1. What is an abstract class?
+Answer
+
+An abstract class is a class declared with the abstract keyword. It cannot be instantiated and is mainly used to provide a common base class with both complete and incomplete (abstract) methods.
+
+abstract class Animal{
+
+    abstract void sound();
+
+    void eat(){
+        System.out.println("Eating");
+    }
+}
+2. Can we create an object of an abstract class?
+Answer
+
+No.
+
+Animal a = new Animal(); // Compile-time error
+
+Reason:
+
+Abstract classes may contain abstract methods, so Java prevents creating incomplete objects.
+
+3. Can an abstract class have constructors?
+Answer
+
+Yes.
+
+abstract class Animal{
+
+    Animal(){
+        System.out.println("Animal Constructor");
+    }
+}
+
+The constructor is called when a subclass object is created.
+
+4. Why does an abstract class have a constructor if we cannot create its object?
+Answer
+
+Because constructors initialize inherited fields.
+
+Example
+
+abstract class Animal{
+
+    Animal(){
+        System.out.println("Animal Constructor");
+    }
+}
+
+class Dog extends Animal{
+
+}
+
+Output
+
+Animal Constructor
+
+The constructor initializes the parent part of the Dog object.
+
+5. Can an abstract class contain normal methods?
+
+Yes.
+
+abstract class Animal{
+
+    abstract void sound();
+
+    void eat(){
+        System.out.println("Eating");
+    }
+}
+6. Can an abstract class contain variables?
+
+Yes.
+
+abstract class Animal{
+
+    int age=10;
+
+    static int count=0;
+
+    final int MAX=100;
+}
+7. Can an abstract class have static methods?
+
+Yes.
+
+abstract class Animal{
+
+    static void display(){
+
+    }
+}
+
+Call
+
+Animal.display();
+8. Can an abstract class have final methods?
+
+Yes.
+
+final void show(){
+
+}
+
+Child cannot override it.
+
+9. Can an abstract class have private methods?
+
+Yes.
+
+private void helper(){
+
+}
+
+Used internally.
+
+10. Can an abstract class have private constructors?
+
+Yes.
+
+But then subclasses cannot call them.
+
+Level 2 (Most Asked)
+11. Can an abstract class have only normal methods?
+
+Yes.
+
+abstract class Animal{
+
+    void eat(){
+
+    }
+}
+
+Still abstract because of keyword.
+
+12. Can an abstract class have zero abstract methods?
+
+Yes.
+
+abstract class Animal{
+
+    void eat(){
+
+    }
+}
+
+Interview trick question.
+
+13. Why make a class abstract if it has no abstract methods?
+
+To prevent object creation.
+
+Example
+
+abstract class Utility{
+
+    void helper(){
+
+    }
+}
+
+You want subclasses only.
+
+14. Can an abstract method have a body?
+
+No.
+
+Wrong
+
+abstract void show(){
+
+}
+
+Correct
+
+abstract void show();
+15. Can an abstract method be private?
+
+No.
+
+Because child must override it.
+
+Private methods are not inherited.
+
+16. Can abstract methods be final?
+
+No.
+
+abstract
+
+means
+
+"must override"
+
+final
+
+means
+
+"cannot override"
+
+Contradiction.
+
+17. Can abstract methods be static?
+
+No.
+
+Static methods belong to the class.
+
+Abstract methods require runtime overriding.
+
+18. Can abstract methods be synchronized?
+
+No.
+
+There is no implementation to synchronize.
+
+19. Can abstract methods be native?
+
+No.
+
+Native methods already have implementation outside Java.
+
+Level 3 (Intermediate)
+20. Can an abstract class implement an interface?
+
+Yes.
+
+interface Engine{
+
+    void start();
+}
+
+abstract class Car implements Engine{
+
+}
+21. Must an abstract class implement all interface methods?
+
+No.
+
+interface Engine{
+
+    void start();
+}
+
+abstract class Car implements Engine{
+
+}
+
+Allowed.
+
+22. Can an abstract class extend another abstract class?
+
+Yes.
+
+abstract class A{
+
+    abstract void show();
+}
+
+abstract class B extends A{
+
+}
+23. Can an abstract class extend a normal class?
+
+Yes.
+
+class A{
+
+}
+
+abstract class B extends A{
+
+}
+24. Can a normal class extend an abstract class?
+
+Yes.
+
+Must implement all abstract methods.
+
+25. Can an abstract class implement multiple interfaces?
+
+Yes.
+
+abstract class Car implements Engine,Brake,System{
+
+}
+Level 4 (Tricky)
+26. Why can't we instantiate an abstract class?
+
+Because it may contain incomplete methods.
+
+Java prevents incomplete object creation.
+
+27. Does an abstract class occupy memory?
+
+Class metadata yes.
+
+Object no.
+
+28. Can an abstract class have main()?
+
+Yes.
+
+abstract class Demo{
+
+    public static void main(String[] args){
+
+        System.out.println("Hello");
+    }
+}
+
+Runs perfectly.
+
+29. Can an abstract class be final?
+
+No.
+
+abstract
+
+↓
+
+must inherit
+final
+
+↓
+
+cannot inherit
+
+Contradiction.
+
+30. Can an abstract class be static?
+
+Top-level abstract class
+
+No.
+
+Nested abstract class
+
+Yes.
+
+class A{
+
+    static abstract class B{
+
+    }
+}
+31. Can an abstract class contain nested classes?
+
+Yes.
+
+32. Can we overload abstract methods?
+
+Yes.
+
+abstract void show();
+
+abstract void show(int a);
+33. Can we override normal methods inside an abstract class?
+
+Yes.
+
+class A{
+
+    void show(){
+
+    }
+}
+
+abstract class B extends A{
+
+    @Override
+    void show(){
+
+    }
+}
+34. Can abstract classes have instance initializer blocks?
+
+Yes.
+
+35. Can abstract classes have static blocks?
+
+Yes.
+
+Level 5 (Advanced)
+36. Difference between Interface and Abstract Class?
+Abstract Class	Interface
+Constructor	Yes
+Instance variables	Yes
+Multiple inheritance	No
+Single inheritance	Yes
+Can have state	Yes
+Can have concrete methods	Yes
+37. When should you use an abstract class?
+
+Use when
+
+classes share common state
+classes share common code
+constructors are needed
+partial implementation is required
+38. When should you use an interface?
+
+Use when
+
+unrelated classes implement same behavior
+multiple inheritance required
+pure contract
+39. Why doesn't Java support multiple inheritance with abstract classes?
+
+Diamond Problem.
+
+        A
+      /   \
+     B     C
+      \   /
+        D
+
+If both B and C override the same method differently, Java wouldn't know which implementation D should inherit.
+
+40. What happens if a subclass doesn't implement all abstract methods?
+
+Example
+
+abstract class A{
+
+    abstract void show();
+}
+
+class B extends A{
+
+}
+
+Compile-time error.
+
+Either
+
+implement show()
+
+or
+
+declare B abstract.
+41. Can we call an abstract method from a constructor?
+
+Yes, but it's dangerous.
+
+Example:
+
+abstract class A {
+
+    A() {
+        show(); // Calls overridden method
+    }
+
+    abstract void show();
+}
+
+class B extends A {
+
+    int x = 10;
+
+    @Override
+    void show() {
+        System.out.println(x);
+    }
+}
+
+Output:
+
+0
+
+Why?
+
+Because the superclass constructor runs before the subclass fields (x) are initialized. This can lead to unexpected behavior.
+
+42. Can an abstract class have final variables?
+
+Yes.
+
+abstract class A{
+
+    final int MAX = 100;
+}
+43. Can an abstract class have static final constants?
+
+Yes.
+
+static final double PI = 3.14;
+High-Level (FAANG / Oracle / Microsoft)
+44. What is the difference between abstraction and abstract class?
+Abstraction is an OOP concept: hiding implementation details and exposing only essential behavior.
+Abstract class is a Java language feature used to help achieve abstraction.
+45. Why would Spring Framework use abstract classes?
+
+Spring uses abstract classes to provide partial implementations so subclasses don't have to implement every method.
+
+Example:
+
+abstract class AbstractController {
+    // common logic
+}
+
+The framework provides reusable behavior, and developers only implement what's specific to their use case.
+
+Top 10 Questions Asked Most Often
+What is an abstract class?
+Why can't we instantiate an abstract class?
+Can an abstract class have constructors?
+Why does an abstract class need a constructor?
+Difference between abstract class and interface.
+Can an abstract class have static/final/private methods?
+Can an abstract class have zero abstract methods?
+Can an abstract method be private, static, or final?
+Can a constructor be abstract? (Answer: No, because constructors are not inherited or overridden.)
+Can we call an abstract method from a constructor? (Answer: Yes, but it should generally be avoided.)
+Advice for Your Java Interview Preparation
+
+Since you've been preparing for Java and Spring Boot interviews, you should also master these OOP topics with the same depth:
+
+Classes & Objects
+Constructors (every tricky scenario)
+this and super
+Inheritance
+Method Overloading
+Method Overriding
+Polymorphism
+Encapsulation
+Abstraction
+Interface
+Association, Aggregation, Composition
+Inner Classes (member, static, local, anonymous)
+Object class (equals(), hashCode(), toString(), clone())
+final, finally, and finalize() (including why finalize() is deprecated)

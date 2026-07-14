@@ -1,0 +1,587 @@
+Absolutely. Interfaces are one of the most asked Java interview topics, especially in Spring Boot because Spring heavily relies on interfaces (JpaRepository, CrudRepository, List, Map, Runnable, Comparable, etc.).
+
+Below is a complete interview guide from basic → advanced → FAANG-level.
+
+LEVEL 1 (Basic)
+1. What is an Interface?
+Answer
+
+An interface is a blueprint (contract) that defines what a class should do, not how it should do it.
+
+Example
+
+interface Animal {
+    void sound();
+}
+
+class Dog implements Animal {
+
+    @Override
+    public void sound() {
+        System.out.println("Bark");
+    }
+}
+2. Why do we use Interfaces?
+Achieve abstraction
+Multiple inheritance
+Loose coupling
+Runtime polymorphism
+3. Can we create an object of an Interface?
+
+No.
+
+Animal a = new Animal(); // ❌
+4. How do we create an object?
+
+Using implementing class.
+
+Animal a = new Dog();
+5. Why?
+
+Interface has no complete implementation.
+
+6. Can Interface have Constructors?
+
+❌ No
+
+Reason:
+
+Constructor initializes an object.
+
+Interfaces cannot have objects.
+
+7. Can Interface have Variables?
+
+Yes.
+
+interface Demo{
+
+    int x = 10;
+}
+
+Actually Java converts it into
+
+public static final int x = 10;
+
+All variables are
+
+public
+static
+final
+
+automatically.
+
+8. Can we modify Interface variables?
+Demo.x = 20;
+
+❌ No
+
+Because variables are final.
+
+9. Can Interface have Instance Variables?
+
+No.
+
+int age;
+
+❌ Illegal
+
+Because every variable becomes static final.
+
+10. Can Interface have Static Variables?
+
+Yes.
+
+static int x = 10;
+
+Actually already static.
+
+LEVEL 2
+11. Can Interface have Methods?
+
+Yes.
+
+Before Java 8
+
+Only abstract methods.
+
+After Java 8
+
+abstract
+default
+static
+
+After Java 9
+
+private
+private static
+12. Default Methods
+interface Animal{
+
+    default void eat(){
+
+        System.out.println("Eating");
+    }
+}
+
+Purpose
+
+Backward compatibility.
+
+13. Static Methods
+interface Animal{
+
+    static void show(){
+
+    }
+}
+
+Call
+
+Animal.show();
+14. Private Methods
+
+Java 9
+
+interface Animal{
+
+    private void helper(){
+
+    }
+}
+
+Used only inside interface.
+
+15. Can Interface have Abstract Methods?
+
+Yes.
+
+void show();
+
+Compiler makes it
+
+public abstract void show();
+16. Can Abstract Method be Final?
+
+No.
+
+Contradiction.
+
+17. Can Abstract Method be Static?
+
+No.
+
+18. Can Abstract Method be Private?
+
+No.
+
+Private methods cannot be overridden.
+
+19. Can Interface have Final Methods?
+
+No.
+
+All abstract methods must be overridden.
+
+LEVEL 3
+20. Can Interface extend another Interface?
+
+Yes.
+
+interface A{
+
+}
+
+interface B extends A{
+
+}
+21. Can Interface extend multiple Interfaces?
+
+Yes.
+
+interface A{
+
+}
+
+interface B{
+
+}
+
+interface C extends A,B{
+
+}
+22. Can Interface implement another Interface?
+
+No.
+
+Only class implements interface.
+
+23. Can Interface extend Class?
+
+No.
+
+interface A extends Demo{
+
+}
+
+❌
+
+24. Can Class implement multiple Interfaces?
+
+Yes.
+
+class Demo implements A,B,C{
+
+}
+25. Why?
+
+Multiple inheritance of type.
+
+No ambiguity because interfaces originally had no implementation.
+
+LEVEL 4
+26. Difference between Abstract Class and Interface?
+Abstract Class	Interface
+Constructor	Yes
+Instance Variable	Yes
+Multiple Inheritance	No
+Multiple Interface	Yes
+State	Yes
+100% abstraction	No
+27. Why are Interface methods public?
+
+Because implementing classes can be anywhere.
+
+They must be accessible.
+
+28. Why Interface variables are public static final?
+
+Imagine
+
+interface Demo{
+
+    int x=10;
+}
+
+If variables weren't static,
+
+every object would need separate copy.
+
+But interface has no objects.
+
+29. Can Interface have Main Method?
+
+YES
+
+interface Demo{
+
+    public static void main(String args[]){
+
+        System.out.println("Hello");
+    }
+}
+
+Runs perfectly.
+
+30. Can Interface be Final?
+
+No.
+
+Need inheritance.
+
+31. Can Interface be Abstract?
+
+Actually
+
+Every interface is abstract.
+
+Compiler internally writes
+
+abstract interface Demo{
+
+}
+LEVEL 5
+32. Diamond Problem
+interface A{
+
+    default void show(){
+
+    }
+}
+
+interface B{
+
+    default void show(){
+
+    }
+}
+
+class C implements A,B{
+
+}
+
+Compile Error.
+
+Must override.
+
+@Override
+public void show(){
+
+    A.super.show();
+}
+33. Why?
+
+Compiler doesn't know
+
+A.show()
+
+or
+
+B.show()
+34. Functional Interface
+
+Contains exactly one abstract method.
+
+@FunctionalInterface
+interface Demo{
+
+    void show();
+}
+
+Used by
+
+Lambda
+Streams
+35. Marker Interface
+
+No methods.
+
+Example
+
+Serializable
+
+Cloneable
+
+RandomAccess
+
+Purpose
+
+Provide metadata.
+
+36. SAM Interface
+
+Single Abstract Method Interface.
+
+Same as Functional Interface.
+
+37. Can Functional Interface have Default Methods?
+
+Yes.
+
+@FunctionalInterface
+interface Demo{
+
+    void show();
+
+    default void helper(){
+
+    }
+}
+
+Still Functional.
+
+38. Can Functional Interface have Static Methods?
+
+Yes.
+
+39. Can Functional Interface have Private Methods?
+
+Yes.
+
+40. Can Functional Interface extend another Interface?
+
+Yes.
+
+Only if total abstract methods remain one.
+
+LEVEL 6
+41. Why is Spring using Interfaces everywhere?
+
+Example
+
+@Service
+class EmailService implements Notification{
+
+}
+
+Later
+
+@Service
+class SmsService implements Notification{
+
+}
+
+Application code
+
+Notification notification;
+
+Can switch implementation without changing client code.
+
+Loose coupling.
+
+42. Why does Spring recommend programming to Interface?
+
+Instead of
+
+EmailService service=new EmailService();
+
+Use
+
+Notification service;
+
+Tomorrow
+
+SmsService
+
+or
+
+PushNotification
+
+No code changes.
+
+43. Why does JpaRepository use Interface?
+public interface UserRepository
+extends JpaRepository<User,Integer>{
+
+}
+
+Spring creates implementation at runtime.
+
+No need to write CRUD methods.
+
+44. Can Interface contain Object methods?
+equals()
+
+hashCode()
+
+toString()
+
+Yes.
+
+45. Can Interface Override Object methods?
+
+Implementing class does.
+
+46. Why can't Interface have Protected Methods?
+
+Because interface methods are meant to define a public contract. protected would restrict access and defeat that purpose.
+
+47. Can Interface have Nested Interface?
+
+Yes.
+
+interface A{
+
+    interface B{
+
+    }
+}
+48. Can Interface have Nested Class?
+
+Yes.
+
+interface A{
+
+    class B{
+
+    }
+}
+
+It is implicitly public static.
+
+49. Can Anonymous Class implement Interface?
+
+Yes.
+
+Runnable r = new Runnable() {
+
+    @Override
+    public void run() {
+        System.out.println("Running");
+    }
+};
+50. Can Lambda implement Interface?
+
+Only Functional Interface.
+
+Runnable r = () -> System.out.println("Running");
+51. Interface vs Composition
+
+Don't confuse them.
+
+Interface → What behavior an object promises.
+Composition → How an object is built using other objects.
+
+Example:
+
+interface Engine {
+    void start();
+}
+
+class PetrolEngine implements Engine {
+    public void start() {
+        System.out.println("Petrol Engine");
+    }
+}
+
+class Car {
+
+    private Engine engine; // Composition + programming to an interface
+
+    Car(Engine engine) {
+        this.engine = engine;
+    }
+}
+
+Here:
+
+PetrolEngine implements Engine → Interface (contract)
+Car has an Engine → Composition/aggregation depending on ownership
+Top 15 Interface Questions Asked in Interviews
+What is an interface?
+Why do we use interfaces?
+Difference between abstract class and interface.
+Why can't interfaces have constructors?
+Why are interface variables public static final?
+Why are interface methods public abstract by default?
+Can an interface have private methods?
+Difference between default and static methods.
+What is a functional interface?
+What is a marker interface?
+What is the diamond problem with default methods?
+Why does Spring use interfaces everywhere?
+Why is JpaRepository an interface instead of a class?
+What is loose coupling, and how do interfaces help achieve it?
+What is the difference between extends and implements?
+My recommendation for your interview preparation
+
+Since you're preparing for Java + Spring Boot interviews, master these topics in this order:
+
+Classes & Objects
+Constructors
+this and super
+Inheritance
+Polymorphism (Overloading & Overriding)
+final, static, abstract
+Abstract Classes
+Interfaces
+Association, Aggregation, Composition
+Inner Classes
+Object class (equals(), hashCode(), toString(), clone())
+Collections Framework
+Exception Handling
+Multithreading
+Java 8 features (Lambda, Functional Interfaces, Streams, Optional)
+JVM Memory (Heap, Stack, String Pool, Garbage Collection)
+
+These topics cover the vast majority of Java interview questions asked in startup, product-based, and enterprise Java backend interviews.
