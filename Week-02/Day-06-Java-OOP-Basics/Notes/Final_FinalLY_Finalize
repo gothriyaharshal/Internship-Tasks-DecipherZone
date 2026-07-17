@@ -530,19 +530,19 @@ Why can the state of a final object change?
 
 Can a final method be overloaded?
 
-Can a constructor be final?
+Can a constructor be final?   constructor cant be final and static ...because it never inhertited ....and cant be abstract becuse every time it contains body
 
-Can an abstract method be final?
+Can an abstract method be final?  no
 
-Why is String declared final?
+Why is String declared final?  because no one extend and change its inner functionalities
 
-Can a final class implement an interface?
+Can a final class implement an interface? yes
 
-Does finally always execute?
+Does finally always execute?   yes
 
-What happens if both try and finally contain return statements?
+What happens if both try and finally contain return statements?  ...finally one returns because if there has return statement in try,,,,,then also finally replace it
 
-What happens if an exception is thrown in finally?
+What happens if an exception is thrown in finally? ...
 
 Why is finalize() deprecated?
 
