@@ -1,0 +1,797 @@
+
+
+
+
+Claim offer
+i want to understand final keyword updation and finalize in java
+
+These three topics are among the most frequently asked Java interview questions, especially by companies like TCS, Infosys, Accenture, Capgemini, Cognizant, Deloitte, Walmart, Amazon, Adobe, Oracle, Microsoft, and Google.
+
+Many candidates confuse final, finally, and finalize(). Let's understand them in depth.
+
+1. final Keyword
+final is a keyword used to restrict modification.
+
+It can be applied to:
+
+Variable
+
+Method
+
+Class
+
+Parameters
+
+Local Variables
+
+Reference Variables
+
+A. Final Variable
+A final variable can be assigned only once.
+
+class Demo {
+
+    final int x = 10;
+
+    void display() {
+        // x = 20; // Compile-time Error
+    }
+}
+Output
+
+Compile-time Error
+cannot assign a value to final variable x
+Blank Final Variable
+Can be initialized inside constructor.
+
+class Student {
+
+    final int rollNo;
+
+    Student(int rollNo){
+        this.rollNo = rollNo;
+    }
+
+    void display(){
+        System.out.println(rollNo);
+    }
+
+    public static void main(String[] args){
+
+        Student s1 = new Student(101);
+        Student s2 = new Student(102);
+
+        s1.display();
+        s2.display();
+    }
+}
+Output
+
+101
+102
+Every object can initialize it once.
+
+Static Blank Final Variable
+Must be initialized inside static block.
+
+class Demo{
+
+    static final int x;
+
+    static{
+        x = 100;
+    }
+
+    public static void main(String args[]){
+        System.out.println(x);
+    }
+}
+Output
+
+100
+B. Final Reference Variable
+This is the most confusing interview question.
+
+class Student{
+
+    String name;
+
+    Student(String name){
+        this.name=name;
+    }
+}
+
+public class Main{
+
+    public static void main(String args[]){
+
+        final Student s = new Student("Harshal");
+
+        s.name="Rahul";
+
+        System.out.println(s.name);
+    }
+}
+Output
+
+Rahul
+Interviewer asks:
+
+Wait... final hai... change kaise ho gaya?
+
+Answer:
+
+final reference ko protect karta hai, object ko nahi.
+
+Reference
+
+s -----> Student Object
+Object ke andar
+
+name = Harshal
+You changed
+
+name = Rahul
+Reference same hai.
+
+Allowed.
+
+But
+
+s = new Student("Amit");
+Output
+
+Compile-time Error
+cannot assign value to final variable s
+Because reference change ho rahi hai.
+
+C. Final Method
+Cannot be overridden.
+
+class Parent{
+
+    final void display(){
+        System.out.println("Parent");
+    }
+}
+
+class Child extends Parent{
+
+    void display(){
+        System.out.println("Child");
+    }
+}
+Output
+
+Compile-time Error
+Cannot override final method
+Can it be overloaded?
+
+Yes.
+
+class Parent{
+
+    final void display(){
+        System.out.println("Hello");
+    }
+
+    void display(int x){
+        System.out.println(x);
+    }
+}
+Perfectly valid.
+
+D. Final Class
+Cannot be inherited.
+
+final class Animal{
+
+}
+
+class Dog extends Animal{
+
+}
+Output
+
+Compile-time Error
+cannot inherit from final Animal
+Examples
+
+String
+Math
+Integer
+Double
+Boolean
+Many wrapper classes are final.
+
+Reason:
+
+Immutable + Security.
+
+Why String is Final?
+Suppose
+
+String password="abc";
+If String were inheritable,
+
+Someone could override methods like
+
+equals()
+
+hashCode()
+
+substring()
+
+length()
+and break security.
+
+Therefore String is final.
+
+Can Constructor be Final?
+No.
+
+final Demo(){
+
+}
+Compile-time Error.
+
+Reason:
+
+Constructors are never inherited.
+
+Overriding is impossible.
+
+No need of final.
+
+Can Local Variable be Final?
+Yes.
+
+void display(){
+
+    final int x=10;
+
+    System.out.println(x);
+}
+Valid.
+
+Can Method Parameter be Final?
+Yes.
+
+void display(final int x){
+
+    // x=20;
+}
+Compile-time Error.
+
+Can Interface Variable be Final?
+Every interface variable is automatically
+
+public static final
+Example
+
+interface Demo{
+
+    int x=100;
+}
+Actually compiler writes
+
+public static final int x=100;
+Can Abstract Method be Final?
+No.
+
+abstract final void display();
+Compile-time Error.
+
+Reason
+
+Abstract means
+
+Must Override
+
+Final means
+
+Cannot Override
+
+Contradiction.
+
+Can Final Method be Abstract?
+No.
+
+Same reason.
+
+Can Final Class have Abstract Method?
+No.
+
+Because no one can inherit it.
+
+Can Final Class have Final Methods?
+Yes.
+
+Can Final Class have Constructors?
+Yes.
+
+Can Final Class Implement Interface?
+Yes.
+
+Can Final Class Extend Another Class?
+Yes.
+
+class Animal{
+
+}
+
+final class Dog extends Animal{
+
+}
+Valid.
+
+Can Abstract Class be Final?
+No.
+
+Contradiction.
+
+Final + Static
+Allowed.
+
+static final double PI=3.14;
+Very common.
+
+Final + Private Method
+Allowed.
+
+Actually useless because private methods cannot be overridden anyway.
+
+Final + Volatile
+Not allowed on the same field.
+
+final means value assigned once.
+
+volatile is for visibility of mutable shared state.
+
+These concepts conflict.
+
+How does JVM optimize final?
+final int x=10;
+
+System.out.println(x+5);
+Compiler may replace
+
+x+5
+with
+
+15
+This is called constant folding.
+
+Is final variable stored differently?
+Primitive final constants may be inlined by the compiler.
+
+Objects are not.
+
+Difference
+final int x=10;
+x immutable
+
+final Student s
+Reference immutable
+
+Object mutable
+
+2. finally Block
+finally is used with exception handling.
+
+It usually executes whether an exception occurs or not.
+
+try{
+    System.out.println("Try");
+}
+finally{
+    System.out.println("Finally");
+}
+Output
+
+Try
+Finally
+Exception
+
+try{
+
+    int x=10/0;
+
+}
+catch(Exception e){
+
+    System.out.println("Catch");
+
+}
+finally{
+
+    System.out.println("Finally");
+
+}
+Output
+
+Catch
+Finally
+When finally may not execute
+Very few situations:
+
+System.exit(0);
+or if the JVM crashes or the operating system forcibly terminates the process.
+
+Return in try
+public static int test(){
+
+    try{
+        return 10;
+    }
+    finally{
+        System.out.println("Finally");
+    }
+}
+Output
+
+Finally
+10
+The return value is computed first, then the finally block runs before the method actually returns.
+
+Return in finally (Not Recommended)
+public static int test(){
+
+    try{
+        return 10;
+    }
+    finally{
+        return 20;
+    }
+}
+Output
+
+20
+The finally return overrides the try return. This is considered bad practice because it hides exceptions and makes code harder to understand.
+
+3. finalize() Method
+Important: finalize() is deprecated (since Java 9) and is intended for removal. You should not use it in modern Java.
+
+It was defined in Object:
+
+protected void finalize() throws Throwable
+The idea was that the JVM might call it before garbage collecting an object.
+
+Example:
+
+class Demo{
+
+    @Override
+    protected void finalize(){
+
+        System.out.println("Finalize called");
+    }
+
+    public static void main(String args[]){
+
+        Demo d=new Demo();
+
+        d=null;
+
+        System.gc();
+    }
+}
+Possible Output
+
+Finalize called
+or
+
+(no output)
+Why?
+
+Because there is no guarantee that finalize() will ever run. System.gc() is only a request to the JVM, not a command.
+
+Why was finalize() removed?
+Problems:
+
+Unpredictable execution.
+
+Performance overhead.
+
+Objects survive longer than necessary.
+
+Security concerns.
+
+Resource leaks if developers relied on it.
+
+Instead, Java recommends:
+
+try-with-resources
+
+Explicit close() methods
+
+AutoCloseable
+
+Example:
+
+try (BufferedReader br = new BufferedReader(new FileReader("data.txt"))) {
+    System.out.println(br.readLine());
+}
+The resource is closed automatically, even if an exception occurs.
+
+final vs finally vs finalize()
+Feature	final	finally	finalize()
+Type	Keyword	Block	Method
+Purpose	Restrict modification	Cleanup after try/catch	Legacy cleanup before garbage collection
+Used With	Variables, methods, classes	Exception handling	Object class
+Execution	Compile-time restriction	Runs after try/catch (except in rare cases like System.exit())	No execution guarantee
+Current Status	Widely used	Widely used	Deprecated; avoid using it
+Common Interview Questions
+What is the difference between final, finally, and finalize()?
+
+Can a final variable be initialized in a constructor?
+
+Why can the state of a final object change?
+
+Can a final method be overloaded?
+
+Can a constructor be final?
+
+Can an abstract method be final?
+
+Why is String declared final?
+
+Can a final class implement an interface?
+
+Does finally always execute?
+
+What happens if both try and finally contain return statements?
+
+What happens if an exception is thrown in finally?
+
+Why is finalize() deprecated?
+
+Does calling System.gc() guarantee that finalize() will execute?
+
+What modern Java feature replaces finalize() for resource cleanup?
+
+What is constant folding, and how does final help the compiler optimize code?
+
+
+Excellent question. This is exactly the kind of question asked in interviews.
+
+The short answer is:
+
+try-with-resources has NO relation with finalize(). They solve different problems.
+
+Let's understand it from the JVM's perspective.
+
+Before Java 7 (Without try-with-resources)
+
+Suppose you open a file.
+
+FileInputStream fis = new FileInputStream("data.txt");
+
+// Read data
+
+fis.close();
+
+Now imagine an exception occurs before close().
+
+FileInputStream fis = new FileInputStream("data.txt");
+
+int x = 10 / 0;   // Exception
+
+fis.close();      // Never executes
+
+Now the file remains open.
+
+This causes a resource leak.
+
+Developers thought:
+
+"Don't worry, finalize() will close it."
+
+For example:
+
+class MyFile {
+
+    FileInputStream fis;
+
+    @Override
+    protected void finalize() {
+        System.out.println("Closing file");
+    }
+}
+
+But this is a bad idea.
+
+Why?
+
+Because nobody knows when finalize() will run.
+
+Object becomes unreachable
+        ↓
+Garbage Collector may run
+        ↓
+JVM may call finalize()
+        ↓
+Object removed
+
+Notice the word may.
+
+It may happen after:
+
+1 second
+1 minute
+10 minutes
+Never (before the JVM exits)
+
+Meanwhile the file stays open.
+
+Why is this dangerous?
+
+Suppose your server handles 10,000 requests.
+
+Each request opens a file.
+
+Open File
+↓
+
+Wait for finalize()
+
+↓
+
+Open File
+
+↓
+
+Wait for finalize()
+
+↓
+
+Open File
+
+Eventually you'll have thousands of open files.
+
+Then the operating system says:
+
+Too many open files
+
+Your application starts failing.
+
+Java 7 introduced try-with-resources
+
+Instead of waiting for the Garbage Collector,
+
+Java says:
+
+"Close the resource immediately."
+
+Example
+
+try (FileInputStream fis = new FileInputStream("data.txt")) {
+
+    // Read file
+
+}
+
+When execution leaves the try block...
+
+Normal execution
+        ↓
+close()
+
+or
+
+Exception occurs
+        ↓
+close()
+
+Either way,
+
+close() is automatically called.
+
+No Garbage Collector involved.
+
+Who calls close()?
+
+The compiler generates code similar to this:
+
+FileInputStream fis = new FileInputStream("data.txt");
+
+try {
+
+    // use file
+
+} finally {
+
+    if (fis != null) {
+        fis.close();
+    }
+
+}
+
+So it's the compiler-generated finally block that calls close(), not finalize().
+
+Then why doesn't it call finalize()?
+
+Because finalize() depends on the Garbage Collector.
+
+Garbage Collection is memory cleanup.
+
+Closing a file is resource cleanup.
+
+These are different things.
+
+Imagine:
+
+RAM Memory
+↓
+
+Garbage Collector
+↓
+
+Object deleted
+
+versus
+
+Operating System File
+↓
+
+close()
+
+↓
+
+File released
+
+The Garbage Collector only knows about Java objects in memory. It doesn't know when your program should release an operating system resource like a file, socket, or database connection.
+
+What is the relation then?
+
+There is almost no direct relation.
+
+Historically:
+
+Old approach
+
+Open Resource
+      ↓
+Forget to close
+      ↓
+Hope finalize() closes it
+      ↓
+Unreliable
+
+Modern approach:
+
+Open Resource
+      ↓
+try-with-resources
+      ↓
+Compiler generates finally
+      ↓
+close()
+      ↓
+Done
+
+So try-with-resources replaced the need to rely on finalize() for releasing resources.
+
+How does try-with-resources know to call close()?
+
+Because the resource must implement the AutoCloseable interface (or its subinterface Closeable).
+
+public interface AutoCloseable {
+    void close() throws Exception;
+}
+
+FileInputStream implements Closeable, which extends AutoCloseable:
+
+AutoCloseable
+       ↑
+   Closeable
+       ↑
+FileInputStream
+
+So when you write:
+
+try (FileInputStream fis = new FileInputStream("data.txt")) {
+    // use file
+}
+
+the compiler knows that fis has a close() method and generates the cleanup code automatically.

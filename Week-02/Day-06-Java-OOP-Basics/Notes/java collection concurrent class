@@ -1,0 +1,545 @@
+Java Interview Notes
+Why We Use Concurrent Collections Instead of Vector & Stack
+
+This is one of the most asked Java interview topics.
+
+Many interviewers ask:
+
+If Vector and Stack are synchronized (thread-safe), then why were Concurrent Collections introduced?
+
+Before Java 1.2
+
+Java had only
+
+Vector
+Stack
+Hashtable
+
+All of them are
+
+Synchronized
+Thread-safe
+
+People thought
+
+"Problem solved."
+
+But there was a huge problem...
+
+Problem with Vector
+
+Suppose two threads are using one Vector.
+
+Vector<Integer> vector = new Vector<>();
+
+Internally
+
+public synchronized boolean add(E e){
+   ...
+}
+
+Every method is synchronized.
+
+Example
+
+vector.add(10);
+vector.add(20);
+vector.remove(10);
+vector.get(0);
+
+Every method does
+
+Acquire Lock
+
+↓
+
+Execute
+
+↓
+
+Release Lock
+What happens?
+
+Imagine
+
+Thread 1
+   |
+   | Lock
+   |
+add()
+
+Thread 2
+   |
+Waiting...
+
+Thread 3
+   |
+Waiting...
+
+Thread 4
+   |
+Waiting...
+
+Only ONE thread works.
+
+Others wait.
+
+Problem
+
+Suppose
+
+100 Threads
+
+99 Threads
+
+↓
+
+Waiting
+
+↓
+
+Only 1 Working
+
+CPU becomes underutilized.
+
+Application becomes slower.
+
+Why?
+
+Synchronization locks the entire object, not just one operation.
+
+Even simple methods like
+
+vector.get(5);
+
+need a lock.
+
+Reading also waits.
+
+Interview Question
+Is synchronization bad?
+
+Answer
+
+No. Synchronization is necessary to avoid race conditions. The problem is coarse-grained synchronization, where the whole object is locked for every operation. This reduces concurrency and hurts performance.
+
+Enter Concurrent Collections (Java 5)
+
+Java introduced
+
+java.util.concurrent
+
+Examples
+
+ConcurrentHashMap
+
+CopyOnWriteArrayList
+
+CopyOnWriteArraySet
+
+ConcurrentLinkedQueue
+
+ConcurrentSkipListMap
+
+ConcurrentSkipListSet
+
+BlockingQueue
+
+These provide
+
+Better performance
+Better scalability
+Thread safety
+Why are Concurrent Collections Faster?
+
+Instead of locking the whole collection,
+
+they use smarter techniques like
+
+Fine-grained locking
+Lock striping (older ConcurrentHashMap implementations)
+CAS (Compare-And-Swap)
+Lock-free algorithms
+Copy-on-write (for specific collections)
+
+So multiple threads can work simultaneously depending on the collection.
+
+Example
+Vector
+Thread 1 ---> LOCK
+
+Thread 2 ---> Waiting
+
+Thread 3 ---> Waiting
+
+Only one thread.
+
+ConcurrentHashMap
+Thread 1 ---> Bucket 1
+
+Thread 2 ---> Bucket 8
+
+Thread 3 ---> Bucket 12
+
+Multiple threads can work at the same time on different parts of the map.
+
+Much faster.
+
+What is CopyOnWriteArrayList?
+
+Suppose
+
+CopyOnWriteArrayList<String> list
+        = new CopyOnWriteArrayList<>();
+
+Initially
+
+[A]
+[B]
+[C]
+
+Now
+
+list.add("D");
+
+Does it modify the original array?
+
+No.
+
+It creates a new array.
+
+Old
+
+A
+B
+C
+
+↓
+
+Copy
+
+A
+B
+C
+D
+
+Then it replaces the old array reference with the new one.
+
+Why?
+
+Readers don't need locking.
+
+Suppose
+
+100 Threads are reading
+
+Thread 1
+
+Thread 2
+
+Thread 3
+
+Thread 4
+
+They all read the same snapshot safely.
+
+No lock needed for reads.
+
+Interview Question
+Why is CopyOnWriteArrayList useful?
+
+Because
+
+Reads are extremely fast.
+Reads don't block each other.
+Iterators never throw ConcurrentModificationException.
+But what's the drawback?
+
+Every write operation
+
+add()
+
+remove()
+
+set()
+
+copies the entire array.
+
+If the array has
+
+10,00,000 Elements
+
+Adding one element copies all one million elements.
+
+Very expensive.
+
+When should we use CopyOnWriteArrayList?
+
+Use it when
+
+90% Reading
+
+10% Writing
+
+Examples
+
+Configuration data
+Cache of feature flags
+List of listeners
+Read-heavy applications
+When NOT to use it?
+
+Suppose
+
+1000 Writes/sec
+
+Terrible choice.
+
+Because every write copies the array.
+
+CopyOnWriteArraySet
+
+Internally uses
+
+CopyOnWriteArrayList
+
+Difference
+
+List
+
+↓
+
+Allows Duplicates
+Set
+
+↓
+
+No Duplicates
+ConcurrentHashMap
+
+Most asked interview question.
+
+Why not Hashtable?
+
+Hashtable
+
+Whole Table Lock
+
+One thread.
+
+ConcurrentHashMap
+
+Allows much greater concurrency than Hashtable by avoiding a single global lock.
+
+Modern implementations (Java 8+) use a combination of synchronized blocks on individual bins when needed and CAS operations for many updates.
+
+Multiple threads can often update different parts of the map simultaneously.
+
+Why ConcurrentHashMap doesn't allow null?
+
+Suppose
+
+map.get("Java");
+
+Returns
+
+null
+
+Question
+
+Did
+
+Key doesn't exist?
+
+OR
+
+Key exists
+
+↓
+
+Value is null?
+
+Impossible to distinguish safely in concurrent code.
+
+So Java simply disallows null keys and null values.
+
+Interview Question
+
+Why does HashMap allow null but ConcurrentHashMap doesn't?
+
+Answer
+
+Because in concurrent environments a returned null could mean either "the key is absent" or "the value is null". Disallowing null removes this ambiguity.
+
+ConcurrentLinkedQueue
+
+Thread-safe Queue
+
+No locks for normal operations.
+
+Uses CAS internally.
+
+Best for
+
+Producer
+
+↓
+
+Consumer
+
+applications.
+
+BlockingQueue
+
+Examples
+
+LinkedBlockingQueue
+
+ArrayBlockingQueue
+
+Producer
+
+↓
+
+Queue
+
+↓
+
+Consumer
+
+If queue becomes full
+
+Producer waits.
+
+If queue becomes empty
+
+Consumer waits.
+
+No need for manual synchronization.
+
+Why Stack is Legacy?
+
+Stack extends Vector.
+
+Object
+
+↓
+
+AbstractCollection
+
+↓
+
+AbstractList
+
+↓
+
+Vector
+
+↓
+
+Stack
+
+Since Vector synchronizes every method,
+
+Stack also synchronizes every method.
+
+Very slow.
+
+What should we use instead of Stack?
+
+Use
+
+Deque<Integer> stack = new ArrayDeque<>();
+
+Instead of
+
+Stack<Integer> stack = new Stack<>();
+Why ArrayDeque?
+Faster
+No unnecessary synchronization
+Better memory usage
+Recommended by Oracle
+Why Vector is Legacy?
+
+Because
+
+ArrayList
+
++
+
+Collections.synchronizedList()
+
++
+
+CopyOnWriteArrayList()
+
+provide better alternatives depending on the use case.
+
+If I Need Thread-Safe List?
+
+Options
+
+Collections.synchronizedList(new ArrayList<>());
+
+OR
+
+CopyOnWriteArrayList
+Difference
+synchronizedList()
+
+Every operation locks.
+
+Good when there are both reads and writes and you don't need extreme concurrency.
+
+CopyOnWriteArrayList
+
+Reads never lock.
+
+Writes copy entire array.
+
+Best for read-heavy applications.
+
+Interview Question
+
+Why not always use synchronizedList()?
+
+Because
+
+Every operation acquires a lock.
+Multiple readers block each other.
+Performance decreases under high concurrency.
+Which Collection Should I Use?
+Requirement	Best Choice
+Fast List	ArrayList
+Thread-safe List (moderate concurrency)	Collections.synchronizedList()
+Read-heavy Thread-safe List	CopyOnWriteArrayList
+Fast Map	HashMap
+Thread-safe Map	ConcurrentHashMap
+Legacy Thread-safe Map	Hashtable (avoid for new code)
+Fast Stack	ArrayDeque
+Legacy Stack	Stack (avoid for new code)
+Producer-Consumer	BlockingQueue
+Most Asked Interview Questions
+Q1. Why is Vector slower than ArrayList?
+
+Because every public method in Vector is synchronized, requiring lock acquisition and release even in single-threaded scenarios.
+
+Q2. Why doesn't everyone use Vector?
+
+It provides thread safety through coarse-grained synchronization, which reduces performance. In single-threaded applications it adds unnecessary overhead.
+
+Q3. Why were Concurrent Collections introduced?
+
+To provide thread-safe collections with better scalability and performance than legacy synchronized collections like Vector, Stack, and Hashtable.
+
+Q4. Why use CopyOnWriteArrayList instead of Vector?
+
+Because CopyOnWriteArrayList allows lock-free reads and is highly efficient for applications where reads greatly outnumber writes.
+
+Q5. Why use ConcurrentHashMap instead of Hashtable?
+
+Because ConcurrentHashMap allows much higher concurrency by avoiding a single global lock and using more fine-grained synchronization and CAS internally.
+
+Q6. Why use ArrayDeque instead of Stack?
+
+Because Stack extends the legacy Vector and synchronizes every operation. ArrayDeque is faster, more memory-efficient, and is the recommended stack implementation for single-threaded code

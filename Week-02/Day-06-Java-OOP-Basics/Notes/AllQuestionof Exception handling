@@ -1,0 +1,368 @@
+JAVA EXCEPTION HANDLING INTERVIEW QUESTIONS
+LEVEL 1 (Basics)
+1. What is an Exception?
+
+Answer
+
+An Exception is an event that occurs during program execution and disrupts the normal flow of the program. Java provides an exception handling mechanism to handle such situations gracefully without abruptly terminating the application.
+
+2. What is Exception Handling?
+
+Answer
+
+Exception Handling is the mechanism of detecting, handling, and recovering from runtime errors using the keywords try, catch, finally, throw, and throws.
+
+3. What is the difference between Error and Exception?
+Error	Exception
+Serious problem	Recoverable problem
+Cannot usually be handled	Can be handled
+JVM/System generated	Application or JVM generated
+Example: OutOfMemoryError	Example: IOException
+4. What is the hierarchy of Exceptions?
+Object
+   │
+Throwable
+ ├───────────────┐
+ │               │
+Error       Exception
+                 │
+         RuntimeException
+5. What is Throwable?
+
+Answer
+
+Throwable is the root class of Java's exception hierarchy. Both Exception and Error inherit from it.
+
+6. What is Checked Exception?
+
+Answer
+
+Checked exceptions are checked at compile time. The compiler forces the programmer to handle them using try-catch or throws.
+
+Examples
+
+IOException
+SQLException
+ClassNotFoundException
+7. What is Unchecked Exception?
+
+Answer
+
+Unchecked exceptions occur at runtime and are not checked by the compiler.
+
+Examples
+
+NullPointerException
+ArithmeticException
+ArrayIndexOutOfBoundsException
+8. What is Error?
+
+Examples
+
+StackOverflowError
+OutOfMemoryError
+VirtualMachineError
+9. Can we handle Errors?
+
+Answer
+
+Generally No.
+
+Errors indicate JVM/system failures.
+
+10. Difference between Checked and Unchecked Exception?
+Checked	Unchecked
+Compile-time	Runtime
+Must handle	Optional
+Exception	RuntimeException
+LEVEL 2 (Keywords)
+11. What is try block?
+
+Code that may throw an exception is placed inside the try block.
+
+12. What is catch block?
+
+Used to handle the exception thrown inside the try block.
+
+13. What is finally block?
+
+The finally block always executes whether an exception occurs or not. It is generally used for resource cleanup such as closing files, database connections, or network sockets.
+
+14. Will finally always execute?
+
+No.
+
+Cases where finally may not execute:
+
+JVM crashes
+System.exit()
+Power failure
+15. Can try exist without catch?
+
+Yes.
+
+Using finally.
+
+try{
+
+}
+finally{
+
+}
+16. Can try exist without finally?
+
+Yes.
+
+try{
+
+}
+catch(Exception e){
+
+}
+17. Can catch exist without try?
+
+No.
+
+18. Can finally exist without try?
+
+No.
+
+19. Can we write multiple catch blocks?
+
+Yes.
+
+20. Can we write multiple finally blocks?
+
+No.
+
+LEVEL 3 (throw vs throws)
+21. What is throw?
+
+Used to explicitly throw an exception object.
+
+throw new ArithmeticException();
+22. What is throws?
+
+Declares that a method may throw one or more exceptions and shifts the responsibility of handling them to the caller.
+
+23. Difference between throw and throws?
+throw	throws
+Used inside method	Used in method declaration
+Throws one exception	Declares multiple exceptions
+Creates exception object	Doesn't create object
+24. Can we throw Checked Exception?
+
+Yes.
+
+25. Can we throw Unchecked Exception?
+
+Yes.
+
+LEVEL 4 (Method Overriding)
+26. Exception Rules in Method Overriding
+Child cannot throw broader checked exception.
+Child can throw same checked exception.
+Child can throw subclass of checked exception.
+Child can throw any RuntimeException.
+27. Can overridden method throw more exceptions?
+
+No.
+
+28. Can child remove exception?
+
+Yes.
+
+LEVEL 5 (Custom Exception)
+29. How do you create Custom Exception?
+class InvalidAgeException extends Exception{
+
+    public InvalidAgeException(String message){
+
+        super(message);
+    }
+}
+30. Why create Custom Exceptions?
+
+To represent business-specific errors with meaningful names and messages, making code easier to understand and maintain.
+
+LEVEL 6 (finally)
+31. What if return is inside try?
+try{
+   return 10;
+}
+finally{
+   System.out.println("Finally");
+}
+
+Output
+
+Finally
+
+Return happens after finally.
+
+32. What if finally also returns?
+try{
+   return 10;
+}
+finally{
+   return 20;
+}
+
+Output
+
+20
+
+Finally overrides try's return.
+
+33. Why is return in finally discouraged?
+
+Because it suppresses exceptions and return values.
+
+LEVEL 7 (Advanced)
+34. What is Stack Trace?
+
+Sequence of method calls leading to an exception.
+
+35. Difference between printStackTrace(), getMessage(), toString()
+Method	Output
+getMessage()	Exception message only
+toString()	Exception class + message
+printStackTrace()	Complete stack trace
+36. What is Exception Propagation?
+
+When an exception is not handled in a method, it propagates up the call stack until it is handled or reaches the JVM.
+
+37. What is Chained Exception?
+throw new IOException("IO Error", e);
+
+Keeps original exception as cause.
+
+38. What is try-with-resources?
+try(FileInputStream fis = new FileInputStream("abc.txt")){
+
+}
+
+Automatically closes resources.
+
+39. Which interface supports try-with-resources?
+
+AutoCloseable
+
+40. Difference between AutoCloseable and Closeable?
+AutoCloseable	Closeable
+Java 7	Java 5
+throws Exception	throws IOException
+LEVEL 8 (Runtime Questions)
+41. Which exception occurs when dividing by zero?
+ArithmeticException
+42. Accessing invalid array index?
+ArrayIndexOutOfBoundsException
+43. Calling method on null?
+NullPointerException
+44. Invalid type casting?
+ClassCastException
+45. Parsing invalid number?
+NumberFormatException
+46. File not found?
+FileNotFoundException
+47. Loading unavailable class?
+ClassNotFoundException
+48. Invalid thread operation?
+IllegalThreadStateException
+49. String index invalid?
+StringIndexOutOfBoundsException
+50. Collection modified while iterating?
+ConcurrentModificationException
+LEVEL 9 (Java 7/8+)
+51. Can we catch multiple exceptions?
+catch(IOException | SQLException e)
+
+Yes.
+
+52. Why is exception variable final in multi-catch?
+
+To prevent reassignment.
+
+53. What is suppressed exception?
+
+Occurs in try-with-resources when both the main operation and resource closing throw exceptions. The close exception is stored as a suppressed exception.
+
+LEVEL 10 (Spring Boot)
+54. How does Spring Boot handle exceptions globally?
+
+Using
+
+@ControllerAdvice
+
+and
+
+@ExceptionHandler
+55. Why use Global Exception Handler?
+
+To avoid duplicate try-catch blocks and centralize error handling.
+
+56. Difference between @ControllerAdvice and @RestControllerAdvice?
+@ControllerAdvice works with MVC controllers.
+@RestControllerAdvice is equivalent to @ControllerAdvice + @ResponseBody, making it suitable for REST APIs.
+LEVEL 11 (Tricky)
+57. Can constructor throw exception?
+
+Yes.
+
+58. Can static block throw checked exception?
+
+No.
+
+59. Can main throw exception?
+
+Yes.
+
+public static void main(String[] args) throws Exception
+60. Can finally throw exception?
+
+Yes.
+
+61. Can catch throw another exception?
+
+Yes.
+
+62. Can we rethrow exception?
+
+Yes.
+
+catch(Exception e){
+
+    throw e;
+}
+63. Can abstract method throw exception?
+
+Yes.
+
+64. Can interface method throw exception?
+
+Yes.
+
+65. Can lambda throw checked exception?
+
+Only if the functional interface's abstract method declares it.
+
+FAANG / Product-Based Questions
+66. Why is Exception immutable?
+
+To preserve consistent error information once created.
+
+67. Why does Java separate Error and Exception?
+
+Errors represent unrecoverable JVM/system failures, while Exceptions represent conditions applications can often handle and recover from.
+
+68. Why does Java have Checked Exceptions?
+
+To force developers to acknowledge and handle recoverable conditions such as file I/O or database access.
+
+69. Why is RuntimeException unchecked?
+
+Because these exceptions usually indicate programming bugs (like NullPointerException or ArrayIndexOutOfBoundsException) that should be fixed rather than forced into try-catch blocks.
+
+70. Why shouldn't we catch Exception everywhere?
+
+Because it hides the real cause of failures, can swallow important exceptions, and makes debugging harder. Catch the most specific exception you can reasonably handle

@@ -15,8 +15,7 @@ tries to optimize the code
 
 .class--->class loader--->Byte verification--->interpreter
 
-If in my .class file there has multiple repeated lines then jit inform to interpreter
-and did not do repeated interpretation
+If in my .class file there has multiple repeated lines then jit inform to interpreter and did not do repeated interpretation
  
 Interpreter executes first
         ↓

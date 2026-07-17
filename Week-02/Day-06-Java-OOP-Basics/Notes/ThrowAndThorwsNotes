@@ -1,0 +1,548 @@
+1. What is throw?
+
+throw is a keyword used to explicitly throw an exception.
+
+Syntax:
+
+throw new ExceptionType("Message");
+
+Example:
+
+public class Demo {
+
+    public static void main(String[] args) {
+
+        throw new ArithmeticException("Number cannot be zero");
+    }
+}
+
+Output
+
+Exception in thread "main"
+java.lang.ArithmeticException: Number cannot be zero
+2. What is throws?
+
+throws is used in the method declaration to tell the caller that this method may throw one or more exceptions.
+
+Example
+
+import java.io.*;
+
+class Demo {
+
+    static void readFile() throws IOException {
+
+        FileReader fr = new FileReader("abc.txt");
+    }
+
+    public static void main(String[] args) {
+
+    }
+}
+3. Difference between throw and throws
+throw	throws
+Keyword	Keyword
+Used inside method	Used in method declaration
+Throws one exception object	Declares one or more exception types
+Requires new keyword	Doesn't require new
+Transfers control immediately	Only informs the caller
+
+Example
+
+throw new IOException();
+void display() throws IOException {
+
+}
+4. Can we throw Checked Exception?
+
+Yes.
+
+import java.io.IOException;
+
+class Demo {
+
+    static void display() throws IOException {
+
+        throw new IOException("File Missing");
+    }
+}
+5. Can we throw Unchecked Exception?
+
+Yes.
+
+throw new NullPointerException();
+6. Can we throw Error?
+
+Yes.
+
+Although generally not recommended.
+
+throw new StackOverflowError();
+7. Can we throw Throwable?
+
+Yes.
+
+throw new Throwable();
+
+But almost never done in real projects.
+
+8. Can we throw Object?
+
+No.
+
+throw new Object();
+
+Compile-time Error
+
+Reason:
+
+Only subclasses of Throwable can be thrown.
+
+Hierarchy
+
+Object
+   │
+Throwable
+ ├── Exception
+ └── Error
+9. Can we throw String?
+
+No.
+
+throw "Error";
+
+Compile-time Error.
+
+Unlike Python or JavaScript.
+
+10. Can we throw null?
+
+Yes.
+
+throw null;
+
+Output
+
+Exception in thread "main"
+java.lang.NullPointerException
+
+The JVM tries to throw a Throwable, but the reference is null.
+
+11. Can one method throw multiple exceptions?
+
+Yes.
+
+void display() throws IOException, SQLException {
+
+}
+12. Can throw throw multiple exceptions at once?
+
+No.
+
+Wrong
+
+throw new IOException(), new SQLException();
+
+One throw statement can throw only one exception object.
+
+13. Can we write multiple throws?
+
+No.
+
+Wrong
+
+void display() throws IOException throws SQLException {
+
+}
+
+Correct
+
+void display() throws IOException, SQLException {
+
+}
+14. Can constructor use throws?
+
+Yes.
+
+class Demo {
+
+    Demo() throws IOException {
+
+    }
+}
+15. Can constructor throw exception?
+
+Yes.
+
+class Demo {
+
+    Demo() {
+
+        throw new RuntimeException();
+    }
+}
+16. Can static method use throws?
+
+Yes.
+
+static void display() throws IOException {
+
+}
+17. Can main method use throws?
+
+Yes.
+
+public static void main(String[] args) throws Exception {
+
+}
+18. Why does main method often declare throws Exception?
+
+Instead of handling every checked exception, it lets the JVM receive any uncaught exception and terminate the program with a stack trace. This is common in small demos but less common in production applications.
+
+19. Can we throw checked exception without throws?
+
+No.
+
+void display() {
+
+    throw new IOException();
+}
+
+Compile-time Error
+
+Reason:
+
+Checked exceptions must either be:
+
+caught
+or declared using throws
+20. Can unchecked exception be thrown without throws?
+
+Yes.
+
+void display() {
+
+    throw new ArithmeticException();
+}
+
+Perfectly valid.
+
+21. Is throws mandatory?
+
+Only for checked exceptions.
+
+22. Is throw mandatory?
+
+No.
+
+It is used only when you want to explicitly raise an exception.
+
+23. Can throws be used with RuntimeException?
+
+Yes.
+
+void display() throws ArithmeticException {
+
+}
+
+Valid, but unnecessary because runtime exceptions don't need to be declared.
+
+24. Can overriding method throw broader checked exception?
+
+No.
+
+class Parent {
+
+    void display() throws IOException {
+
+    }
+}
+
+class Child extends Parent {
+
+    void display() throws Exception {
+
+    }
+}
+
+Compile-time Error.
+
+Reason:
+
+A child cannot widen the checked exceptions declared by the parent method.
+
+25. Can child throw smaller checked exception?
+
+Yes.
+
+class Parent {
+
+    void display() throws Exception {
+
+    }
+}
+
+class Child extends Parent {
+
+    void display() throws IOException {
+
+    }
+}
+
+Valid.
+
+26. Can child throw RuntimeException?
+
+Yes.
+
+class Parent {
+
+    void display() {
+
+    }
+}
+
+class Child extends Parent {
+
+    void display() throws ArithmeticException {
+
+    }
+}
+
+Valid.
+
+Runtime exceptions are unrestricted in overriding.
+
+27. Can overriding method remove throws?
+
+Yes.
+
+class Parent {
+
+    void display() throws IOException {
+
+    }
+}
+
+class Child extends Parent {
+
+    void display() {
+
+    }
+}
+
+Valid.
+
+The child can declare fewer or no checked exceptions.
+
+28. Can interface method use throws?
+
+Yes.
+
+interface Demo {
+
+    void display() throws IOException;
+}
+29. Can implementing class remove throws?
+
+Yes.
+
+interface Demo {
+
+    void display() throws IOException;
+}
+
+class Test implements Demo {
+
+    public void display() {
+
+    }
+}
+
+Valid.
+
+30. Can implementing class throw broader checked exception?
+
+No.
+
+interface Demo {
+
+    void display() throws IOException;
+}
+
+class Test implements Demo {
+
+    public void display() throws Exception {
+
+    }
+}
+
+Compile-time Error.
+
+31. Can abstract method use throws?
+
+Yes.
+
+abstract void display() throws IOException;
+32. Can lambda expression throw checked exception?
+
+Only if the functional interface method declares it.
+
+Example:
+
+@FunctionalInterface
+interface Reader {
+    void read() throws IOException;
+}
+
+Reader r = () -> {
+    throw new IOException("Read failed");
+};
+33. Can we throw custom exception?
+
+Yes.
+
+class InvalidAgeException extends Exception {
+
+    InvalidAgeException(String msg) {
+        super(msg);
+    }
+}
+
+Use
+
+throw new InvalidAgeException("Age must be 18+");
+34. Why do we create custom exceptions?
+
+To represent business-specific errors instead of generic exceptions.
+
+Examples:
+
+InvalidAgeException
+InsufficientBalanceException
+UserNotFoundException
+ProductOutOfStockException
+35. What happens after throw?
+
+Execution stops at that point in the current method.
+
+Example
+
+System.out.println("A");
+
+throw new RuntimeException();
+
+System.out.println("B");
+
+Output
+
+A
+
+B is never printed.
+
+36. Can we write code after throw?
+throw new RuntimeException();
+
+System.out.println("Hello");
+
+Compile-time Error
+
+Unreachable statement
+37. Can throw be inside catch?
+
+Yes.
+
+try {
+
+}
+catch(Exception e){
+
+    throw e;
+}
+
+This is called rethrowing the exception.
+
+38. Can throw be inside finally?
+
+Yes.
+
+finally {
+
+    throw new RuntimeException();
+}
+
+Be careful: if finally throws an exception, it replaces any exception already being propagated.
+
+39. Can throws be used with final method?
+
+Yes.
+
+final void display() throws IOException {
+
+}
+
+final and throws are unrelated.
+
+40. Can synchronized method use throws?
+
+Yes.
+
+synchronized void display() throws IOException {
+
+}
+41. Can private method use throws?
+
+Yes.
+
+private void display() throws IOException {
+
+}
+42. Can recursive method use throws?
+
+Yes.
+
+void fun() throws IOException {
+
+    fun();
+}
+43. Can generic method use throws?
+
+Yes.
+
+<T> void display() throws IOException {
+
+}
+44. What is exception propagation?
+
+If a method doesn't handle an exception, it passes it to its caller.
+
+Example:
+
+void c() throws IOException {
+    throw new IOException();
+}
+
+void b() throws IOException {
+    c();
+}
+
+void a() throws IOException {
+    b();
+}
+
+The exception propagates from c() → b() → a() → caller.
+
+45. Real-world Spring Boot example
+public UserDto getUser(int id) {
+
+    User user = userRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException(
+                    "User not found with id " + id));
+
+    return modelMapper.map(user, UserDto.class);
+}
+
+Here:
+
+orElseThrow() uses throw internally to create and throw an exception.
+throws is not required because ResourceNotFoundException usually extends RuntimeException (an unchecked exception).
