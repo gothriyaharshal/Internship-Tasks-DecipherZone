@@ -1,0 +1,491 @@
+📚 Spring JDBC Complete Learning Roadmap
+
+We'll learn it in the same way we learned JDBC—from basic to advanced.
+
+Module 1: Introduction
+What is Spring JDBC?
+Why do we need Spring JDBC?
+Problems with plain JDBC
+Advantages of Spring JDBC
+Architecture of Spring JDBC
+Spring JDBC Flow
+Required Maven Dependencies
+Module 2: JdbcTemplate
+What is JdbcTemplate?
+How it works internally
+Configuring DataSource
+Creating a JdbcTemplate bean
+Methods of JdbcTemplate
+Difference between JdbcTemplate and JDBC
+Module 3: CRUD using JdbcTemplate
+
+We'll build a complete Student Management project.
+
+Database
+Student
+--------------------------
+id
+name
+age
+course
+email
+
+Then we'll implement:
+
+1. Insert
+studentDao.save(student);
+2. Read All
+studentDao.findAll();
+3. Read By Id
+studentDao.findById(1);
+4. Update
+studentDao.update(student);
+5. Delete
+studentDao.delete(1);
+
+I'll explain every line:
+
+DAO
+Repository
+Service
+Controller
+Bean creation
+SQL execution
+How JdbcTemplate internally works
+Module 4: RowMapper ⭐⭐⭐⭐⭐
+
+This is one of the most important Spring JDBC topics.
+
+We'll cover:
+
+What is RowMapper?
+Why do we need it?
+How it converts a database row into a Java object
+Internal working
+Anonymous class implementation
+Lambda implementation
+Separate RowMapper class
+Custom RowMapper
+
+Example:
+
+public class StudentRowMapper implements RowMapper<Student>
+
+We'll also understand how Spring internally calls:
+
+mapRow(ResultSet rs, int rowNum)
+
+and how each row becomes a Student object.
+
+Module 5: NamedParameterJdbcTemplate ⭐⭐⭐⭐⭐
+
+We'll learn:
+
+Why NamedParameterJdbcTemplate was introduced
+Difference between ? placeholders and named parameters
+Advantages
+Internal working
+
+Example:
+
+Instead of
+
+SELECT * FROM student
+WHERE id=?
+AND name=?
+
+we'll write
+
+SELECT * FROM student
+WHERE id=:id
+AND name=:name
+
+Then learn:
+
+MapSqlParameterSource
+BeanPropertySqlParameterSource
+Map<String,Object>
+
+We'll perform complete CRUD using NamedParameterJdbcTemplate.
+
+Module 6: Batch Update
+Insert 1000 students
+Batch Update
+Batch Delete
+Performance benefits
+Internal working
+Module 7: Transactions
+What is a transaction?
+ACID properties
+@Transactional
+Rollback
+Commit
+Nested transactions
+Module 8: Exception Handling
+Spring JDBC Exceptions
+DataAccessException
+Why Spring wraps SQL exceptions
+Exception hierarchy
+Module 9: Generated Keys
+
+Example:
+
+INSERT...
+
+Return generated ID using:
+
+GeneratedKeyHolder
+Module 10: Advanced JdbcTemplate
+
+Methods:
+
+query()
+queryForObject()
+queryForList()
+queryForMap()
+queryForRowSet()
+update()
+execute()
+
+We'll understand where and why each method is used.
+
+Module 11: Project
+
+Complete Employee Management System.
+
+Spring Boot
+Spring JDBC
+MySQL
+CRUD
+Validation
+Exception Handling
+Layered Architecture
+Module 12: Interview Questions
+
+We'll cover:
+
+Why JdbcTemplate?
+How does JdbcTemplate work internally?
+Why RowMapper?
+Difference between ResultSetExtractor and RowMapper
+Difference between RowMapper and BeanPropertyRowMapper
+Why NamedParameterJdbcTemplate?
+Difference between JdbcTemplate and NamedParameterJdbcTemplate
+Batch Update
+Transaction Management
+Common interview scenarios
+My Teaching Style
+
+Just like our Java I/O series, I won't simply give you code. For each topic, we'll cover:
+
+Why this feature exists.
+The problem it solves.
+Its internal working (step by step).
+Real-world usage.
+Complete code examples.
+Interview questions.
+Common mistakes.
+Mini exercises to practice.
+We'll start with this order:
+Spring JDBC Introduction
+Project Setup
+JdbcTemplate
+CRUD with JdbcTemplate
+RowMapper (in depth)
+NamedParameterJdbcTemplate (in depth)
+Batch Updates
+Transactions
+Complete Project
+Interview Preparation
+
+By the end, you'll not only know how to write Spring JDBC code, but also why Spring designed these classes and what happens internally when you call methods like update(), query(), or queryForObject(). That level of understanding is what interviewers often look for.
+
+
+<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+jdbc have repetative code and ...more bioplater code like load driver then set up connection then perfrom query but in spring jdbc it internally using jdbc but 
+it remove bioplater code and make code small and easy
+
+Project Structure
+SpringJdbcCRUD
+│
+├── src/main/java
+│   ├── config
+│   │      AppConfig.java
+│   │
+│   ├── entity
+│   │      Student.java
+│   │
+│   ├── dao
+│   │      StudentDao.java
+│   │      StudentDaoImpl.java
+│   │
+│   └── Main.java
+│
+└── pom.xml
+
+
+pom.xml>>>>
+
+<dependencies>
+
+    <!-- Spring Core -->
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>6.2.7</version>
+    </dependency>
+
+    <!-- Spring JDBC -->
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jdbc</artifactId>
+        <version>6.2.7</version>
+    </dependency>
+
+    <!-- MySQL Driver -->
+    <dependency>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
+        <version>9.3.0</version>
+    </dependency>
+
+</dependencies>
+
+  
+>>>>>Create table in database with any name or student name
+
+public class Student {
+
+    private int id;
+    private String name;
+    private int age;
+    private String course;
+
+>>Makes an Pojo class 
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Step 4: AppConfig
+package config;
+
+import javax.sql.DataSource;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public DataSource dataSource() {
+
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+
+        ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
+
+        ds.setUrl("jdbc:mysql://localhost:3306/springjdbc");
+
+        ds.setUsername("root");
+
+        ds.setPassword("root");
+
+        return ds;
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate() {
+
+        return new JdbcTemplate(dataSource());
+
+    }
+
+}
+
+
+
+Step 5: DAO Interface
+package dao;
+
+import entity.Student;
+
+import java.util.List;
+
+public interface StudentDao {
+
+    int insert(Student student);
+
+    int update(Student student);
+
+    int delete(int id);
+
+    Student getStudent(int id);
+
+    List<Student> getAllStudents();
+
+}
+Step 6: DAO Implementation
+package dao;
+
+import config.AppConfig;
+import entity.Student;
+
+import java.util.List;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+
+public class StudentDaoImpl implements StudentDao {
+
+    AnnotationConfigApplicationContext context =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+
+    JdbcTemplate jdbcTemplate = context.getBean(JdbcTemplate.class);
+
+    // INSERT
+    @Override
+    public int insert(Student student) {
+
+        String sql =
+                "insert into student values(?,?,?,?)";
+
+        return jdbcTemplate.update(
+                sql,
+                student.getId(),
+                student.getName(),
+                student.getAge(),
+                student.getCourse()
+        );
+
+    }
+
+    // UPDATE
+    @Override
+    public int update(Student student) {
+
+        String sql =
+                "update student set name=?,age=?,course=? where id=?";
+
+        return jdbcTemplate.update(
+                sql,
+                student.getName(),
+                student.getAge(),
+                student.getCourse(),
+                student.getId()
+        );
+
+    }
+
+    // DELETE
+    @Override
+    public int delete(int id) {
+
+        String sql =
+                "delete from student where id=?";
+
+        return jdbcTemplate.update(sql,id);
+
+    }
+
+    // SELECT ONE
+    @Override
+    public Student getStudent(int id) {
+
+        String sql =
+                "select * from student where id=?";
+
+        return jdbcTemplate.queryForObject(
+                sql,
+                new BeanPropertyRowMapper<>(Student.class),
+                id
+        );
+
+    }
+
+    // SELECT ALL
+    @Override
+    public List<Student> getAllStudents() {
+
+        String sql =
+                "select * from student";
+
+        return jdbcTemplate.query(
+                sql,
+                new BeanPropertyRowMapper<>(Student.class)
+        );
+
+    }
+
+}
+Step 7: Main Class
+import dao.StudentDao;
+
+import dao.StudentDaoImpl;
+
+import entity.Student;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        StudentDao dao = new StudentDaoImpl();
+
+        // INSERT
+
+        Student s =
+                new Student(101,"Harshal",22,"Java");
+
+        System.out.println(dao.insert(s));
+
+
+
+        // UPDATE
+
+        s.setCourse("Spring Boot");
+
+        System.out.println(dao.update(s));
+
+
+
+        // GET ONE
+
+        System.out.println(dao.getStudent(101));
+
+
+
+        // GET ALL
+
+        dao.getAllStudents()
+                .forEach(System.out::println);
+
+
+
+        // DELETE
+
+        System.out.println(dao.delete(101));
+
+    }
+
+}
+Output
+1
+
+1
+
+101 Harshal 22 Spring Boot
+
+101 Harshal 22 Spring Boot
+
+1
+
+
+Q: Why do we pass Student.class to BeanPropertyRowMapper?
+
+Answer: BeanPropertyRowMapper uses Student.class to create a Student object using reflection. It then matches database column names (like id, name, age, course) with the corresponding setter methods (setId(), setName(), etc.) and populates the object automatically.

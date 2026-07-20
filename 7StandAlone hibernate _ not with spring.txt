@@ -1,0 +1,577 @@
+
+
+
+
+Claim offer
+i want all crud operation on standalone hibernate
+
+Perfect. If you understand Standalone Hibernate CRUD deeply, then Spring ORM, Spring Data JPA, and Spring Boot JPA become much easier because they all build on Hibernate.
+
+Complete Roadmap of Standalone Hibernate CRUD
+Java Application
+      │
+      ▼
+Entity Class
+      │
+      ▼
+hibernate.cfg.xml
+      │
+      ▼
+SessionFactory
+      │
+      ▼
+Session
+      │
+      ▼
+Transaction
+      │
+      ▼
+CRUD Operation
+      │
+      ▼
+Database
+Project Structure
+HibernateCRUD/
+
+src
+│
+├── entity
+│      User.java
+│
+├── util
+│      HibernateUtil.java
+│
+├── dao
+│      UserDao.java
+│
+├── Main.java
+│
+resources
+│
+└── hibernate.cfg.xml
+Step 1 Create Maven Project
+pom.xml
+<dependencies>
+
+    <!-- Hibernate -->
+    <dependency>
+        <groupId>org.hibernate.orm</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>6.4.4.Final</version>
+    </dependency>
+
+    <!-- MySQL Driver -->
+    <dependency>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
+        <version>8.3.0</version>
+    </dependency>
+
+    <!-- JPA Annotation -->
+    <dependency>
+        <groupId>jakarta.persistence</groupId>
+        <artifactId>jakarta.persistence-api</artifactId>
+        <version>3.1.0</version>
+    </dependency>
+
+</dependencies>
+Step 2 Create Database
+create database hibernate_db;
+Step 3 Entity Class
+package entity;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="users")
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name="name")
+    private String name;
+
+    @Column(name="email")
+    private String email;
+
+    @Column(name="city")
+    private String city;
+
+    public User() {
+    }
+
+    public User(String name, String email, String city) {
+        this.name = name;
+        this.email = email;
+        this.city = city;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id=id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name){
+        this.name=name;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
+    public void setEmail(String email){
+        this.email=email;
+    }
+
+    public String getCity(){
+        return city;
+    }
+
+    public void setCity(String city){
+        this.city=city;
+    }
+
+}
+Step 4 Hibernate Configuration
+resources
+
+hibernate.cfg.xml
+
+<?xml version='1.0' encoding='utf-8'?>
+
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+<session-factory>
+
+<property name="hibernate.connection.driver_class">
+com.mysql.cj.jdbc.Driver
+</property>
+
+<property name="hibernate.connection.url">
+jdbc:mysql://localhost:3306/hibernate_db
+</property>
+
+<property name="hibernate.connection.username">
+root
+</property>
+
+<property name="hibernate.connection.password">
+root
+</property>
+
+<property name="hibernate.dialect">
+org.hibernate.dialect.MySQLDialect
+</property>
+
+<property name="hibernate.hbm2ddl.auto">
+update
+</property>
+
+<property name="hibernate.show_sql">
+true
+</property>
+
+<mapping class="entity.User"/>
+
+</session-factory>
+
+</hibernate-configuration>
+Step 5 Hibernate Utility
+package util;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+public class HibernateUtil {
+
+    private static SessionFactory sessionFactory;
+
+    static {
+
+        sessionFactory = new Configuration()
+                .configure("hibernate.cfg.xml")
+                .buildSessionFactory();
+
+    }
+
+    public static SessionFactory getSessionFactory(){
+
+        return sessionFactory;
+    }
+
+}
+Internal Flow
+Application Starts
+
+↓
+
+Configuration Reads
+
+hibernate.cfg.xml
+
+↓
+
+Connection Created
+
+↓
+
+SessionFactory Created
+
+↓
+
+Stored in JVM Memory
+
+↓
+
+Ready for CRUD
+SessionFactory is created only once because it is expensive to build.
+
+Step 6 DAO Class
+package dao;
+
+import entity.User;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import util.HibernateUtil;
+
+public class UserDao {
+
+}
+INSERT Operation
+public void saveUser(User user){
+
+    Session session =
+            HibernateUtil.getSessionFactory().openSession();
+
+    Transaction tx = session.beginTransaction();
+
+    session.persist(user);
+
+    tx.commit();
+
+    session.close();
+
+}
+Internal Flow
+openSession()
+
+↓
+
+Connection Taken
+
+↓
+
+beginTransaction()
+
+↓
+
+persist()
+
+↓
+
+Hibernate Creates SQL
+
+↓
+
+INSERT INTO users...
+
+↓
+
+commit()
+
+↓
+
+Database Commit
+
+↓
+
+close()
+Main
+public class Main {
+
+    public static void main(String[] args) {
+
+        UserDao dao = new UserDao();
+
+        User user = new User(
+                "Harshal",
+                "harshal@gmail.com",
+                "Jaipur");
+
+        dao.saveUser(user);
+
+    }
+
+}
+Generated SQL
+
+insert into users(name,email,city)
+values(?,?,?)
+READ BY ID
+public User getUser(int id){
+
+    Session session =
+            HibernateUtil.getSessionFactory().openSession();
+
+    User user = session.get(User.class,id);
+
+    session.close();
+
+    return user;
+
+}
+Main
+
+User user = dao.getUser(1);
+
+System.out.println(user.getName());
+System.out.println(user.getEmail());
+Generated SQL
+
+select *
+from users
+where id=1;
+READ ALL
+public List<User> getAllUsers(){
+
+    Session session =
+            HibernateUtil.getSessionFactory().openSession();
+
+    List<User> users =
+            session.createQuery("from User",User.class)
+                    .list();
+
+    session.close();
+
+    return users;
+
+}
+Main
+
+List<User> users = dao.getAllUsers();
+
+for(User u : users){
+
+    System.out.println(u.getId());
+    System.out.println(u.getName());
+    System.out.println(u.getEmail());
+
+}
+Generated SQL
+
+select *
+from users;
+UPDATE
+public void updateUser(int id){
+
+    Session session =
+            HibernateUtil.getSessionFactory().openSession();
+
+    Transaction tx =
+            session.beginTransaction();
+
+    User user =
+            session.get(User.class,id);
+
+    user.setCity("Delhi");
+
+    tx.commit();
+
+    session.close();
+
+}
+Notice that there is no explicit session.update(user) here. Since the entity was loaded in the same session, it is in the persistent state. Hibernate's dirty checking detects that city changed and automatically issues an UPDATE when the transaction commits.
+
+Generated SQL
+
+update users
+set city=?
+where id=?;
+DELETE
+public void deleteUser(int id){
+
+    Session session =
+            HibernateUtil.getSessionFactory().openSession();
+
+    Transaction tx =
+            session.beginTransaction();
+
+    User user =
+            session.get(User.class,id);
+
+    session.remove(user);
+
+    tx.commit();
+
+    session.close();
+
+}
+Generated SQL
+
+delete from users
+where id=?;
+Complete Lifecycle
+Application
+
+↓
+
+SessionFactory
+
+↓
+
+Session
+
+↓
+
+Transaction
+
+↓
+
+Entity Object
+
+↓
+
+persist()
+
+↓
+
+Database Row
+
+↓
+
+commit()
+
+↓
+
+close()
+CRUD Flow Diagram
+Main
+
+↓
+
+UserDao
+
+↓
+
+SessionFactory
+
+↓
+
+Session
+
+↓
+
+Transaction
+
+↓
+
+Hibernate Engine
+
+↓
+
+SQL Generation
+
+↓
+
+MySQL
+
+↓
+
+Result Returned
+
+↓
+
+Session Closed
+Why Transaction Is Needed
+For operations that modify data (INSERT, UPDATE, DELETE), Hibernate requires a transaction.
+
+Transaction tx = session.beginTransaction();
+
+...
+
+tx.commit();
+Without committing:
+
+persist()
+
+↓
+
+SQL prepared
+
+↓
+
+No Commit
+
+↓
+
+Nothing saved
+For simple reads (SELECT), you can often omit a transaction in standalone Hibernate, although many applications still use one for consistency.
+
+Entity States (Very Important)
+Hibernate manages entity objects through different states:
+
+new User()
+⬇
+
+Transient
+
+(Not associated with Hibernate)
+
+⬇ persist()
+
+Persistent
+
+(Managed by the current Session)
+
+⬇ session.close()
+
+Detached
+
+(No longer managed)
+
+⬇ remove()
+
+Removed
+
+(Marked for deletion and deleted on commit)
+
+Methods You Should Know
+Method	Purpose
+persist()	Save a new entity
+get()	Fetch by primary key immediately
+find()	JPA equivalent of get()
+merge()	Copy state from a detached entity into a managed entity
+remove()	Delete an entity
+createQuery()	HQL query
+createNativeQuery()	Native SQL
+beginTransaction()	Start transaction
+commit()	Save changes
+rollback()	Undo changes if an error occurs
+close()	Release session resources
+What comes next?
+Once you're comfortable with this standalone Hibernate CRUD, the progression is:
+
+Hibernate (Standalone) – You manually create the SessionFactory, Session, and transactions.
+
+Spring ORM + Hibernate – Spring manages the SessionFactory and transactions (@Transactional) for you.
+
+Spring Data JPA (without Spring Boot) – You use repositories like JpaRepository instead of writing most DAO code yourself.
+
+Spring Boot + Spring Data JPA – Spring Boot auto-configures Hibernate, the datasource, and repositories, so you write the least amount of configuration.
+
+Understanding the standalone version first makes it much easier to appreciate what Spring is automating behind the scenes.
+
+

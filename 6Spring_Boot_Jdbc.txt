@@ -1,0 +1,422 @@
+Project Structure
+StudentManagement
+│
+├── controller
+│      StudentController.java
+│
+├── service
+│      StudentService.java
+│      StudentServiceImpl.java
+│
+├── repository
+│      StudentRepository.java
+│      StudentRepositoryImpl.java
+│
+├── model
+│      Student.java
+│
+├── SpringJdbcApplication.java
+│
+└── application.properties
+Step 1: MySQL Table
+CREATE DATABASE springjdbc;
+
+USE springjdbc;
+
+CREATE TABLE student(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    course VARCHAR(100),
+    marks DOUBLE
+);
+Step 2: application.properties
+spring.datasource.url=jdbc:mysql://localhost:3306/springjdbc
+spring.datasource.username=root
+spring.datasource.password=your_password
+
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+Step 3: pom.xml Dependencies
+<dependencies>
+
+    <!-- Spring Web -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <!-- Spring JDBC -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-jdbc</artifactId>
+    </dependency>
+
+    <!-- MySQL -->
+    <dependency>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
+    </dependency>
+
+</dependencies>
+Step 4: Model
+public class Student {
+
+    private int id;
+    private String name;
+    private String email;
+    private String course;
+    private double marks;
+
+    public Student() {
+    }
+
+    public Student(int id, String name, String email,
+                   String course, double marks) {
+
+        this.id=id;
+        this.name=name;
+        this.email=email;
+        this.course=course;
+        this.marks=marks;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id=id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name=name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email=email;
+    }
+
+    public String getCourse() {
+        return course;
+    }
+
+    public void setCourse(String course) {
+        this.course=course;
+    }
+
+    public double getMarks() {
+        return marks;
+    }
+
+    public void setMarks(double marks) {
+        this.marks=marks;
+    }
+
+}
+Step 5: Repository Interface
+import java.util.List;
+
+public interface StudentRepository {
+
+    int save(Student student);
+
+    int update(Student student);
+
+    int delete(int id);
+
+    Student getStudent(int id);
+
+    List<Student> getAllStudents();
+
+}
+Step 6: Repository Implementation
+@Repository
+public class StudentRepositoryImpl
+        implements StudentRepository {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    // INSERT
+    @Override
+    public int save(Student student) {
+
+        String sql =
+        "insert into student(name,email,course,marks) values(?,?,?,?)";
+
+        return jdbcTemplate.update(
+                sql,
+                student.getName(),
+                student.getEmail(),
+                student.getCourse(),
+                student.getMarks()
+        );
+    }
+
+    // UPDATE
+    @Override
+    public int update(Student student) {
+
+        String sql =
+        "update student set name=?,email=?,course=?,marks=? where id=?";
+
+        return jdbcTemplate.update(
+                sql,
+                student.getName(),
+                student.getEmail(),
+                student.getCourse(),
+                student.getMarks(),
+                student.getId()
+        );
+    }
+
+    // DELETE
+    @Override
+    public int delete(int id) {
+
+        String sql =
+        "delete from student where id=?";
+
+        return jdbcTemplate.update(sql,id);
+    }
+
+    // SELECT BY ID
+    @Override
+    public Student getStudent(int id) {
+
+        String sql =
+        "select * from student where id=?";
+
+        return jdbcTemplate.queryForObject(
+                sql,
+                new BeanPropertyRowMapper<>(Student.class),
+                id
+        );
+
+    }
+
+    // SELECT ALL
+    @Override
+    public List<Student> getAllStudents() {
+
+        String sql =
+        "select * from student";
+
+        return jdbcTemplate.query(
+                sql,
+                new BeanPropertyRowMapper<>(Student.class)
+        );
+
+    }
+
+}
+Step 7: Service Interface
+import java.util.List;
+
+public interface StudentService {
+
+    int save(Student student);
+
+    int update(Student student);
+
+    int delete(int id);
+
+    Student getStudent(int id);
+
+    List<Student> getAllStudents();
+
+}
+Step 8: Service Implementation
+@Service
+public class StudentServiceImpl
+        implements StudentService {
+
+    @Autowired
+    private StudentRepository repository;
+
+    @Override
+    public int save(Student student) {
+        return repository.save(student);
+    }
+
+    @Override
+    public int update(Student student) {
+        return repository.update(student);
+    }
+
+    @Override
+    public int delete(int id) {
+        return repository.delete(id);
+    }
+
+    @Override
+    public Student getStudent(int id) {
+        return repository.getStudent(id);
+    }
+
+    @Override
+    public List<Student> getAllStudents() {
+        return repository.getAllStudents();
+    }
+
+}
+Step 9: Controller
+@RestController
+@RequestMapping("/students")
+public class StudentController {
+
+    @Autowired
+    private StudentService service;
+
+    // INSERT
+    @PostMapping
+    public String save(@RequestBody Student student){
+
+        service.save(student);
+
+        return "Student Saved Successfully";
+    }
+
+    // UPDATE
+    @PutMapping
+    public String update(@RequestBody Student student){
+
+        service.update(student);
+
+        return "Student Updated Successfully";
+    }
+
+    // DELETE
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable int id){
+
+        service.delete(id);
+
+        return "Student Deleted Successfully";
+    }
+
+    // GET BY ID
+    @GetMapping("/{id}")
+    public Student getStudent(@PathVariable int id){
+
+        return service.getStudent(id);
+    }
+
+    // GET ALL
+    @GetMapping
+    public List<Student> getAllStudents(){
+
+        return service.getAllStudents();
+    }
+
+}
+Testing with Postman
+1. Insert Student
+
+POST http://localhost:8080/students
+
+{
+    "name":"Harshal",
+    "email":"harshal@gmail.com",
+    "course":"Spring Boot",
+    "marks":95
+}
+2. Get All Students
+
+GET
+
+http://localhost:8080/students
+3. Get Student By ID
+
+GET
+
+http://localhost:8080/students/1
+4. Update Student
+
+PUT
+
+http://localhost:8080/students
+{
+    "id":1,
+    "name":"Harshal Gothriya",
+    "email":"harshal@gmail.com",
+    "course":"Java Full Stack",
+    "marks":98
+}
+5. Delete Student
+
+DELETE
+
+http://localhost:8080/students/1
+Flow of a Request
+Client (Postman)
+        │
+        ▼
+StudentController
+        │
+        ▼
+StudentService
+        │
+        ▼
+StudentRepository
+        │
+        ▼
+JdbcTemplate
+        │
+        ▼
+MySQL Database
+        │
+        ▼
+Result
+        │
+        ▼
+Controller
+        │
+        ▼
+Client
+Interview Questions
+Why do we use JdbcTemplate instead of plain JDBC?
+What is the difference between query() and queryForObject()?
+Why do we use BeanPropertyRowMapper?
+Why is PreparedStatement (using ? placeholders) safer than string concatenation?
+What happens if queryForObject() finds no rows or more than one row?
+What value does jdbcTemplate.update() return?
+
+>>
+jdbc spring jdbc spring boot jdbc....hibernate .....Srping data jpa....
+
+>>Project where spring security and multipart file structure were therer
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

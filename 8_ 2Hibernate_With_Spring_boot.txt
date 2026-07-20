@@ -1,0 +1,549 @@
+
+
+
+
+Claim offer
+i want all crud operation on Spring hibernate
+
+Perfect. Since you've already learned Standalone Hibernate CRUD, the next step is Spring Hibernate (without Spring Boot).
+
+This is one of the most important topics because it teaches you how Spring integrates with Hibernate manually. After this, Spring Boot + Spring Data JPA becomes much easier.
+
+What is Spring Hibernate?
+Spring Hibernate means
+
+Spring Framework + Hibernate ORM
+
+Spring manages the objects (IoC Container), transactions, and dependencies, while Hibernate performs the database operations.
+
+Client
+   |
+DispatcherServlet
+   |
+Controller
+   |
+Service
+   |
+DAO (Repository)
+   |
+Hibernate SessionFactory
+   |
+Hibernate
+   |
+MySQL
+Project Structure
+SpringHibernateCRUD
+
+src/main/java
+
+com.example
+
+    config
+        AppConfig.java
+
+    controller
+        StudentController.java
+
+    dao
+        StudentDao.java
+        StudentDaoImpl.java
+
+    entity
+        Student.java
+
+    service
+        StudentService.java
+        StudentServiceImpl.java
+
+src/main/webapp
+
+WEB-INF
+      views
+            home.jsp
+            addStudent.jsp
+            updateStudent.jsp
+
+pom.xml
+Required Dependencies
+<dependencies>
+
+    <!-- Spring MVC -->
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
+        <version>5.3.39</version>
+    </dependency>
+
+    <!-- Spring ORM -->
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-orm</artifactId>
+        <version>5.3.39</version>
+    </dependency>
+
+    <!-- Hibernate -->
+    <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>5.6.15.Final</version>
+    </dependency>
+
+    <!-- MySQL -->
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>8.0.33</version>
+    </dependency>
+
+    <!-- JSP -->
+    <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>jstl</artifactId>
+        <version>1.2</version>
+    </dependency>
+
+</dependencies>
+Database
+create database springhibernate;
+
+use springhibernate;
+
+create table student(
+
+id int primary key auto_increment,
+
+name varchar(50),
+
+email varchar(50),
+
+course varchar(30)
+
+);
+Entity
+@Entity
+@Table(name="student")
+public class Student {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int id;
+
+    private String name;
+
+    private String email;
+
+    private String course;
+
+    public Student(){}
+
+    //Getter Setter
+}
+Java Configuration
+Instead of XML, we'll use Java Config.
+
+@Configuration 
+@EnableWebMvc                                 //this is for @EnableWebMvc handler mapping we do not do manually...like that ...or for dispatch...view resolver we make an bean and like that
+@ComponentScan("com.example")
+@EnableTransactionManagement              //insted of it we also make an xml class wehre we give dispatcher servlet configuration like that also
+public class AppConfig {
+
+}
+Now configure Hibernate.
+
+@Bean
+public DriverManagerDataSource dataSource(){
+
+    DriverManagerDataSource ds =
+            new DriverManagerDataSource();
+
+    ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
+    ds.setUrl("jdbc:mysql://localhost:3306/springhibernate");
+    ds.setUsername("root");
+    ds.setPassword("root");
+
+    return ds;
+}
+SessionFactory Bean
+@Bean
+public LocalSessionFactoryBean sessionFactory(){
+
+    LocalSessionFactoryBean factory =
+            new LocalSessionFactoryBean();
+
+    factory.setDataSource(dataSource());
+
+    factory.setPackagesToScan("com.example.entity");
+
+    Properties p = new Properties();
+
+    p.put("hibernate.dialect",
+            "org.hibernate.dialect.MySQL8Dialect");
+
+    p.put("hibernate.show_sql",true);
+
+    p.put("hibernate.hbm2ddl.auto","update");
+
+    factory.setHibernateProperties(p);
+
+    return factory;
+}
+Transaction Manager
+@Bean
+public HibernateTransactionManager transactionManager(){
+
+    HibernateTransactionManager tx =
+            new HibernateTransactionManager();
+
+    tx.setSessionFactory(sessionFactory().getObject());
+
+    return tx;
+}
+DAO Layer
+Interface
+
+public interface StudentDao {
+
+    void save(Student student);
+
+    List<Student> getAll();
+
+    Student getById(int id);
+
+    void update(Student student);
+
+    void delete(int id);
+
+}
+DAO Implementation
+@Repository
+public class StudentDaoImpl
+        implements StudentDao{
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    @Override
+    public void save(Student student){
+
+        sessionFactory
+                .getCurrentSession()
+                .save(student);
+    }
+
+    @Override
+    public List<Student> getAll(){
+
+        return sessionFactory
+                .getCurrentSession()
+                .createQuery("from Student",
+                        Student.class)
+                .list();
+    }
+
+    @Override
+    public Student getById(int id){
+
+        return sessionFactory
+                .getCurrentSession()
+                .get(Student.class,id);
+    }
+
+    @Override
+    public void update(Student student){
+
+        sessionFactory
+                .getCurrentSession()
+                .update(student);
+    }
+
+    @Override
+    public void delete(int id){
+
+        Student student =
+                getById(id);
+
+        sessionFactory
+                .getCurrentSession()
+                .delete(student);
+    }
+
+}
+Service Layer
+Interface
+
+public interface StudentService {
+
+    void save(Student student);
+
+    List<Student> getAll();
+
+    Student getById(int id);
+
+    void update(Student student);
+
+    void delete(int id);
+
+}
+Implementation
+
+@Service
+@Transactional
+public class StudentServiceImpl
+        implements StudentService{
+
+    @Autowired
+    private StudentDao dao;
+
+    @Override
+    public void save(Student student){
+        dao.save(student);
+    }
+
+    @Override
+    public List<Student> getAll(){
+        return dao.getAll();
+    }
+
+    @Override
+    public Student getById(int id){
+        return dao.getById(id);
+    }
+
+    @Override
+    public void update(Student student){
+        dao.update(student);
+    }
+
+    @Override
+    public void delete(int id){
+        dao.delete(id);
+    }
+
+}
+Why @Transactional on the Service?
+Every Hibernate operation requires a transaction.
+
+Without it:
+
+sessionFactory.getCurrentSession()
+throws
+
+No Hibernate Session bound to thread
+because Spring opens and closes the Hibernate Session only inside a transaction.
+
+Flow:
+
+Controller
+
+↓
+
+Service (@Transactional)
+
+↓
+
+Spring opens Transaction
+
+↓
+
+Hibernate Session created
+
+↓
+
+DAO
+
+↓
+
+Database
+
+↓
+
+Commit
+
+↓
+
+Session Closed
+That's why @Transactional is usually placed on the service layer, where business operations begin.
+
+Controller
+@Controller
+public class StudentController {
+
+    @Autowired
+    private StudentService service;
+
+    @GetMapping("/")
+    public String home(Model model){
+
+        model.addAttribute(
+                "students",
+                service.getAll());
+
+        return "home";
+    }
+
+    @GetMapping("/add")
+    public String addForm(Model model){
+
+        model.addAttribute(
+                "student",
+                new Student());
+
+        return "addStudent";
+    }
+
+    @PostMapping("/save")
+    public String save(
+            @ModelAttribute Student student){
+
+        service.save(student);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(
+            @PathVariable int id,
+            Model model){
+
+        model.addAttribute(
+                "student",
+                service.getById(id));
+
+        return "updateStudent";
+    }
+
+    @PostMapping("/update")
+    public String update(
+            @ModelAttribute Student student){
+
+        service.update(student);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(
+            @PathVariable int id){
+
+        service.delete(id);
+
+        return "redirect:/";
+    }
+
+}
+CRUD Flow
+Create
+JSP Form
+
+↓
+
+Controller
+
+↓
+
+Service (@Transactional)
+
+↓
+
+DAO
+
+↓
+
+Session.save()
+
+↓
+
+MySQL
+Read
+Browser
+
+↓
+
+Controller
+
+↓
+
+Service
+
+↓
+
+DAO
+
+↓
+
+Session.createQuery()
+
+↓
+
+Database
+
+↓
+
+List<Student>
+
+↓
+
+JSP
+Update
+Edit Button
+
+↓
+
+Controller
+
+↓
+
+Service
+
+↓
+
+DAO
+
+↓
+
+Session.update()
+
+↓
+
+Database
+Delete
+Delete Button
+
+↓
+
+Controller
+
+↓
+
+Service
+
+↓
+
+DAO
+
+↓
+
+Session.delete()
+
+↓
+
+Database
+Difference from Standalone Hibernate
+Standalone Hibernate	Spring Hibernate
+You create SessionFactory manually	Spring creates it as a bean
+You open/close Session manually	Spring manages the session
+You begin/commit transactions manually	@Transactional handles transactions
+You instantiate DAO/services yourself	Spring injects them with @Autowired
+More boilerplate	Cleaner and easier to maintain
+What You'll Learn Next
+Once you're comfortable with Spring + Hibernate, the next evolution is:
+
+Spring + Hibernate + XML Configuration (traditional configuration)
+
+Spring Data JPA (without Spring Boot) – replace most DAO code with repository interfaces.
+
+Spring Boot + Hibernate (Spring Data JPA) – auto-configuration removes much of the manual setup.
+
+At that point you'll clearly understand what Spring Boot is doing behind the scenes because you'll have built the same application manually first.
+
+

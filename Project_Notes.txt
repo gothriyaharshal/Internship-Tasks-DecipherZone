@@ -1,0 +1,342 @@
+Client and Server Architechture
+
+>>REST APi (RESTFUL APPLICATION )
+  >>client server architecture 
+  >>stateless
+  >>cachebel (when client send request to server .....server store it in form of cache )
+  >>Layered Architecture Were Follwed
+  >>uniform Architecture (when client connect with server it is in unified way)
+
+>>Rest Concepts
+  >>Resource
+  >>sub resource
+  >>URI
+  >>Http methods
+  >>Http Response Code
+
+Resources>>>>>>>
+ in user i have Student ...... in company i have Employe then those are resources
+
+URI (uniform Resource identifier)
+  We identify Resource by uri which present on server
+
+   https:://localhost:8282/students/ 
+
+like that
+
+Sub-Resource>>>>>
+ Like post is an Resource and comment is an Sub-Resource of it 
+ 
+     https:://localhost:8282/resource/{id}/sub-resource
+
+
+Http ReQuest Methods
+>>>
+  Get.....Get.....post(create).....put(update).......Delete
+
+PATCH is used to partially update a resource.
+
+It updates only the fields you provide, leaving all other fields unchanged.
+
+Http Response code>>>>>>>>
+200 ok >>Request is successful
+201 >> Request is successful and new Requeste were created
+401 >> authentication is required for this resource
+500 >> internal server error
+
+>>>>client requirement
+
+ client want an application where he and she write blog and articles user can comment on the blog / article
+
+>> user should create/update/delete/posts
+>> user should add , update delete  comment on postsa
+>>post also be in cateogarized way
+>>i also want one photo per post 
+
+
+>>proper post and login api 
+>>posts api includes pagination and sorting
+>>proper user input validation handling
+>>Proper exception handling
+>>We want role based authentication
+
+>>Framework 
+java 8+
+maven
+sts
+Apache tomcat
+Spring core , spring security(jwt) , Spring data(jpa) hibernate, etc.
+
+ >>Api documentation
+  Swaggger
+  
+>>post man
+>>aws-ec2
+>>MySQL
+
+
+>>>>
+
+              Api layer         businesl     dao
+ postmen----->controller----->service----->repositary(database interaction)------>fileds
+
+ >>controller provides reponse to client
+
+>>>Exception handling in project suppose if I want to delete ...update or get an user which id did not have in spring boot how did I handle it in spring boot
+
+how did i achieve Exception handling in Spring boot
+
+Exception Handling is one of the most important topics in Spring Boot. Every REST API should handle exceptions gracefully instead of showing a long stack trace.
+
+Why do we need Exception Handling?
+
+Suppose your API is:
+
+GET /users/100
+
+But only users 1, 2, 3 exist.
+
+Without exception handling, Spring Boot returns:
+
+{
+    "timestamp": "...",
+    "status": 500,
+    "error": "Internal Server Error",
+    "trace": "Very long stack trace..."
+}
+
+This is:
+
+❌ Not user-friendly.
+❌ Exposes internal application details.
+❌ Not suitable for production.
+
+Instead, we want:
+
+{
+    "message": "User not found with id : 100",
+    "success": false
+}
+Complete Flow of Exception Handling
+Client
+   │
+   ▼
+Controller
+   │
+   ▼
+Service
+   │
+   ▼
+Repository
+   │
+   ▼
+Database
+
+If an error occurs
+       │
+       ▼
+Throw Custom Exception
+       │
+       ▼
+Global Exception Handler
+       │
+       ▼
+Custom JSON Response
+Step 1: Create a Custom Exception
+package com.blog.blog_app.exceptions;
+
+public class ResourceNotFoundException extends RuntimeException {
+
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+}
+Step 2: Throw the Exception
+
+Instead of:
+
+User user = repository.findById(id).get();
+
+write:
+
+User user = repository.findById(id)
+        .orElseThrow(() ->
+                new ResourceNotFoundException("User not found with id : " + id));
+
+If the user doesn't exist, Spring throws your custom exception.
+
+Step 3: Create a Global Exception Handler
+package com.blog.blog_app.exceptions;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> resourceNotFound(ResourceNotFoundException ex) {
+
+        return new ResponseEntity<>(
+                ex.getMessage(),
+                HttpStatus.NOT_FOUND
+        );
+    }
+}
+
+Now every ResourceNotFoundException is handled here.
+
+Step 4: Test
+
+Request:
+
+GET /users/100
+
+Database:
+
+1
+2
+3
+
+Response:
+
+User not found with id : 100
+
+Status:
+
+404 NOT FOUND
+Better Response Object
+
+Instead of returning only a string, create a response class.
+
+public class ApiResponse {
+
+    private String message;
+
+    private boolean success;
+
+    // Constructors
+    // Getters & Setters
+}
+
+Global Exception Handler
+
+@ExceptionHandler(ResourceNotFoundException.class)
+public ResponseEntity<ApiResponse> resourceNotFound(ResourceNotFoundException ex){
+
+    ApiResponse response =
+            new ApiResponse(ex.getMessage(), false);
+
+    return new ResponseEntity<>(
+            response,
+            HttpStatus.NOT_FOUND
+    );
+}
+
+Response:
+
+{
+    "message":"User not found with id : 100",
+    "success":false
+}
+
+This is the style used in many production APIs.
+
+Handle Multiple Exceptions
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiResponse> handleResource(
+            ResourceNotFoundException ex){
+
+        ApiResponse response =
+                new ApiResponse(ex.getMessage(), false);
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse> handleAll(
+            Exception ex){
+
+        ApiResponse response =
+                new ApiResponse(ex.getMessage(), false);
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+}
+
+The second method catches any exception that you haven't handled specifically.
+
+Why @RestControllerAdvice?
+
+@RestControllerAdvice is a global exception handler.
+
+Instead of writing try-catch in every controller:
+
+try{
+
+}
+catch(Exception e){
+
+}
+
+Spring automatically sends every matching exception to your handler.
+
+Real Project Structure
+com.blog.blog_app
+│
+├── controller
+│
+├── service
+│
+├── repository
+│
+├── entity
+│
+├── exceptions
+│      │
+│      ├── ResourceNotFoundException.java
+│      │
+│      ├── GlobalExceptionHandler.java
+│      │
+│      └── ApiResponse.java
+│
+└── BlogAppApplication.java
+Interview Questions
+1. Why create a custom exception?
+
+To provide meaningful, application-specific error messages instead of generic exceptions.
+
+2. Why extend RuntimeException?
+
+Because it is an unchecked exception, so you don't have to declare it with throws in every method.
+
+3. Why use @RestControllerAdvice?
+
+To centralize exception handling for all REST controllers and avoid repeating try-catch blocks.
+
+4. Difference between @ControllerAdvice and @RestControllerAdvice
+@ControllerAdvice	@RestControllerAdvice
+Used with Spring MVC	Used with REST APIs
+Usually returns views (JSP/Thymeleaf)	Returns JSON responses
+Equivalent to @ControllerAdvice + @ResponseBody?	Yes
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Model Mapper like converting Dto to Entity and Entity to Dto like that
+
+
+ 

@@ -458,9 +458,9 @@ abstract class A {
     A() {
         show(); // Calls overridden method
     }
-
+0
     abstract void show();
-}
+}0
 
 class B extends A {
 

@@ -1,0 +1,18 @@
+it also an paradiem like oop.....it seprates cross cutting concerns from main logics
+
+>>
+suppose I have service class and in it I have multiple business logic like create user delete etc...
+
+>>I say that before running any service do login 
+  createUser()
+{
+  doLogin()
+   then other work
+}
+
+getUser()
+{
+ dologin()
+ then other work
+}
+

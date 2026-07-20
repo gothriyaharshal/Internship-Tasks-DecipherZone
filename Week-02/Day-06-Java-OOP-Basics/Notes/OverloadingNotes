@@ -1,3 +1,8 @@
+in this exception handlding has some rule
+>>if my parent class have .... method which throwing an checked exception and child class override that method then
+  rule is .... that method only throw particular exception or child class exception of that ,,,,it no throws bigger then it
+>>there has no rule for runtimeexception we throw in child also if i want
+
 
 Let's do a deep analysis of Method Overriding in Java.
 

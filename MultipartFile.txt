@@ -1,0 +1,381 @@
+This is actually one of the most important topics in Spring Boot. Many beginners find it difficult because it combines Spring Boot + HTTP + Multipart files + Java File I/O + Database.
+
+The good news is that you do not need to master Java File I/O first to upload files in Spring Boot. Spring provides MultipartFile, which makes it much easier.
+
+Let's start from the beginning.
+
+Suppose you're building a Blog App
+
+A post has:
+
+Title
+Content
+Author
+Image
+Video (optional)
+Question 1: Should images/videos be stored in the database?
+
+There are three approaches.
+
+Approach 1: Store files inside the database (BLOB)
+POST TABLE
+
+-------------------------------------
+id
+title
+content
+image  (BLOB)
+video  (BLOB)
+-------------------------------------
+
+You store the actual image bytes in MySQL.
+
+Example:
+
+Image
+↓
+
+010100100101011001001010101010...
+Advantages
+Everything is in one place.
+Easy database backup.
+Disadvantages
+Database becomes very large.
+Slower performance.
+Large videos make the database huge.
+
+Because of these disadvantages, this approach is uncommon for large media files.
+
+Approach 2: Store files locally (most common for learning)
+Project
+
+uploads/
+      images/
+      videos/
+
+src/
+pom.xml
+
+When the user uploads:
+
+nature.jpg
+
+You save it here:
+
+uploads/images/nature.jpg
+
+Then your database stores only:
+
+POST TABLE
+
+----------------------------
+id
+title
+content
+image = nature.jpg
+----------------------------
+
+or
+
+image = uploads/images/nature.jpg
+
+This is the approach used in most Spring Boot tutorials.
+
+Approach 3: Cloud Storage (used in production)
+
+Large companies don't keep images on the server itself.
+
+Instead they upload to services like:
+
+Amazon S3
+Google Cloud Storage
+Cloudinary
+
+Database stores only the URL.
+
+image
+
+https://....
+
+This is what companies typically use in production.
+
+For your Blog App
+
+I recommend Approach 2 (store locally).
+
+How does Spring Boot receive an image?
+
+Suppose your frontend sends:
+
+Title
+Content
+Image
+
+The request is not JSON.
+
+Instead it is:
+
+multipart/form-data
+
+because JSON cannot directly contain a binary image file.
+
+Your controller looks like:
+
+@PostMapping("/posts")
+public ResponseEntity<?> createPost(
+
+        @RequestParam String title,
+
+        @RequestParam String content,
+
+        @RequestParam MultipartFile image
+) {
+
+}
+
+Notice:
+
+MultipartFile image
+
+Spring automatically receives the uploaded file.
+
+What is MultipartFile?
+
+Think of it as a Java object representing the uploaded file.
+
+MultipartFile
+
+------------------
+photo.jpg
+2 MB
+image/jpeg
+------------------
+
+Useful methods include:
+
+image.getOriginalFilename()
+
+returns
+
+photo.jpg
+image.getSize()
+
+returns
+
+2048000
+image.getContentType()
+
+returns
+
+image/jpeg
+image.getInputStream()
+
+returns the file's bytes.
+
+How do we save it?
+
+Spring provides:
+
+image.transferTo(destination);
+
+Example:
+
+Path path = Paths.get("uploads/images/" + image.getOriginalFilename());
+
+image.transferTo(path);
+
+That's all.
+
+You don't need FileOutputStream.
+
+Spring writes the file for you.
+
+What goes into the database?
+
+Suppose the uploaded file is:
+
+dog.png
+
+Database:
+
+POST
+
+-----------------------------
+id = 1
+title = Dog
+content = Cute Dog
+image = dog.png
+-----------------------------
+
+Only the filename (or relative path) is stored.
+
+How do we retrieve the image later?
+
+Browser requests:
+
+GET
+
+/uploads/images/dog.png
+
+Spring reads the file from disk and returns it.
+
+Where does Java File I/O come in?
+
+Eventually you'll learn classes like:
+
+File
+Path
+Files
+InputStream
+OutputStream
+BufferedInputStream
+BufferedOutputStream
+
+Spring's MultipartFile is built on top of these Java I/O concepts, but for simple uploads you don't have to use them directly.
+
+The complete flow
+React / Angular / Postman
+          │
+          │ multipart/form-data
+          ▼
+Spring Boot Controller
+          │
+          ▼
+MultipartFile
+          │
+          ▼
+Save to uploads/images/
+          │
+          ▼
+Store filename in MySQL
+          │
+          ▼
+Response
+Should you learn Java File I/O first?
+
+Yes, but after you're comfortable with Spring Boot CRUD.
+
+I know from our previous conversations that you're currently learning:
+
+✅ Spring Boot
+✅ Data JPA
+✅ DTO
+✅ ModelMapper
+✅ Exception Handling
+✅ CRUD APIs
+
+Your next learning order should be:
+
+Spring Boot CRUD (finish completely)
+Bean Validation
+One-to-One, One-to-Many, Many-to-Many mappings
+File Upload (MultipartFile)
+Java File I/O (File, Path, Files, Streams)
+Spring Security
+JWT Authentication
+Cloud storage (Amazon S3 or Cloudinary)
+
+This order will make file upload much easier to understand because you'll already have a solid Spring Boot foundation.
+
+I can also build a complete "Blog App with Image Upload" project step by step, starting from the Post entity and ending with uploading, storing, and retrieving images, explaining every line as if you're learning it for the first time. That project will naturally introduce the Java File I/O concepts you need along the way.
+
+
+
+>>>>>>>>>>>>>
+
+FetchType
+
+This is one of the most important concepts.
+
+Suppose database contains
+
+User
+
+1 Harshal
+
+Posts
+
+Java
+
+Spring
+
+Hibernate
+EAGER Loading
+fetch = FetchType.EAGER
+
+means
+
+Whenever User is fetched, fetch Posts immediately.
+
+You execute
+
+User user = userRepo.findById(1).get();
+
+JPA automatically does something like
+
+SELECT * FROM user;
+
+SELECT * FROM post WHERE user_id=1;
+
+Even if you never use
+
+user.getPostList()
+
+Posts are already loaded into memory.
+
+LAZY Loading
+fetch = FetchType.LAZY
+
+means
+
+Don't load posts immediately.
+
+You do
+
+User user = userRepo.findById(1).get();
+
+Only this query runs
+
+SELECT * FROM user;
+
+No post query.
+
+Later, when you write
+
+user.getPostList();
+
+Only then Hibernate executes
+
+SELECT * FROM post WHERE user_id=1;
+
+This saves memory and improves performance when related data isn't always needed.
+
+Visual Difference
+EAGER
+find User
+     │
+     ▼
+User
+     │
+     ▼
+Posts automatically loaded
+LAZY
+find User
+     │
+     ▼
+User only
+
+Later
+
+user.getPostList()
+       │
+       ▼
+Now Posts are loaded
+Which should you use?
+
+In most Spring Boot applications:
+
+@ManyToOne defaults to EAGER.
+@OneToMany defaults to LAZY.
+
+For a blog application, keeping @OneToMany as LAZY is usually a good choice because when you fetch a user, you don't always need every post they've written.

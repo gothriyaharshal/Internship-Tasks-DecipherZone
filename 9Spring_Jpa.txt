@@ -1,0 +1,447 @@
+
+
+
+
+Claim offer
+i want all crud operation on Spring jpa
+
+Perfect. Since you've already covered Standalone Hibernate, and you're learning the progression
+
+JDBC → Hibernate → Spring ORM → Spring Data JPA → Spring Boot + Spring Data JPA
+
+the next step is Spring JPA (without Spring Boot).
+
+What is Spring JPA?
+First, understand one important thing.
+
+Many students say Spring JPA, but technically there is no separate technology called Spring JPA.
+
+Usually people mean
+
+Spring Framework + Spring ORM + JPA (Hibernate implementation)
+
+Architecture
+
+Application
+      |
+Controller
+      |
+Service
+      |
+DAO (Repository)
+      |
+Spring ORM
+      |
+JPA Interfaces
+      |
+Hibernate (Implementation)
+      |
+MySQL
+Notice
+
+You write JPA code.
+
+Hibernate executes it.
+
+Spring manages everything.
+Project Structure
+SpringJPAProject
+
+src
+ └── main
+      ├── java
+      │      com.example
+      │
+      │      config
+      │          AppConfig.java
+      │
+      │      entity
+      │          Student.java
+      │
+      │      dao
+      │          StudentDAO.java
+      │          StudentDAOImpl.java
+      │
+      │      service
+      │          StudentService.java
+      │          StudentServiceImpl.java
+      │
+      │      Main.java
+      │
+      └── resources
+              application.properties
+Dependencies (pom.xml)
+<dependencies>
+
+    <!-- Spring Context -->
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>6.2.0</version>
+    </dependency>
+
+    <!-- Spring ORM -->
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-orm</artifactId>
+        <version>6.2.0</version>
+    </dependency>
+
+    <!-- Spring TX -->
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-tx</artifactId>
+        <version>6.2.0</version>
+    </dependency>
+
+    <!-- Hibernate -->
+    <dependency>
+        <groupId>org.hibernate.orm</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>6.6.0.Final</version>
+    </dependency>
+
+    <!-- MySQL -->
+    <dependency>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
+        <version>9.0.0</version>
+    </dependency>
+
+    <!-- JPA -->
+    <dependency>
+        <groupId>jakarta.persistence</groupId>
+        <artifactId>jakarta.persistence-api</artifactId>
+        <version>3.2.0</version>
+    </dependency>
+
+</dependencies>
+application.properties
+db.driver=com.mysql.cj.jdbc.Driver
+db.url=jdbc:mysql://localhost:3306/studentdb
+db.username=root
+db.password=root
+Entity
+package com.example.entity;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="student")
+public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    private String name;
+
+    private String city;
+
+    public Student() {}
+
+    public Student(String name, String city) {
+        this.name = name;
+        this.city = city;
+    }
+
+    // getters setters
+}
+Spring Configuration
+@Configuration
+@ComponentScan("com.example")
+@EnableTransactionManagement
+@PropertySource("classpath:application.properties")
+public class AppConfig {
+
+    @Autowired
+    Environment env;
+
+    @Bean
+    public DataSource dataSource(){
+
+        DriverManagerDataSource ds=new DriverManagerDataSource();
+
+        ds.setDriverClassName(env.getProperty("db.driver"));
+        ds.setUrl(env.getProperty("db.url"));
+        ds.setUsername(env.getProperty("db.username"));
+        ds.setPassword(env.getProperty("db.password"));
+
+        return ds;
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
+
+        LocalContainerEntityManagerFactoryBean emf =
+                new LocalContainerEntityManagerFactoryBean();
+
+        emf.setDataSource(dataSource());
+
+        emf.setPackagesToScan("com.example.entity");
+
+        HibernateJpaVendorAdapter adapter =
+                new HibernateJpaVendorAdapter();
+
+        emf.setJpaVendorAdapter(adapter);
+
+        Properties prop=new Properties();
+
+        prop.put("hibernate.hbm2ddl.auto","update");
+        prop.put("hibernate.show_sql","true");
+
+        emf.setJpaProperties(prop);
+
+        return emf;
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(
+        EntityManagerFactory emf){
+
+        return new JpaTransactionManager(emf);
+    }
+
+}
+DAO Interface
+public interface StudentDAO {
+
+    void save(Student student);
+
+    Student getById(int id);
+
+    List<Student> getAll();
+
+    void update(Student student);
+
+    void delete(int id);
+
+}
+DAO Implementation
+@Repository
+public class StudentDAOImpl implements StudentDAO {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Override
+    public void save(Student student) {
+
+        entityManager.persist(student);
+
+    }
+
+    @Override
+    public Student getById(int id) {
+
+        return entityManager.find(Student.class,id);
+
+    }
+
+    @Override
+    public List<Student> getAll() {
+
+        return entityManager
+                .createQuery("from Student",Student.class)
+                .getResultList();
+
+    }
+
+    @Override
+    public void update(Student student) {
+
+        entityManager.merge(student);
+
+    }
+
+    @Override
+    public void delete(int id) {
+
+        Student s=entityManager.find(Student.class,id);
+
+        if(s!=null){
+
+            entityManager.remove(s);
+
+        }
+
+    }
+
+}
+Service Interface
+public interface StudentService {
+
+    void save(Student student);
+
+    Student getById(int id);
+
+    List<Student> getAll();
+
+    void update(Student student);
+
+    void delete(int id);
+
+}
+Service Implementation
+@Service
+@Transactional
+public class StudentServiceImpl implements StudentService {
+
+    @Autowired
+    StudentDAO dao;
+
+    @Override
+    public void save(Student student) {
+
+        dao.save(student);
+
+    }
+
+    @Override
+    public Student getById(int id) {
+
+        return dao.getById(id);
+
+    }
+
+    @Override
+    public List<Student> getAll() {
+
+        return dao.getAll();
+
+    }
+
+    @Override
+    public void update(Student student) {
+
+        dao.update(student);
+
+    }
+
+    @Override
+    public void delete(int id) {
+
+        dao.delete(id);
+
+    }
+
+}
+Main Class
+public class Main {
+
+    public static void main(String[] args) {
+
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext(AppConfig.class);
+
+        StudentService service =
+                context.getBean(StudentService.class);
+
+        // INSERT
+        service.save(new Student("Harshal","Jaipur"));
+
+        // GET
+        Student s=service.getById(1);
+
+        System.out.println(s.getName());
+
+        // UPDATE
+        s.setCity("Delhi");
+
+        service.update(s);
+
+        // GET ALL
+
+        service.getAll().forEach(System.out::println);
+
+        // DELETE
+
+        service.delete(1);
+
+    }
+
+}
+CRUD Flow
+INSERT
+Main
+ ↓
+StudentService
+ ↓
+StudentDAO
+ ↓
+EntityManager.persist()
+ ↓
+Hibernate
+ ↓
+SQL INSERT
+ ↓
+Database
+GET
+Main
+ ↓
+Service
+ ↓
+DAO
+ ↓
+EntityManager.find()
+ ↓
+Hibernate
+ ↓
+SELECT
+ ↓
+Database
+UPDATE
+Main
+ ↓
+Service
+ ↓
+DAO
+ ↓
+EntityManager.merge()
+ ↓
+Hibernate
+ ↓
+UPDATE
+ ↓
+Database
+DELETE
+Main
+ ↓
+Service
+ ↓
+DAO
+ ↓
+EntityManager.remove()
+ ↓
+Hibernate
+ ↓
+DELETE
+ ↓
+Database
+EntityManager Methods Used
+Method	Purpose
+persist()	Insert new entity
+find()	Get entity by primary key
+merge()	Update detached entity
+remove()	Delete entity
+createQuery()	Fetch multiple records
+createNamedQuery()	Run named JPQL query
+createNativeQuery()	Run raw SQL
+Difference from Standalone Hibernate
+Standalone Hibernate	Spring + JPA
+SessionFactory	EntityManagerFactory
+Session	EntityManager
+Manual transaction (beginTransaction())	@Transactional
+Manual session close	Spring manages lifecycle
+session.save()	entityManager.persist()
+session.update()	entityManager.merge()
+session.delete()	entityManager.remove()
+session.get()	entityManager.find()
+What You'll Learn Next
+Once you're comfortable with this style, the next step is Spring Data JPA (without Spring Boot), where you won't write the DAO implementation yourself. Instead, you'll create an interface like:
+
+public interface StudentRepository extends JpaRepository<Student, Integer> {
+}
+and Spring Data JPA will automatically provide implementations for CRUD methods such as save(), findById(), findAll(), and deleteById(). This significantly reduces boilerplate code and is the foundation for how persistence is typically done in modern Spring Boot applications.
+
+

@@ -1,0 +1,1690 @@
+Advantage of spring boot
+
+Open source java application......standalone and entrerpirce application bna skte h ......
+
+>>>Lightwieght ....mtlb jar file ki jruri nhi h yaha pr
+
+>>Configuration eaasy h xml java annotation
+
+>> Dependenci Injection .....ek object ko dusre object m inject krte h 
+
+>>AOP 
+
+>>Simplified data Access
+
+>>Testing Support
+
+>>Spring securtiy
+
+>>Integration capabilitirs....dusre framework k sath easyli coordinate krva skte h 
+
+>>Free to use...open Source
+
+>>>>>>>>>>>>>Spring container 
+
+---->Core component of spring  .....Responsibilities.........Managing Bean Objects ......MAnage bea lifeCycle..........DI.....AOP........
+      
+       Transaction management ......db accesss...integration(frontend technology integrated krvate h )
+
+---->Types of  Spring Container.........Bean Factory(old)........ApplicationContext(new)...
+
+       jeise javac Code chlate the hum jvm bnate the veise hi yaha spring framework m 
+      ....BeanFactory or ApplicationContext(InterFace) hota h jo sari responsibility ko chlane m help krta h 
+
+---->Working of Spring Container
+
+      Pojo class bnayege.....like Student Class usme khuch data leleia or uska getter or setter leleia........
+     or fir configuration k through hum object bnayege 
+     ....us object ka naam kya hoga us object ki id name kya hoga..........
+     configuration hum xml , java file ,, annotation k through provide krte h .....fir obejct create krega or method or 
+    task perform krva skta hu 
+
+[POJO CLASS]------->[cONFIGURATION]------->[sPRING CONTAINER]-------ACCESS OBJECTS
+
+object get hone k baad m us pr method ya khcuh bhi kr skta hu 
+
+For this we want's to add some jar files also
+
+-------->> Create an java project ........name lo uska 
+    --->>>Create Pojo class  pacakge bnalena ......package ki naming bdiya se understable formate m honi chahiye,,,,Create Student class
+
+     public class Student
+     {
+
+
+      private String name ;
+      private int Roll_no ;
+      private String  email;
+   
+    //generate getter and setters constructor to strings;
+
+    }
+
+
+-----------Now creatign new pacakge in it we creating Configuration file.......first with xml file
+    (ApplicationContext.xml) .........Spring configuration file which provides instruction to spring containers
+  
+    Here copy paste Scema if xml configuration file....get from chrome.......We gives here infromation that we want to creates here object of an class
+
+   <bean class ="bean.Student" id="stdID" >                          .....ye object spring container banyege jeise hi bean m aise likhege 
+
+                                                                                         //object create krdia ab jo properties thi us class m vo provide krege /......
+
+ <property name="name" value="Deepak">                                      //name    m vo dedo or uski value dedo
+ <property name="roll_no" value="23">                                      
+ <property name="yakhcuh" value="sfd">                                      
+
+
+  </bean>
+
+//object create ho jayege ......or us ki id ho jayegi//////or meine object bna k vaha value bhi dedi....
+
+
+------------------------------------>>Main pacakage bnao or main class bnalo uski 
+
+//or yaha hum ApplicationContext ka use krege or yaha hume khcuh jar file download krni hogi iska use krne k lie kyuki normal java project bnaya h apn ne
+
+//Spring_bean jar file
+//spring_core.jar
+//spring-context.jar              or chroems e jake download krke inko fir .....buildpath ....classpath....add library,...or select kro or Apply and close krdo 
+//comman-logging.jar
+//spring_exprssion.jar
+
+
+//ye sb download krne wlaa kaam hume maven project m nhi krna -pdata h h
+
+public class Main
+
+{
+   public static void main(String[] args)
+   {
+        yaha ye ApplicationContext interface h ,,,,,,or iski implementing class ClasspathApplicationContext h.....
+
+        String config_Loc = "in/sp/resources/application.xml";
+        ApplicationContext context = new ClassPathApplicationContext(config_loc);
+
+ 
+     Student std = (Student) contex.getBean("stdID");    oject humne nhi bnaya spring ne banaya humne context.getBean m object ki id di fir bs display method ko chla dia
+    std.didsplay();                                                             //humen bs object get kia h context.getbeans se
+    }
+}
+
+
+>>kitne bhi object bna skta hu m ek class k or bs yaha main class m aake get krlena 
+
+    Student std2 = (Student) contex.getBean("stdID2");
+
+or m aise kitne bhi object bna skta hu suppose meine ek or bean bna lia uske niche or yaha std2 se bna wpas display call krlia
+
+_______________________________________________________________________________________________________________________________________
+
+
+Xml use na krke hum javaa configuration se krege aaj 
+
+pojo class bnali thi....configuration file bnai .....fir main class bnai thi ......phle ////
+
+pojo class create kro......java file create kro......fir main class crreate kro yaha vo jar file toh jod dena kyuki java project h ye ........
+
+Student Class----> vhi upr wala same ............springConfig file (java file dusre pacakage m bna lena ) ab vaha m xml based configuration krta tha yaha jjava based kruga 
+
+class Student {
+
+  vhi same propeties or getter and setters
+}
+
+Resource pacakge
+
+@Configuration .................................this annotation for xml ddt 
+class SpringConfig
+{
+
+@Bean ......................ye ki spring hume obejct bnake k degi jo class provide krvayege
+public Student std1
+{
+  Student st=new Student();  
+ st.setName("Kamal");
+ st.RollNumber("100");                   aise propery set kr skte h                               
+ return st;
+
+}
+
+Ab MAin class ko bnayege useme dhyn ye rkhna  h ki .....muje ApplicationContext interface ki Classpathapplicatiocontext Xml based configuration m krni h or AnnotationConfigApplicationcontext use krege 
+
+puclic calss main
+{
+public static void main()
+{
+
+  ApplicationContext context= new AnnotationConfigApplicationContext(SpringCongiFile.class)
+ 
+ Student std = (Student)context.getBean("std1");  or      Student std = (Student)context.getBean(Student.class);   
+ std.display();                                                                                          
+
+ aise chleag humara yaha spring AOP jar file bhi add krni hogi 
+
+---->>>>M cahhta hu bean or method name alg alg ho toh m  @Bean(name="Khuch bhi")     or vaha   Student std = (Student)context.getBean("Khuch bhi");  
+_
+---> or aisse m kitne bhi object bna skta hu Bean annotation lga kr or vaha main m call krlo simple
+
+______________________________________________________________________________________________________________________________________
+
+Annotation Configuration.........libraries add krvado
+
+public class Student{
+
+ //vhi same 
+
+}
+
+------>Ek configuration file create krege ....dhyn ye rkhna h ki Anootation ki configuration krni h toh ya toh xml file ya java file koi bhi ek file toh leni hogi apn ko 
+
+First using Annotation in xml file 
+
+Schemma Copy paste krde 
+
+XML FILE WITH ANNOTATION
+
+Schema...
+
+<bean>   hum bean tag m likhte the pr yaha bean tag m nhi likhna hum @Componnet lagayefe toh spirng uska object bna dega easyli .......@component
+
+------->>MAin class bnak Main method bna lena or vha chlake dekhna 
+
+public class Main
+{
+  psvm()
+  {
+    String resourceFilePAth = "meri Student class ka path"
+   ApplicationContext applicationContext = new ClassPAthxml ("resourceFilePAth")l;
+  Student std = (Student)context.getBean("student");                                                              yaha uska objective ye hoga k @Component lgate hi vo student small naam se obejct bnayega
+  std.display();
+
+}
+
+
+----->>Pr itna krne se nhi chlega hume Xml file m Componet ko scan bhi krvana hoga toh hum xml file m Dddl lagade or vha tag lagayege 
+           <context:component-scan base-pacakege="in.sp.beans"> .....yaha vo pacakge dena yaha componet lga h humare ye vah se scan krega 
+
+------>>ab run kruga toh chl jayega pr value nhi aayegi......value lane k lie hum humari pojo class m .....jo varivale h unke upr @Value("deepak") ,,,,asie provide kr skta hu 
+
+--------------------------------------------------------------------------------------------------------------------------------->>>>
+
+Xml se annotation use kia toh ab Hum Java file se krege 
+
+
+@Configuration .................................this annotation for xml ddt 
+@compnentScan("in.sp.beans") yaha m arrat type m bhi de skta hu ki bohot sare pacakage ko bhi ek sath pass kr skta hu 
+class SpringConfig
+{
+
+yaha hum bean object khud bhi create kr skte hor nhi hi kyuki .......vah bn rhe h 
+
+@Bean ......................ye ki spring hume obejct bnake k degi jo class provide krvayege
+public Student std1
+{
+  Student st=new Student();  
+ st.setName("Kamal");
+ st.RollNumber("100");                   aise propery set kr skte h                               
+ return st;
+
+}
+
+______________________________________________________________________________________________________________________________________
+
+LifeCycle of Spring Container
+
+pojo class ya bean class-------------Configuration file banyege--------------------or spring container make there obejct 
+
+java BEan Classs------Configuation(XML , ANNOTATION , java)------Spring Contaianer(Obejct)------java bean obejct ab is bean object ki lifecycle discuss krege 
+
+
+----> Loading Bean Defination(From Configuration file java , xml , Annotation)..........
+
+----> Bean Instantiation (Bean object is created)................
+           .bean object create hua uski koi id set ho gyi pr by default ye sb null h ......ya 0 h ...ye obejct humara non parametarized constructor se bna 
+  
+        BeanPostProcessor ka use bhi kr skte h bean initialization krne se phle ....khcuh bhi kaam krvana h toh
+
+----> Bean initialization (Bean Obejct is Initialized) ...............sari properties ki value set ho jayegi.....Property tag,,,,,settemethod....@Value kisis se  bhi 
+
+
+        BeanPostProcessor ka use bhi kr skte h bean initialization krne se badme ....khcuh bhi kaam krvana h toh   
+ 
+---->using bean object .........phle get krvauga context.getBean se fir operation perform krvauga
+
+---->bean Obejct destruction by destroye() method
+
+______________________________________________________________________________________________________________________________________
+
+Dependency injection-----(Design pattern )
+
+  work---> injecting dependency .....mtlb ek object k andr dusre obejct ko inject krte h yah ek object dusre object pr dependent h toh aise kr skte h 
+
+   Class Student
+    {
+       private String name ;
+      private int Roll_number;
+     
+     private Address address ; 
+    }
+
+
+   Class Address
+  {
+    private Sting Strret ; 
+    
+}
+
+
+aise m Address class ko vha use kr rha hu isse bolete h dependency inejction
+ .........jb bhi Student ka object bnega usse ....Address ka object chahiye hoga......or jb m Address ka object student m inject krvauga usse Dependency iinjection boelge
+
+
+>>>>Dependency inject nhi use krege toh toght coupling hogi loose coupling nhi......tight coupling muje Student class k andr hi Address class ka new Keyword se object banna hoga
+        jo ki shi nhi h 
+
+>>>>We can Achieve Di with 2 ways ....
+       ---->Setter method Di
+       ----->Constructor Di
+______________________________________________________________________________________________________________________________________
+
+Create New Project .......java project add libraries
+
+Make pacakage.....bean 
+
+     Class Student
+    {
+       private String name ;
+      private int Roll_number;
+     
+     private Address address ; 
+    }
+
+
+   Class Address
+  {
+    private Sting Strret ; 
+    private Sting city ; 
+ private Sting pincode ;  
+}
+
+1> way to achive m setter method se achieve krte h hum .....yaha getter setter ya sb generate krdor or m ek display method ya toStrign ko bhi print krluga taki output dikhe muje
+
+    setter method jruri h yaha geeteer na bhi banyege toh bhi chelga yaha bhi .......
+
+    ----->>Ab Resource pac bna de ApplicationContect.xml file bna lena schema dedena vha 
+
+
+       <bean class="in.sp.bean.addrress" id="adrId">
+       <property name="Street" value="20">
+       <property name="city" value="sdf">
+       <property name="pincode" value="">
+</bean>
+
+       <bean class="in.sp.bean" id="stdId">
+       <property name="rollno" value="20">
+       <property name="name" value="sdf">
+       <property name="address" ref="adrId">     property tag internallly setter method ka hi use krta h 
+</bean>
+
+
+Main calss bnak run krvao chlegi mst 
+
+
+
+z-------------------------------------------------------------------------------------->>>Ab construn Dependency inejection ka usekruga 
+
+constructor ko overide krdo setter vgre ko htado  kyuki jeise hi object bnega construtor chelga 
+
+ab m Xml m property tag ka use nhi krege hum <constructor-arg value="">  tag ka use krege 
+ 
+<constructor-arg value="222"> aise or studen or address m aise provide krdege 
+<constructor-arg ref="adrID" >  aise ref ka use krege attribute ka ......................................constructo injeect m sequence vise yaha dena hoga jeise vha die h ....pr setter m keise hi provide kro cahhe
+
+______________________________________________________________________________________________________________________________________
+
+Humne Dependency inejction dekha tha xml k basis pr ,,,,,Ab java file k basis pr dekhte h 
+
+
+     Class Student
+    {
+       private String name ;
+      private int Roll_number;
+     
+     private Address address ; 
+    }
+
+
+   Class Address                                         genertate getter and setter of both of these class
+  {
+    private Sting Strret ; 
+    private Sting city ; 
+ private Sting pincode ;  
+}
+------------------------------>
+@Confiuration
+class Spring-Config
+{
+
+@Bean
+public Student std
+{
+Student st1 = new Student();
+st1.setName("afd");
+return st1;
+
+}
+
+@Bean 
+public Address adr
+{
+Address adr1 = new Address();
+adr1.street("asdad);
+adr1.city("asdad);
+adr1.pincode("asdad);
+
+return adr1;
+}
+
+}
+------------------------->>Main class bando 
+
+public class Main
+{
+
+psvm 
+{
+
+ ApplicationContext context  = new AnnotationConfigApplicationContxt(SpringConfig.class);
+ 
+Student stf= context.getBean(Student.class);
+
+stf.display();
+
+}
+
+
+
+----------> aise hi m constructor se bhi kr skta h u.....bs m Constructor override kr duga m ....... address or student m 
+
+     
+
+
+@Confiuration
+class Spring-Config
+{
+
+@Bean
+public Student std
+{
+Student st1 = new Student("Kali" , "12" , "sdf");
+return st1;
+
+}
+
+@Bean 
+public Address adr
+{
+Address adr1 = new Address("sf" , " asd" , " asd");
+
+return adr1;
+}
+
+}
+
+______________________________________________________________________________________________________________________________________
+
+AutoWiring
+
+Di m ek bean object ko dusre bean obejct m insert kr stke h easyli ..... by setter or construtor.....by xml or java configuration file k through
+
+Autowiring is an the process in which automatic Di ho jata h bina coding kie bina java ya sml configuration file k 
+
+Autowiring achived by Annotation based Autowiring and XmlBased autowiring .........by @Autowiring and Autowird tag 
+
+ Class Student
+    {
+       private String name ;
+      private int Roll_number;
+     
+     private Address address ; 
+    }
+
+
+   Class Address                                         genertate getter and setter ,toString(obejct call hone pr obejct stirng ki way m print hoga) of both of these class
+  {
+    private Sting Strret ; 
+    private Sting city ; 
+ private Sting pincode ;  
+}
+
+---------->an java file Configuration banyege
+
+
+@Confiuration
+class Spring-Config
+{
+
+@Bean
+public Student std
+{
+Student st1 = new Student();
+st1.setName("afd");
+return st1;
+
+}
+
+@Bean 
+public Address adr
+{
+Address adr1 = new Address();
+adr1.street("asdad);
+adr1.city("asdad);
+adr1.pincode("asdad);
+                                                                           yaha manulaay DI kr rhe h hum Main class bnake print krke dekh lo 
+return adr1;
+}
+
+}
+
+---------> muje Bs @AutoWired annoation lagana hoga ...@Bean meine student k upr bhi lagaya or @Bean meine Addrees k upr bhi lagay ye Autowired lagane se kya hua ki muje 
+              student k Bean m aise likhne ki jrurt nhi h ....st1.setAddress(adr());.........aise likhen ki koi jrury nhi h muje smja
+
+
+Ab @Qualifier vgre ko bhi smj lete h ki supoose mere pass Address k do @Bean object h toh konsa select hoga m btata hu ...agr sidha run kru toh errror dega kyuki confuse hogya
+konsa select kru .........@AutoWired @Qualifier("adr1(Bean ka naam)") or bs aise mera vhi sleect hoga jo m krna cvhahta hu 
+
+autowiring hum primitive type pr achive nhi kr skte h ...non primitive type pr hi achive kr skte h object array vgre pr
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Xml based Autowirin......di ko automatic krdena hi xml m autowiring h 
+
+xml k through di achive krna toh pta hi h 
+
+
+ Class Student
+    {
+       private String name ;
+      private int Roll_number;
+     
+     private Address address ; 
+    }
+
+
+   Class Address                                         genertate getter and setter ,toString(obejct call hone pr obejct stirng ki way m print hoga) of both of these class
+  {
+    private Sting Strret ; 
+    private Sting city ; 
+ private Sting pincode ;  
+}
+
+------------------->>ab xml configuration file banuga m 
+
+meine <bean class= "Student">  ki bnai.....
+
+fir meine meine <bean class= "Address">  ki bnai.....
+
+>abhi tk toh m property tag use kr rha tha or value initaite kr rha tha .....ref se student wale bean tag ko bta rha tha bhai ki aaddress wale bean ko bhi lele pr vo
+  manual dependency thi.....ab  muje autowire krnah toh m 
+
+>> <bean class= "Student">  isme autowire tag ka use krke address wale bean ki id deduga ....jis se data chla jeyga
+
+<bean class= "Student" autowire ="yaha modes hote h byname ,,,bytype ">
+
+1> autowire... byname,,,,,, mode
+     
+    yaha meine jo student class m aise dia h .....public Address adr ; .......toh ye adr hi yaha autowire m jana chiaye....or Address beans banaya h uski id bhi same honi chahiye 
+  
+ <bean class= "Student" autowire ="byname"> phle hum byname ka smj lete h 
+
+  property name same hona chaiaye address wale ki id se 
+ 
+2> by Type 
+
+ iska mtlb ....humne lagay h 
+ <bean class= "Student" autowire ="bytype">   isme datatype same hoan chahiye ki Public Address address banaya h meine toh......Address ke type ka beans bna h ya nhi bs
+ 
+id khcuh bhi ho us bean ki frk nhi pdta 
+
+>>>>pr agr mere pass do bean object bne h toh kya hoga kyuki vo toh bs itna dekhga ki Address type ka bean h ya nhi toh muje jo object chlana h Addres ka 
+      usme ek or attribute add krlege ....autowire-candidate = true....
+
+3>constructore
+
+ autowire = constructor
+
+....humen Student or Address class bnai toh meine....vha constructor overrider krlia
+...or constructor-args se value insert ki bean m meine
+bs chl jayega 
+
+agr bohot object h pr muje specific mera chlanah toh ....autowire-candidate = true...
+_____________________________________________________________________________________________________________________________________
+
+Maven >>>
+
+java project [build , dependencies , profiles , etc]   ------->compile, test , Deploye , Documentation etc....(MAven tool(ONLINE REPOSISTARIES))----->Output
+
+>>MAven pom.xml file ko read krega usi m sari configuration hoti h or vo sare task ko automated kr deta h 
+
+maven jar file ko online deepndency add krke apne system m localliy save kr deta h ......m2 mfolder m or hum ,,,,,,pom.xml m jar file bhi add kr dege 
+
+
+2>Spring ka programm maven k through,,,,,,Create Maven project........
+     quickStart(Archtype(Kis type ka project humsimple islie ye choose krege ))........pom.xml m sb chizre h project ki
+
+3> Spring ka simple program bnao ......Student class bnao getter and setter bnao ......
+     xml file bnado or .....fir main class bnak runkro usko ....chlega project humara....Spring Context maven dependency add kr dena
+    kyuki vo applicationcontext or classpathapplicationcontext vo isi m hi h 
+
+3> humare project ko ye ..... jar war  m bhi convert kr deta h 
+______________________________________________________________________________________________________________________________________
+
+Spring JDBC module .....
+
+Ye module provide krta h jiski vjh se hum Spring Application ko ......JDBC .....ki help se Database se connect kr skte h (SPRING JDBC MODULE)
+
+Spring JDbc bhi internally jdbc ko use krta h 
+
+---->Spring Jdbc 3  Classes Provide krta h .....database se connection banne k lie 
+
+   DriverMAnagerDataSource   (jiske thorugh hum configuration provide krte h )
+  
+   JdbcTemplate  (By which we perform CURD operation)
+
+  NamedParameterTemplate
+
+------->     DriverMAnagerDataSource ......
+
+  DataSource (interface )  ko implements krta h ye class.......or ye interface javax.sql pacakage m hota h 
+ 
+---->>it is use for Database Configuration........Driver Loading......Connection Creation
+
+
+  JdbcTemplate Calss
+
+ ---->Central class of Spring jdnc module .....by it we can perform curd operations ......
+       .update().....(insert, update , delete k lie ye update method chlta h )....or yaha hume select k lie
+       bohot methods de rkhe h query().......QueryForList() ......queryFormap() .......queryForObject()
+        ........queryForRowSet().......jdbc m hum resultset m data retrive krke khi store krte the
+      yaha hum direct kisi .....DataStructure m store krte h 
+
+
+----->Create New maven project.....simple prject quick start bnao ....
+
+      pom.xml (SpringContext maven dependency add,,,,,,,,,,,spring Jdbc dependency add kro .......mysqlConnector jar file dependency bhi add krni h )
+
+    --->Resources pacakage m .....Springconfigfile bando ......java annotation based confiuration krege apon 
+
+   @Configuration
+    public class SpringConfigFile
+  
+   {
+       //is class ka object bna k phle configuration kruga m database ki 
+      @Bean
+      public DriverManagerDataSource myDataSource()
+
+     {
+         DriverManagerDataSource dataSource = new DriverManagerDataSource();
+         
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/spring_db")         db bna lena usme student naam setable bna lena bs 
+        dataSource.setUserName("root");
+        dataSource.setPassword("root");
+
+       return datasource;
+
+}
+
+//aise hi jdbcTemplate ka bean bna lua 
+
+@Bean
+public JdbcTemplate myJdbcTemplate()
+
+{
+
+    JdbcTemplate.setDataSource(myDataSource());                  //datasource set krna h pr yaha meine Drivermanager ka jo method banya h vhi likhduga kyuki data source
+                                                                                                drivermanager m implement ho rha h or ...ye iska objevct humne ba lua upr
+
+    return jdbcTemplate;
+}
+   
+
+
+--------------->>>Ab Main class pr aajate h 
+
+public class App
+{
+ public static void main(String [] args)
+{
+
+   ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfigFile.class);
+   
+  JdbcTemplate jdbcTemplate = context.getBean(JdbcTemplate.class);                      
+                                                                                                                        yaha meine bean get kia h jdbctemplatwe ko kyuki m Crud operation  perform krvane wala hu ...
+                                                                                                                        .iski k pass h sare update query wale operation s
+
+  int std_roll = 101; 
+ String std_name = "deepak";
+ Float std_marks = 91.5 ;
+
+
+////insert Query
+
+  String insert_Sql_query = "Insert into values(? , ? , ? );"
+
+int count =   jdbcTemplate.update(insert_Sql_query , std_roll_no , std_name , std_marks);
+
+  if(count > 0)
+  {
+    System.out.println("insertion succesfull");
+  }
+ else
+{
+  Sout("Not succesfull");
+ }
+
+
+
+//update Query(comment krke likhna ek ek ko )
+>>table m data toh h hi bs nyi float value lelebe or jisko update krna h uska roll nu lellehe 
+
+float marks = 98.3f;
+int rollno = 101;
+
+String update_sql_query = "update student set std_marks = ? wjere std_roll=?"
+int count =   jdbcTemplate.update(update_Sql_query , marks , roll_no);
+
+  if(count > 0)
+  {
+    System.out.println("updation succesfull");
+  }
+ else
+{
+  Sout("Not succesfull");
+ }
+
+
+//deleteQuery 
+
+int roll_no = 102 ; 
+String delete_sql_query ="Delete from student where std_roll = ?";
+
+int count = jdbcTemplate.update(delete_sql_query , rollNo) ;
+ 
+if(count > 0 )
+ {
+
+   sout("deleted");
+}
+
+else
+{
+sout("nope");
+}
+
+//////////////////////////////////////Ab select operation perform krege tummultiple data insert kr lena yaha pr.....querySting (Rowmapper wala select krna h ) 
+
+
+String select_sql_query = " Select * from studemt;"
+
+jdbcTempalte.query(select_sql_query , null);  
+                   
+                                                          yaha second jgh muje Rowmapper provide krna h vo keise or kya kre ....RowMapper class create krna h  StudentRowMapper naame se
+
+
+//mtlb bean class Student naam se bnani hogi ......or ek StudentMapper which implements RowMapper bnanni hogi....
+  or yaha mapRow naam se method override ho ajegea jo Student class ko return krega
+
+//or m vhaa Student calss ka object bnauga or get kruga sb khcuh...
+
+//student class bna dena ek bean jisme vhi sb ho jo meine phle manually lia tha getter setter provide krdo 
+
+
+public class StudentRowMapper implements Rowmapper<Student>
+
+{
+
+   @OverRide
+   public Student mapRow(ResultSet rs , int rowNum) thorows SqlException 
+   {
+     Student std = new Student() ;
+     std.setRollno(rs.getInt(std_roll));    mtlb db m se eke k chiz ko get krega resultset se or student k objecy m daal dega or ye objecy yaha se return krva rha hu m 
+
+     std.setName(rs.getString("std_name"));
+
+
+     std.setMarks(rs.getFloat("std_,marks"));     sari row ko ek ek krke get krvayega or list m store krvayega or list m data pass kr dega 
+
+   return std;
+
+}
+
+
+---->(Main class m hum....aise cahnge krege thoda sa )
+
+List<Student> std_list = jdbcTempalte.query(select_sql_query , new StudentMapper());  
+
+for(Student std : std_list)
+{
+sot("Roolle"+ st.getRoll);
+aise hi sb get krvaluga 
+
+}
+
+
+//or agr muje sara data nhi get kreke ek hi data get krna h toh bs query change krnddena 
+  Where std_roll laa dena or nivhe queryForObjrct ka use krna or data list m mt nikalna nikal jayegi aaram se
+
+
+
+----------->Jdbc template m hum positional parameter ka use krte the pr yha pr named parameter ka use krege taki confusion ouccer na hoo
+
+make an new project .....add dependency alll like spirng context....mysql-connector--spring-jdbc---
+
+--->SpringConfig file banana.....vhi DrivermanagerDataSource banna .....jdbc template bnana .....or usme apn operation perfrom krvayege
+
+--->table bhi ban dena ek database bnake 
+
+---->ab namedPArameterjdbc class ka bean bnauga m or fir kruga JdbcTemplate bane se phle 
+
+--->>jdbc template ka bnanae ki jrurt nhi ab 
+
+
+   @Public NamesparameterJdbcTemplate npJdbcTemplate()
+{
+    
+   NamedparameterJdbcTemplate npjdbcTemplate = new NamedParameterJdbcTempalte(myDataSource())  ;  
+                                                                                                                                     yaha pr bhi data source ko dena  h apn koi vhi mehof DrivermanagerDatasource wala
+
+   return npJdbcTemplate;
+
+}
+
+
+--------->App class mtlb main cals m ajana
+
+NamedParameterJdbTecmplate np= context.getBean(NamedPArameterJdbcTemplate.class);   ye lijhne se typecastnhi krna pdega 
+
+Map<String , Object > map = new Hashmap<String , Object>();
+
+map.put("key_roll" , 104);
+map.put("Key_name"  , "Rahul");
+map.put("key_marks" , 88.8f);
+
+String insert_sql_query = "insert into student values(key_roll , Key_name , key_marks)"              ab yaha humne ? na use krke named parameter use kie h 
+
+int count = np.update( insert_sql_query  ,map);
+if(count > 0)
+{
+sout(""success);
+
+}
+else{
+
+sout("fails");
+}
+
+}
+}}
+
+__________________________________________________________________________________________________________________________________
+
+
+MVC DESING PATTERN IN SPRING BOOT 
+
+>>>Code ko ache se organize krta h user-friedly code hota h code ki scabiliy bdh jati h ........
+>>Types of design pattern s
+
+     Singleton Design pattern
+     Factory Method Design Pattern
+    Dao Design pattern 
+    Mvc Desgin pattern 
+
+Model (Store data)---------view(Frontend or presentation)-------controller(used for Backend)
+
+client-----url provide krega ------controller k pass jayegi request ------controller view page generate krvayega -------
+or yaha controller backend part bhi excute krvayega login sign ka
+
+Controller(Servlet).........viewPAge(jsp)
+
+---->>Hr layer apna ek task kr rhi h usse hi mvc layer bolter h 
+
+
+Programm of Login Regisrtation >>>>>>>
+
+---------------------------------------->>Create an Dynamic Web PRoject 
+
+1>index.html static page where we giving Login here link and .......creating other seconfd Login page where i creating loginpage .......
+
+---------> index.html
+
+ <h3> Welcome </h3>
+
+ <a href="Login.html">Login here </a>
+
+ <a href="Register.html">Register here</a>
+
+--------->  Registration page
+
+  <form action ="registerForm" method="post">
+    name email pass button
+ </form>
+
+--------->  Login page
+ <form action="loginForm" method="post">
+    email and password bana luga m 
+   button
+ </form>
+
+------->Controller bnana hoga ......RegisterController taki db m data store ho jaye .........or Login controller jis se hum login kr skte h 
+
+   Registercontroller in controller Package 
+
+ @WebServlet("/regForm")
+ public class Register extends HttpServlet
+{
+   dopost(kyuki vha do post hi toh chla rha hu na m )
+  {
+    String myname = request.getParameter("name1");
+    String myemail = request.getParameter("email");                            database bna lena or ek table bna lena usme architecture dedena uska .....Register naam se Table bna lena
+    String mypass = request.getParameter("pass1");
+    String mycity = request.getParameter("city1");
+    
+}
+
+//ab yaha se hum database connectivity krege  try catch m likege or bs data store krvayege 
+
+ try
+{
+  //myaha connection banan se acha h m ek DbConnection naamse class bnauga or fir connection kruga aao dekhte h keise 
+{{{{{
+
+   public static class DbConnection    ..taki object na banana pde hume islie static bna liea khi bhi call kr stke h 
+    {
+       public Connection getConnection()
+        {
+            Connection conn==null;
+
+            try
+                {
+                 Class.forNAme("com.");
+                Connection conn = Drivermanager.getConnection(jdbc:///database name vgre ddedena );     /jar file bhi deni hogi hume maven ka project ni h ye 
+              }
+         catch(Exception e )
+{
+ e.printStackTrace();
+}
+
+return conn;
+
+}}}
+
+Connection conn = DbConnection.getConnection();
+String insert_sql_query ="insert into register values(?,?,?,?)";
+
+PreparedStatement ps= conn.prepareStatement(insert_sql_query);
+ps.setSting(1,myName);
+
+ps.setSting(2,myEmail);
+ps.setSting(3,myPass);
+ps.setSting(4,myCity);
+
+int count = ps.executeUpdate();
+if(count>0)
+{
+sout("true")
+//Register krvane k baad hum login page pr janachahe ge toh RequesDispather h na
+
+RequestDispatcher re= request.getRequestDispatch("/login.html");                                                            itna part execute krke dekho chelgas
+re.include(req , resp);
+
+}
+else
+{
+sou("false");
+}
+
+}
+cathc(Exceptiom)
+
+---------->>
+
+
+   Logincontroller in controller Package 
+
+ @WebServlet("/loginForm")
+ public class Login extends HttpServlet
+{
+   dopost(kyuki vha do post hi toh chla rha hu na m )
+  {
+     
+    String myEmail =req.getParameter("email1");
+    String myPass = req.getParameter("pass1");     
+
+try{
+  Connection conn = DbConnection.getConnection();
+  String select_sql_query = "select * from register where email.=? and password=?";
+
+  PreparedStatement ps = con.preparedStatement(select_sql_query);
+  ps.setString(1,myemail);
+  ps.setString(2,myPass);
+
+ ResultSet rs = ps.excuteQuery();
+
+ if(rs.next())         select ki query ResultSetReturn krrgegu or m fir succes dikha duha vrna m aise false dikha duga 
+{
+    ///toh jo bhi value aayegi usko m .....model k andr stroe kr vaduga database se value jo bhi retrive hogi vo model m stroe krvaduga 
+
+//Beans classsb bna deena ....name email city bna elna getter and setter generate krvadena 
+//ab yaha us bean class ka object bna luag //////       User user = new User();
+//or uski properties m set krduga //////////////////         user.setName(rs.getString("name"));    rs.getStirng ka mtlb h ki database me jo bhi column h vo get krna h or set krna h 
+                                                                            user.setEmail or setCity kr dena bhai
+
+//Ab m chahta hu ki ye wala object sari jgh accesable ho toh m session ka use krluga yaha pr 
+
+HttpSession session = req.getSession();
+session.setAttribute("session_user" , user);
+
+Requestdispathcehr rd = req.getRequestDispathcher("/profile.jsp");   dynamically bannah muje ye page toh meine ye page lelia 
+rd.forward(req, resp);                                                                           //ab hum bs ek profile.jsp page bna lege 
+}
+
+else
+{
+   out.println("Email or pass were eorn ");
+  RequestDispatcher rd=request.getRequestDispatcher("/login.html");
+ rd.include(req.resp);
+
+
+}
+
+  }  
+}
+
+}
+
+---------------------------------------------->>>
+
+profile.jsp
+
+<%
+  User user =(User)  session.getAttribute("session_user");      is naam se session bnaaya tha humne or create krlia get krlia or ye user m value return krega 
+%>
+
+<h2> Welcome </h2>
+  <h3> NAme : <% user.getName() > </h3>
+
+//sb khcuh get krva skte h aise apn 
+
+
+bs run kro chlao mst chlega or m logout ka bhi kr skta hu ki baar baar alg alg profile se login krke dekhu or vo chl jaye 
+
+<a href="logout">Logout</a>
+
+-------------------------------------------->
+
+create an logout servlet
+
+@WebServlet("/logout")
+public class Logout extend Httpservlet
+{
+   //request href mtlb hyperlink se aa rhi h toh hum do get ka use kreege 
+
+  doGet()
+  {
+  
+   HttpSesion session = req.getSession();
+   session.invalidate();
+   Requa..Adad rd =request.RequestDispathchd("/login.html");
+   rd.forwad();
+
+} 
+}
+
+___________________________________________________________________________________________________________________________________________________________
+
+Ek or acha Example ye trika jada acha h toh yr folloe krna 
+
+Bhai 🔥 ab tu ready hai proper structured project dekhne ke liye — main tujhe clean MVC based (Servlet + JSP + JDBC) ka full flow code deta hu
+👉 Proper naming: users table + User class
+🗂️ Project Structure (samajh le pehle)
+
+src/
+ ├── model/
+ │     └── User.java
+ ├── dao/
+ │     └── UserDao.java
+ ├── servlet/
+ │     ├── RegisterServlet.java
+ │     ├── LoginServlet.java
+ │     └── LogoutServlet.java
+ ├── util/
+ │     └── DBConnection.java
+
+webapp/
+ ├── index.html
+ ├── register.html
+ ├── login.html
+ └── home.jsp
+🧱 1. Database Table
+SQL
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    password VARCHAR(100)
+);
+🔌 2. DB Connection
+Java
+package util;
+
+import java.sql.*;
+
+public class DBConnection {
+    public static Connection getConnection() throws Exception {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        return DriverManager.getConnection(
+            "jdbc:mysql://localhost:3306/test", "root", "password");
+    }
+}
+👤 3. Model Class
+Java
+package model;
+
+public class User {
+    private String name;
+    private String email;
+    private String password;
+
+    // getters & setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+}
+🛢️ 4. DAO Layer (DB logic alag 🔥)
+Java
+package dao;
+
+import model.User;
+import util.DBConnection;
+import java.sql.*;
+
+public class UserDao {
+
+    public boolean register(User user) {
+        try {
+            Connection con = DBConnection.getConnection();
+            String sql = "INSERT INTO users(name,email,password) VALUES(?,?,?)";
+
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+
+            return ps.executeUpdate() > 0;
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public User login(String email, String password) {
+        try {
+            Connection con = DBConnection.getConnection();
+            String sql = "SELECT * FROM users WHERE email=? AND password=?";
+
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.setString(2, password);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) {
+                User user = new User();
+                user.setName(rs.getString("name"));
+                user.setEmail(rs.getString("email"));
+                return user;
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+}
+🎯 5. Register Servlet
+Java
+package servlet;
+
+import dao.UserDao;
+import model.User;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+
+@WebServlet("/register")
+public class RegisterServlet extends HttpServlet {
+
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) {
+        try {
+            String name = req.getParameter("name");
+            String email = req.getParameter("email");
+            String password = req.getParameter("password");
+
+            User user = new User();
+            user.setName(name);
+            user.setEmail(email);
+            user.setPassword(password);
+
+            UserDao dao = new UserDao();
+
+            if(dao.register(user)) {
+                req.getRequestDispatcher("login.html").forward(req, res);
+            } else {
+                res.getWriter().println("Registration Failed");
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+🔐 6. Login Servlet
+Java
+package servlet;
+
+import dao.UserDao;
+import model.User;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+
+@WebServlet("/login")
+public class LoginServlet extends HttpServlet {
+
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) {
+        try {
+            String email = req.getParameter("email");
+            String password = req.getParameter("password");
+
+            UserDao dao = new UserDao();
+            User user = dao.login(email, password);
+
+            if(user != null) {
+                HttpSession session = req.getSession();
+                session.setAttribute("user", user);
+
+                req.getRequestDispatcher("home.jsp").forward(req, res);
+            } else {
+                res.getWriter().println("Invalid Credentials");
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+🚪 7. Logout Servlet
+Java
+package servlet;
+
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+
+@WebServlet("/logout")
+public class LogoutServlet extends HttpServlet {
+
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) {
+        HttpSession session = req.getSession();
+        session.invalidate();
+
+        try {
+            res.sendRedirect("login.html");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+🏠 8. home.jsp
+JSP
+<%@ page import="model.User" %>
+
+<%
+    User user = (User) session.getAttribute("user");
+%>
+
+<h2>Welcome <%= user.getName() %></h2>
+
+<a href="logout">Logout</a>
+🌐 9. register.html
+HTML
+<form action="register" method="post">
+    Name: <input type="text" name="name"><br>
+    Email: <input type="email" name="email"><br>
+    Password: <input type="password" name="password"><br>
+    <button type="submit">Register</button>
+</form>
+🌐 10. login.html
+HTML
+<form action="login" method="post">
+    Email: <input type="email" name="email"><br>
+    Password: <input type="password" name="password"><br>
+    <button type="submit">Login</button>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+} 
+
+
+
+
+
+c
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,434 @@
+
+
+
+
+Claim offer
+i want all crud operation on spring boot jpa
+
+Perfect. Since you've already learned:
+
+Standalone JDBC
+
+Spring JDBC
+
+Standalone Hibernate
+
+Spring Hibernate
+
+Spring Data JPA
+
+The final step is Spring Boot + Spring Data JPA.
+
+This is what most companies use today.
+
+Spring Boot JPA CRUD (Complete Project)
+Project Structure
+SpringBootJpaCrud
+│
+├── controller
+│      StudentController.java
+│
+├── service
+│      StudentService.java
+│      StudentServiceImpl.java
+│
+├── repository
+│      StudentRepository.java
+│
+├── entity
+│      Student.java
+│
+├── exception
+│      ResourceNotFoundException.java
+│
+├── SpringBootJpaApplication.java
+│
+└── application.properties
+Step 1: Dependencies
+<dependencies>
+
+    <!-- Spring Web -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <!-- Spring Data JPA -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+
+    <!-- MySQL -->
+    <dependency>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
+    </dependency>
+
+</dependencies>
+Step 2: application.properties
+spring.datasource.url=jdbc:mysql://localhost:3306/studentdb
+spring.datasource.username=root
+spring.datasource.password=root
+
+spring.jpa.hibernate.ddl-auto=update
+
+spring.jpa.show-sql=true
+
+spring.jpa.properties.hibernate.format_sql=true
+Step 3: Entity
+package com.entity;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="student")
+public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private String name;
+
+    private String course;
+
+    private double fee;
+
+    public Student() {
+    }
+
+    public Student(Integer id, String name, String course, double fee) {
+        this.id = id;
+        this.name = name;
+        this.course = course;
+        this.fee = fee;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCourse() {
+        return course;
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
+    }
+
+    public double getFee() {
+        return fee;
+    }
+
+    public void setFee(double fee) {
+        this.fee = fee;
+    }
+}
+Step 4: Repository
+package com.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.entity.Student;
+
+public interface StudentRepository extends JpaRepository<Student, Integer> {
+
+}
+Notice there is no implementation class.
+
+Spring Boot creates it automatically.
+
+What does JpaRepository provide?
+save()
+
+findById()
+
+findAll()
+
+delete()
+
+deleteById()
+
+count()
+
+existsById()
+
+findAllById()
+
+saveAll()
+
+deleteAll()
+
+flush()
+
+getReferenceById()
+You don't write SQL.
+
+You don't write implementation.
+
+Spring creates everything.
+
+Step 5: Service Interface
+package com.service;
+
+import java.util.List;
+import com.entity.Student;
+
+public interface StudentService {
+
+    Student saveStudent(Student student);
+
+    Student updateStudent(Integer id, Student student);
+
+    Student getStudent(Integer id);
+
+    List<Student> getAllStudents();
+
+    void deleteStudent(Integer id);
+
+}
+Step 6: Service Implementation
+package com.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.entity.Student;
+import com.repository.StudentRepository;
+
+@Service
+public class StudentServiceImpl implements StudentService {
+
+    private final StudentRepository repository;
+
+    public StudentServiceImpl(StudentRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public Student saveStudent(Student student) {
+
+        return repository.save(student);
+    }
+
+    @Override
+    public Student updateStudent(Integer id, Student student) {
+
+        Student dbStudent = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student Not Found"));
+
+        dbStudent.setName(student.getName());
+        dbStudent.setCourse(student.getCourse());
+        dbStudent.setFee(student.getFee());
+
+        return repository.save(dbStudent);
+    }
+
+    @Override
+    public Student getStudent(Integer id) {
+
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student Not Found"));
+    }
+
+    @Override
+    public List<Student> getAllStudents() {
+
+        return repository.findAll();
+    }
+
+    @Override
+    public void deleteStudent(Integer id) {
+
+        repository.deleteById(id);
+    }
+
+}
+Why don't we use @Transactional here?
+In Spring Boot Data JPA:
+
+SimpleJpaRepository (the class that implements JpaRepository) is already transactional:
+
+Read methods → @Transactional(readOnly = true)
+
+Save/Delete methods → @Transactional
+
+So this works:
+
+repository.save(student);
+without adding
+
+@Transactional
+You usually add @Transactional on the service when:
+
+Multiple repository calls must succeed or fail together.
+
+You modify lazy-loaded entities within one transaction.
+
+You need explicit transaction boundaries for business logic.
+
+Step 7: Controller
+package com.controller;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.*;
+
+import com.entity.Student;
+import com.service.StudentService;
+
+@RestController
+@RequestMapping("/students")
+public class StudentController {
+
+    private final StudentService service;
+
+    public StudentController(StudentService service) {
+        this.service = service;
+    }
+
+    @PostMapping
+    public Student save(@RequestBody Student student) {
+
+        return service.saveStudent(student);
+    }
+
+    @GetMapping("/{id}")
+    public Student getStudent(@PathVariable Integer id) {
+
+        return service.getStudent(id);
+    }
+
+    @GetMapping
+    public List<Student> getAllStudents() {
+
+        return service.getAllStudents();
+    }
+
+    @PutMapping("/{id}")
+    public Student update(@PathVariable Integer id,
+                          @RequestBody Student student) {
+
+        return service.updateStudent(id, student);
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Integer id) {
+
+        service.deleteStudent(id);
+
+        return "Deleted Successfully";
+    }
+
+}
+Testing in Postman
+Insert
+POST
+http://localhost:8080/students
+Body
+
+{
+    "name":"Harshal",
+    "course":"Java",
+    "fee":15000
+}
+Get One
+GET
+http://localhost:8080/students/1
+Get All
+GET
+http://localhost:8080/students
+Update
+PUT
+http://localhost:8080/students/1
+{
+    "name":"Harshal Kumar",
+    "course":"Spring Boot",
+    "fee":20000
+}
+Delete
+DELETE
+http://localhost:8080/students/1
+Internal Flow
+Client
+   │
+   ▼
+StudentController
+   │
+   ▼
+StudentService
+   │
+   ▼
+StudentRepository (JpaRepository)
+   │
+   ▼
+SimpleJpaRepository (provided by Spring Data JPA)
+   │
+   ▼
+EntityManager
+   │
+   ▼
+Hibernate
+   │
+   ▼
+JDBC
+   │
+   ▼
+MySQL
+How save() works internally
+When you call:
+
+repository.save(student);
+The flow is:
+
+StudentRepository
+       │
+       ▼
+SimpleJpaRepository.save(entity)
+       │
+       ▼
+EntityManager.persist(entity)   // if new entity (id is null)
+or
+
+EntityManager.merge(entity)     // if entity already exists (id is not null)
+Then:
+
+Hibernate
+      │
+      ▼
+Generates SQL
+      │
+      ▼
+INSERT INTO student(...)
+or
+
+UPDATE student
+SET ...
+WHERE id = ?
+Comparison of all persistence approaches
+Feature	Standalone Hibernate	Spring Hibernate	Spring Data JPA	Spring Boot + Spring Data JPA
+XML configuration	Yes	Optional	No	No
+SessionFactory	Manual	Managed by Spring	Hidden	Hidden
+EntityManager	No	Yes	Yes	Yes
+Repository interface	No	No	Yes	Yes
+CRUD implementation	Manual	Manual	Auto-generated	Auto-generated
+SQL writing	Usually No	Usually No	No	No
+Transaction management	Manual	@Transactional	Mostly handled by repository	Mostly handled by repository
+Embedded server	No	No	No	Yes (Tomcat by default)
+Production usage	Rare	Less common	Common	Most common
+This is the standard layered architecture used in most modern Spring Boot applications. From here, the next topics to learn are custom query methods (findByName, findByCourse), pagination & sorting, JPQL, native SQL queries, relationships (@OneToOne, @OneToMany, @ManyToMany), and finally Spring Security with JPA.
+
+

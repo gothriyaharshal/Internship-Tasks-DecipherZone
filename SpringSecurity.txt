@@ -1,0 +1,494 @@
+Ye bahut important topic hai. Agar tum Spring Security + JWT ka ye flow deeply samajh gaye, to tumhe JWT implementation ratne ki zarurat nahi padegi. Har line ka purpose samajh aa jayega.
+
+Main isko 5 phases me explain karta hoon.
+
+Phase 1 - Login Request (Abhi user ke paas token nahi hai)
+
+User pehli baar login karta hai.
+
+POST /api/auth/login
+
+{
+   "username":"harshal",
+   "password":"12345"
+}
+
+Dhyan do:
+
+Is request me JWT token nahi hota.
+
+Sirf username aur password hote hain.
+
+Request Spring Boot me enter hoti hai
+
+Sabse pehle request kis ke paas jati hai?
+
+Client
+   │
+   ▼
+Tomcat
+   │
+   ▼
+Filter Chain
+
+Spring Security ne bahut saare filters laga rakhe hote hain.
+
+Example:
+
+SecurityContextHolderFilter
+LogoutFilter
+UsernamePasswordAuthenticationFilter
+ExceptionTranslationFilter
+AuthorizationFilter
+...
+
+Agar tum JWT use kar rahe ho to tumhara custom filter bhi inke beech me hota hai.
+
+JwtAuthenticationFilter
+Login request par JWT Filter kya karta hai?
+
+JWT Filter request dekhta hai.
+
+POST /api/auth/login
+
+Header check karta hai.
+
+Authorization: Bearer xxxxxx
+
+Kya mila?
+
+Nothing
+
+Kyun?
+
+Kyuki login ke time token hota hi nahi.
+
+Isliye filter simply bolta hai
+
+Koi JWT nahi hai.
+
+Main authentication nahi karunga.
+
+Next filter ko request de do.
+
+Ye line isi ka kaam karti hai
+
+filterChain.doFilter(request,response);
+
+Request finally controller tak pahunch jati hai.
+
+@PostMapping("/login")
+
+Ab tum
+
+authenticationManager.authenticate(...)
+
+call karte ho.
+
+AuthenticationManager kya karta hai?
+UsernamePasswordAuthenticationToken
+        │
+        ▼
+AuthenticationManager
+        │
+        ▼
+DaoAuthenticationProvider
+        │
+        ▼
+UserDetailsService
+        │
+        ▼
+Database
+
+Database se user nikla.
+
+Password compare hua.
+
+BCrypt se match hua.
+
+Agar password galat
+
+401 Unauthorized
+
+Agar sahi
+
+Authentication Successful
+JWT kab banta hai?
+
+Authentication ke baad.
+
+String token = jwtHelper.generateToken(userDetails);
+
+Example
+
+eyJhbGciOiJIUzI1NiJ9....
+
+Ye client ko bhej diya.
+
+{
+   "token":"eyJhbGciOiJIUzI1Ni..."
+}
+
+Ab login complete.
+
+Phase 2 - Client token save karta hai
+
+Client
+
+Browser
+
+ya
+
+Android
+
+ya
+
+React App
+
+token save karta hai.
+
+Example
+
+LocalStorage
+
+ya
+
+SessionStorage
+
+ya
+
+HttpOnly Cookie
+Phase 3 - Dusri Request
+
+Ab user profile dekhna chahta hai.
+
+GET /api/users/profile
+
+Ab request ke saath token bheja jata hai.
+
+Authorization: Bearer eyJhbGciOiJIUzI...
+
+Ab request dubara Spring Boot me enter hoti hai.
+
+Tomcat
+      │
+      ▼
+Security Filter Chain
+
+Ab sabse important part start hota hai.
+
+Phase 4 - JWT Filter
+
+Tumhara custom filter execute hota hai.
+
+Example
+
+protected void doFilterInternal(...)
+
+Step 1
+
+Authorization Header nikala.
+
+String header=request.getHeader("Authorization");
+
+Header
+
+Bearer eyJhbGciOiJI...
+
+Step 2
+
+Bearer hata diya.
+
+JWT
+
+↓
+
+eyJhbGciOiJI...
+
+Step 3
+
+JWT verify kiya.
+
+Signature
+
+check hui.
+
+Expiry
+
+check hui.
+
+Secret Key
+
+match hui.
+
+Agar kuch bhi galat
+
+401
+
+Step 4
+
+Username nikala.
+
+username=jwtHelper.getUsernameFromToken(jwt);
+
+Result
+
+harshal
+
+Step 5
+
+Database se user nikala.
+
+userDetailsService.loadUserByUsername(username);
+
+Database
+
+Username
+
+Password
+
+Roles
+
+sab aa gaye.
+
+Step 6
+
+JWT dobara validate hua.
+
+jwtHelper.validateToken(jwt,userDetails)
+
+Sab sahi?
+
+Yes
+Authentication Object banta hai
+
+Ab Spring ko bolna padega
+
+Ye user authenticate ho chuka hai.
+
+Kaise?
+
+UsernamePasswordAuthenticationToken authentication=
+new UsernamePasswordAuthenticationToken(
+userDetails,
+null,
+userDetails.getAuthorities());
+
+Is object me hota hai
+
+Principal
+
+↓
+
+UserDetails
+
+Credentials
+
+null
+
+Kyuki password dubara nahi chahiye.
+
+Authorities
+
+ROLE_ADMIN
+
+ROLE_USER
+Ab SecurityContext me set karte hain
+
+Ye sabse important line hai.
+
+SecurityContextHolder.getContext().setAuthentication(authentication);
+
+Question
+
+SecurityContext kya hai?
+
+Ye ek object hai jo current request ke authenticated user ki information rakhta hai.
+
+Socho ye request ka identity card hai.
+
+Current Request
+        │
+        ▼
+SecurityContext
+        │
+        ▼
+Authentication
+        │
+        ▼
+UserDetails
+
+Ab Spring Security ke har filter ko pata chal gaya
+
+Current user authenticated hai.
+Agar ye line na likho
+SecurityContextHolder.getContext().setAuthentication(authentication);
+
+To kya hoga?
+
+Controller chalega.
+
+Lekin Spring bolega
+
+No authenticated user.
+
+Aur
+
+403 Forbidden
+
+de dega.
+
+Isliye ye line compulsory hai.
+
+FilterChain.doFilter()
+
+Ab authentication ho gaya.
+
+Ab request ko aage bhejna hai.
+
+filterChain.doFilter(request,response);
+
+Matlab
+
+JWT Filter
+
+↓
+
+Next Filter
+
+↓
+
+Controller
+
+Agar ye line nahi likhoge
+
+Request wahi ruk jayegi.
+
+Controller kabhi execute hi nahi hoga.
+
+Controller
+
+Ab controller me
+
+@GetMapping("/profile")
+
+execute hoga.
+
+Ab tum
+
+Authentication authentication=
+SecurityContextHolder
+.getContext()
+.getAuthentication();
+
+likh sakte ho.
+
+Ya
+
+Principal principal
+
+le sakte ho.
+
+Ya
+
+@AuthenticationPrincipal
+
+use kar sakte ho.
+
+Kyuki user pehle hi SecurityContext me store ho chuka hai.
+
+Request Complete
+
+Response client ko chali gayi.
+
+Ab kya SecurityContext permanently save rehta hai?
+
+Nahi.
+
+Request complete hote hi Spring Security us request ka SecurityContext clear kar deta hai.
+
+Agle request me fir se:
+
+JWT read hoga.
+Validate hoga.
+Authentication banega.
+SecurityContext me set hoga.
+
+Isi wajah se JWT authentication stateless kehlata hai. Server session me login state store nahi karta; har request apne JWT ke basis par independently authenticate hoti hai.
+
+Complete JWT Flow
+                LOGIN REQUEST
+Client
+   │
+   ▼
+POST /login
+(username,password)
+   │
+   ▼
+Security Filter Chain
+   │
+   ▼
+JWT Filter
+(No Token → Skip)
+   │
+   ▼
+Controller
+   │
+   ▼
+AuthenticationManager
+   │
+   ▼
+UserDetailsService
+   │
+   ▼
+Database
+   │
+   ▼
+Password Match
+   │
+   ▼
+JWT Generated
+   │
+   ▼
+Client Stores Token
+══════════════════════════════════════════
+
+         NEXT REQUEST
+
+GET /profile
+Authorization: Bearer JWT
+   │
+   ▼
+Security Filter Chain
+   │
+   ▼
+JWT Filter
+   │
+   ▼
+Read Header
+   │
+   ▼
+Extract Token
+   │
+   ▼
+Validate JWT
+   │
+   ▼
+Load UserDetails
+   │
+   ▼
+Create Authentication
+   │
+   ▼
+SecurityContextHolder.setAuthentication()
+   │
+   ▼
+filterChain.doFilter()
+   │
+   ▼
+Controller Executes
+   │
+   ▼
+Response
+
+Ye Spring Security JWT ka end-to-end request lifecycle hai. Agar tumhe ye flow samajh aa gaya, to phir SecurityContext, AuthenticationManager, UserDetailsService, JwtAuthenticationFilter, aur SecurityFilterChain sab ek doosre se naturally connect ho jayenge.

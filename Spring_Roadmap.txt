@@ -1,0 +1,580 @@
+Phase 1 : Spring Fundamentals (Must Learn First)
+
+This is the foundation of everything.
+
+Spring Framework
+
+1. What is Spring?
+
+2. Why Spring?
+
+3. Problems before Spring
+
+4. Architecture
+
+5. Modules of Spring
+
+6. IOC Container
+
+7. Dependency Injection
+
+8. Bean
+
+9. BeanFactory
+
+10. ApplicationContext
+
+11. XML Configuration
+
+12. Java Configuration
+
+13. Annotation Configuration
+
+14. @Component
+
+15. @Service
+
+16. @Repository
+
+17. @Controller
+
+18. @Configuration
+
+19. @Bean
+
+20. @Autowired
+
+21. @Primary
+
+22. @Qualifier
+
+23. Bean Lifecycle
+
+24. Bean Scope
+
+25. Lazy Initialization
+
+26. Constructor Injection
+
+27. Setter Injection
+
+28. Field Injection
+
+29. Circular Dependency
+
+30. Profiles
+
+31. Environment
+
+32. Property Files
+
+33. Spring Expression Language (SpEL)
+
+34. Resource Loading
+Phase 2 : Spring MVC
+1. MVC Architecture
+
+2. DispatcherServlet
+
+3. Front Controller Pattern
+
+4. Controller
+
+5. @Controller
+
+6. @RestController
+
+7. Request Mapping
+
+8. GetMapping
+
+9. PostMapping
+
+10. PutMapping
+
+11. DeleteMapping
+
+12. PatchMapping
+
+13. RequestParam
+
+14. PathVariable
+
+15. RequestBody
+
+16. ResponseBody
+
+17. ResponseEntity
+
+18. Model
+
+19. ModelMap
+
+20. ModelAndView
+
+21. View Resolver
+
+22. JSP
+
+23. Thymeleaf
+
+24. Form Handling
+
+25. Validation
+
+26. BindingResult
+
+27. Redirect
+
+28. Forward
+
+29. Session
+
+30. Cookies
+
+31. Flash Attributes
+
+32. Multipart File Upload
+
+33. Exception Handling
+
+34. Controller Advice
+
+35. Filters
+
+36. Interceptors
+
+37. CORS
+
+38. REST API Design
+
+39. Content Negotiation
+
+40. Message Converters
+
+41. Handler Mapping
+
+42. Handler Adapter
+
+43. Spring MVC Lifecycle
+Phase 3 : Spring Boot
+
+This is where most real-world development starts.
+
+1. Spring Boot
+
+2. Auto Configuration
+
+3. Starter Dependencies
+
+4. Embedded Tomcat
+
+5. application.properties
+
+6. application.yml
+
+7. Profiles
+
+8. Configuration Properties
+
+9. Actuator
+
+10. DevTools
+
+11. Banner
+
+12. Logging
+
+13. CommandLineRunner
+
+14. ApplicationRunner
+
+15. External Configuration
+
+16. Environment Variables
+
+17. Packaging
+
+18. Jar
+
+19. War
+
+20. Deployment
+Phase 4 : Spring Data JPA + Hibernate
+1. ORM
+
+2. Hibernate
+
+3. Entity
+
+4. Repository
+
+5. CrudRepository
+
+6. JpaRepository
+
+7. PagingAndSortingRepository
+
+8. EntityManager
+
+9. Persistence Context
+
+10. First Level Cache
+
+11. Transactions
+
+12. Dirty Checking
+
+13. Cascade Types
+
+14. Fetch Types
+
+15. Lazy Loading
+
+16. Eager Loading
+
+17. JPQL
+
+18. Native Query
+
+19. Criteria API
+
+20. Specifications
+
+21. Pagination
+
+22. Sorting
+
+23. Projections
+
+24. Auditing
+
+25. Optimistic Locking
+
+26. Pessimistic Locking
+Phase 5 : Spring Security
+1. Authentication
+
+2. Authorization
+
+3. Security Filter Chain
+
+4. Password Encoder
+
+5. BCrypt
+
+6. UserDetails
+
+7. UserDetailsService
+
+8. AuthenticationManager
+
+9. SecurityContext
+
+10. SecurityContextHolder
+
+11. AuthenticationProvider
+
+12. JWT
+
+13. Refresh Token
+
+14. Role Based Security
+
+15. Method Security
+
+16. OAuth2
+
+17. Google Login
+
+18. GitHub Login
+
+19. CSRF
+
+20. CORS
+
+21. Session Management
+
+22. Stateless Authentication
+Phase 6 : REST API
+1. REST
+
+2. Resources
+
+3. URI Design
+
+4. CRUD APIs
+
+5. HTTP Status Codes
+
+6. Idempotent Methods
+
+7. Versioning
+
+8. HATEOAS
+
+9. Pagination
+
+10. Sorting
+
+11. Filtering
+
+12. API Documentation
+
+13. Swagger
+
+14. OpenAPI
+
+15. Postman
+Phase 7 : Validation
+@NotNull
+
+@NotBlank
+
+@NotEmpty
+
+@Email
+
+@Pattern
+
+@Size
+
+@Min
+
+@Max
+
+@Future
+
+@Past
+
+Custom Validation
+
+Global Validation
+Phase 8 : Exception Handling
+1. try catch
+
+2. Custom Exception
+
+3. Runtime Exception
+
+4. Checked Exception
+
+5. Global Exception
+
+6. @ExceptionHandler
+
+7. @ControllerAdvice
+
+8. ResponseEntityExceptionHandler
+Phase 9 : Logging
+SLF4J
+
+Logback
+
+Log Levels
+
+File Logging
+
+Rolling Logs
+
+Pattern
+
+MDC
+
+Correlation ID
+Phase 10 : Testing
+JUnit 5
+
+Mockito
+
+MockMvc
+
+@WebMvcTest
+
+@DataJpaTest
+
+@SpringBootTest
+
+TestContainers
+
+Integration Testing
+Phase 11 : Advanced Spring
+AOP
+
+Caching
+
+Redis
+
+Scheduling
+
+Async
+
+Events
+
+Spring Batch
+
+Spring Mail
+
+WebSocket
+
+SSE
+
+Reactive Spring (WebFlux)
+Phase 12 : Microservices
+Microservice Architecture
+
+API Gateway
+
+Service Discovery
+
+Eureka
+
+Feign Client
+
+Config Server
+
+Load Balancer
+
+Circuit Breaker
+
+Resilience4J
+
+Distributed Tracing
+
+Zipkin
+
+Sleuth
+
+Centralized Logging
+Phase 13 : Deployment
+Docker
+
+Docker Compose
+
+Kubernetes
+
+Nginx
+
+Linux
+
+AWS
+
+Azure
+
+GCP
+
+CI/CD
+
+GitHub Actions
+
+Jenkins
+
+Monitoring
+
+Prometheus
+
+Grafana
+Bonus Topics (Very Important for Interviews)
+Spring AOP
+
+Reflection
+
+Bean Lifecycle
+
+BeanFactory vs ApplicationContext
+
+IOC vs DI
+
+Autowiring
+
+Proxy
+
+CGLIB
+
+JDK Dynamic Proxy
+
+Transactions
+
+@Transactional
+
+Propagation
+
+Isolation Levels
+
+Thread Safety
+
+Singleton Bean
+
+Prototype Bean
+
+Circular Dependency
+
+Memory Management
+
+DispatcherServlet Internals
+Recommended Learning Order
+Java Core
+      ↓
+Collections
+      ↓
+Exception Handling
+      ↓
+Multithreading
+      ↓
+JDBC
+      ↓
+Maven
+      ↓
+Servlet
+      ↓
+JSP
+      ↓
+Spring Core
+      ↓
+Spring MVC
+      ↓
+Spring Boot
+      ↓
+Spring Data JPA
+      ↓
+Hibernate
+      ↓
+MySQL/PostgreSQL
+      ↓
+REST API
+      ↓
+Validation
+      ↓
+Exception Handling
+      ↓
+Spring Security
+      ↓
+JWT
+      ↓
+Testing
+      ↓
+Redis
+      ↓
+Kafka (optional but valuable)
+      ↓
+Docker
+      ↓
+Microservices
+      ↓
+Kubernetes
+      ↓
+Cloud Deployment
+A roadmap tailored to your current progress
+
+Based on the topics we've already discussed together (Java, Servlets, Spring Security, JWT, JPA, CRUD, sessions, filters, listeners, etc.), I recommend this sequence:
+
+Spring Core (deep dive into IoC, DI, Beans, Bean lifecycle)
+Spring MVC (DispatcherServlet internals, controllers, request lifecycle)
+Spring Boot (auto-configuration and starters)
+Spring Data JPA + Hibernate internals
+REST API design
+Validation + Global Exception Handling
+Spring Security (from basic auth to JWT and OAuth2)
+Testing (JUnit, Mockito, MockMvc)
+Redis, Caching, Scheduling, AOP
+Microservices, Docker, Kubernetes, CI/CD

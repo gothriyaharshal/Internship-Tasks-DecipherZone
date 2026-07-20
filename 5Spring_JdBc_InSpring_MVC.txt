@@ -1,0 +1,780 @@
+
+
+
+
+
+Great. We'll start with Part 1. This will give you a working Spring MVC project. In the next parts, we'll add CRUD operations.
+
+Step 1: Project Structure
+SpringMVC_CRUD
+│
+├── src
+│   └── main
+│       ├── java
+│       │    └── com
+│       │         └── crud
+│       │              ├── controller
+│       │              ├── dao
+│       │              ├── service
+│       │              ├── model
+│       │              └── config
+│       │
+│       ├── resources
+│       │
+│       └── webapp
+│             ├── WEB-INF
+│             │      ├── views
+│             │      │      home.jsp
+│             │      │      addUser.jsp
+│             │      │      users.jsp
+│             │      │      editUser.jsp
+│             │      │
+│             │      └── dispatcher-servlet.xml
+│             │
+│             └── index.jsp
+│
+├── pom.xml
+Step 2: pom.xml
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="
+         http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.crud</groupId>
+    <artifactId>SpringMVC_CRUD</artifactId>
+    <version>1.0</version>
+    <packaging>war</packaging>
+
+    <properties>
+        <java.version>17</java.version>
+        <spring.version>5.3.39</spring.version>
+    </properties>
+
+    <dependencies>
+
+        <!-- Spring MVC -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- Spring JDBC -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- MySQL -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
+        </dependency>
+
+        <!-- JSTL -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+        <!-- Servlet API -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>
+Step 3: web.xml
+
+Location
+
+src/main/webapp/WEB-INF/web.xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         version="4.0">
+
+    <display-name>SpringMVC CRUD</display-name>
+
+    <servlet>
+
+        <servlet-name>spring</servlet-name>
+
+        <servlet-class>
+            org.springframework.web.servlet.DispatcherServlet
+        </servlet-class>
+
+        <load-on-startup>1</load-on-startup>
+
+    </servlet>
+
+    <servlet-mapping>
+
+        <servlet-name>spring</servlet-name>
+
+        <url-pattern>/</url-pattern>
+
+    </servlet-mapping>
+
+</web-app>
+Step 4: dispatcher-servlet.xml
+
+Location
+
+WEB-INF/spring-servlet.xml
+
+The file name must match the servlet name in web.xml. Since the servlet name is spring, the file should be spring-servlet.xml.
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+       xsi:schemaLocation="
+
+http://www.springframework.org/schema/beans
+https://www.springframework.org/schema/beans/spring-beans.xsd
+
+http://www.springframework.org/schema/context
+https://www.springframework.org/schema/context/spring-context.xsd
+
+http://www.springframework.org/schema/mvc
+https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package="com.crud"/>
+
+    <mvc:annotation-driven/>
+
+    <bean
+        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+
+        <property name="prefix" value="/WEB-INF/views/"/>
+
+        <property name="suffix" value=".jsp"/>
+
+    </bean>
+
+</beans>
+
+
+Think like we do configuration of View resoulver handler mappoing and ....in web.xml do configuration of Despathcer serlet now after 
+
+
+
+
+
+What we are going to build
+Browser
+   │
+   ▼
+DispatcherServlet
+   │
+   ▼
+Controller
+   │
+   ▼
+Service
+   │
+   ▼
+DAO (Repository)
+   │
+   ▼
+JdbcTemplate
+   │
+   ▼
+Database
+
+We will perform all CRUD operations.
+
+Create Student
+Read Student
+Update Student
+Delete Student
+Project Structure
+SpringMVCJdbcCRUD
+
+src/main/java
+
+com.example
+
+    config
+        SpringConfig.java
+
+    controller
+        StudentController.java
+
+    dao
+        StudentDao.java
+        StudentDaoImpl.java
+
+    model
+        Student.java
+
+    service
+        StudentService.java
+        StudentServiceImpl.java
+
+src/main/webapp
+
+WEB-INF
+
+    views
+
+        home.jsp
+        addStudent.jsp
+        updateStudent.jsp
+        viewStudent.jsp
+Step 1 Dependencies
+Maven
+<dependencies>
+
+    <!-- Spring MVC -->
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
+        <version>5.3.39</version>
+    </dependency>
+
+    <!-- Spring JDBC -->
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jdbc</artifactId>
+        <version>5.3.39</version>
+    </dependency>
+
+    <!-- MySQL -->
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>8.0.33</version>
+    </dependency>
+
+    <!-- JSTL -->
+
+    <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>jstl</artifactId>
+        <version>1.2</version>
+    </dependency>
+
+</dependencies>
+Step 2 Database
+create database springjdbc;
+use springjdbc;
+create table student(
+
+id int primary key auto_increment,
+
+name varchar(100),
+
+email varchar(100),
+
+course varchar(100)
+
+);
+Step 3 Model
+public class Student {
+
+    private int id;
+    private String name;
+    private String email;
+    private String course;
+
+    public Student() {
+    }
+
+    public Student(int id, String name, String email, String course) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.course = course;
+    }
+
+    //Getter Setter
+}
+Step 4 Java Configuration
+@Configuration                           Think like we make this in Xml formate  where wew do upper like
+@EnableWebMvc
+@ComponentScan("com.example")
+public class SpringConfig {
+
+}
+
+Now configure ViewResolver.
+
+@Bean
+public InternalResourceViewResolver viewResolver(){
+
+    InternalResourceViewResolver resolver =
+            new InternalResourceViewResolver();
+
+    resolver.setPrefix("/WEB-INF/views/");
+    resolver.setSuffix(".jsp");
+
+    return resolver;
+}
+Step 5 Configure DataSource
+@Bean
+public DataSource dataSource(){
+
+    DriverManagerDataSource ds =
+            new DriverManagerDataSource();
+
+    ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
+
+    ds.setUrl("jdbc:mysql://localhost:3306/springjdbc");
+
+    ds.setUsername("root");
+
+    ds.setPassword("root");
+
+    return ds;
+}
+Step 6 JdbcTemplate Bean
+@Bean
+public JdbcTemplate jdbcTemplate(){
+
+    return new JdbcTemplate(dataSource());
+
+}
+Step 7 DAO Interface
+public interface StudentDao {
+
+    int save(Student student);
+
+    List<Student> getAllStudents();
+
+    Student getStudentById(int id);
+
+    int update(Student student);
+
+    int delete(int id);
+
+}
+Step 8 DAO Implementation
+@Repository
+public class StudentDaoImpl implements StudentDao {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Override
+    public int save(Student student) {
+
+        String sql="insert into student(name,email,course) values(?,?,?)";
+
+        return jdbcTemplate.update(sql,
+
+                student.getName(),
+
+                student.getEmail(),
+
+                student.getCourse());
+
+    }
+
+    @Override
+    public List<Student> getAllStudents() {
+
+        String sql="select * from student";
+
+        return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Student.class));
+
+    }
+
+    @Override
+    public Student getStudentById(int id) {
+
+        String sql="select * from student where id=?";
+
+        return jdbcTemplate.queryForObject(sql,
+
+                new BeanPropertyRowMapper<>(Student.class),
+
+                id);
+
+    }
+
+    @Override
+    public int update(Student student) {
+
+        String sql="update student set name=?,email=?,course=? where id=?";
+
+        return jdbcTemplate.update(sql,
+
+                student.getName(),
+
+                student.getEmail(),
+
+                student.getCourse(),
+
+                student.getId());
+
+    }
+
+    @Override
+    public int delete(int id) {
+
+        String sql="delete from student where id=?";
+
+        return jdbcTemplate.update(sql,id);
+
+    }
+
+}
+Step 9 Service
+
+Interface
+
+public interface StudentService {
+
+    int save(Student student);
+
+    List<Student> getAllStudents();
+
+    Student getStudentById(int id);
+
+    int update(Student student);
+
+    int delete(int id);
+
+}
+
+Implementation
+
+@Service
+public class StudentServiceImpl implements StudentService{
+
+    @Autowired
+    StudentDao dao;
+
+    @Override
+    public int save(Student student){
+
+        return dao.save(student);
+
+    }
+
+    @Override
+    public List<Student> getAllStudents(){
+
+        return dao.getAllStudents();
+
+    }
+
+    @Override
+    public Student getStudentById(int id){
+
+        return dao.getStudentById(id);
+
+    }
+
+    @Override
+    public int update(Student student){
+
+        return dao.update(student);
+
+    }
+
+    @Override
+    public int delete(int id){
+
+        return dao.delete(id);
+
+    }
+
+}
+Step 10 Controller
+@Controller
+public class StudentController {
+
+    @Autowired
+    StudentService service;
+
+    @GetMapping("/")
+    public String home(Model model){
+
+        model.addAttribute("students",service.getAllStudents());
+
+        return "home";
+
+    }
+
+    @GetMapping("/add")
+
+    public String addStudent(){
+
+        return "addStudent";
+
+    }
+
+    @PostMapping("/save")
+
+    public String save(@ModelAttribute Student student){
+
+        service.save(student);
+
+        return "redirect:/";
+
+    }
+
+    @GetMapping("/edit/{id}")
+
+    public String edit(@PathVariable int id,Model model){
+
+        model.addAttribute("student",
+
+                service.getStudentById(id));
+
+        return "updateStudent";
+
+    }
+
+    @PostMapping("/update")
+
+    public String update(@ModelAttribute Student student){
+
+        service.update(student);
+
+        return "redirect:/";
+
+    }
+
+    @GetMapping("/delete/{id}")
+
+    public String delete(@PathVariable int id){
+
+        service.delete(id);
+
+        return "redirect:/";
+
+    }
+
+}
+JSP Pages
+addStudent.jsp
+<form action="save" method="post">
+
+Name:
+<input type="text" name="name">
+
+Email:
+<input type="text" name="email">
+
+Course:
+<input type="text" name="course">
+
+<input type="submit" value="Save">
+
+</form>
+updateStudent.jsp
+<form action="../update" method="post">
+
+<input type="hidden" name="id" value="${student.id}">
+
+Name
+
+<input type="text"
+
+name="name"
+
+value="${student.name}">
+
+Email
+
+<input type="text"
+
+name="email"
+
+value="${student.email}">
+
+Course
+
+<input type="text"
+
+name="course"
+
+value="${student.course}">
+
+<input type="submit">
+
+</form>
+home.jsp
+<a href="add">Add Student</a>
+
+<table border="1">
+
+<tr>
+
+<th>ID</th>
+
+<th>Name</th>
+
+<th>Email</th>
+
+<th>Course</th>
+
+<th>Edit</th>
+
+<th>Delete</th>
+
+</tr>
+
+<c:forEach items="${students}" var="s">
+
+<tr>
+
+<td>${s.id}</td>
+
+<td>${s.name}</td>
+
+<td>${s.email}</td>
+
+<td>${s.course}</td>
+
+<td>
+
+<a href="edit/${s.id}">
+
+Edit
+
+</a>
+
+</td>
+
+<td>
+
+<a href="delete/${s.id}">
+
+Delete
+
+</a>
+
+</td>
+
+</tr>
+
+</c:forEach>
+
+</table>
+Complete Flow (Internal Working)
+
+When a user visits http://localhost:8080/, the request first reaches the DispatcherServlet (the Front Controller). The DispatcherServlet asks the HandlerMapping which controller should handle the request. It finds the method mapped to / in StudentController.
+
+The controller calls StudentService, which contains the business logic. The service delegates the work to StudentDao. The DAO uses JdbcTemplate to execute SQL queries. JdbcTemplate obtains a connection from the configured DataSource, runs the SQL against MySQL, maps the result to Student objects, and returns them to the DAO.
+
+The returned data flows back through the layers:
+
+MySQL
+   ↑
+JdbcTemplate
+   ↑
+DAO
+   ↑
+Service
+   ↑
+Controller
+   ↑
+Model
+   ↑
+DispatcherServlet
+   ↑
+ViewResolver
+   ↑
+home.jsp
+   ↑
+Browser
+
+The Model carries the data (for example, the list of students) from the controller to the JSP. The InternalResourceViewResolver converts the logical view name "home" into the actual JSP path:
+
+"home"
+      ↓
+/WEB-INF/views/home.jsp
+
+The JSP renders the HTML, which is sent back to the browser.
+
+Request Flow for Each CRUD Operation
+
+Create (Insert):
+
+Browser
+  ↓
+POST /save
+  ↓
+StudentController.save()
+  ↓
+StudentService.save()
+  ↓
+StudentDao.save()
+  ↓
+JdbcTemplate.update("INSERT ...")
+  ↓
+MySQL
+  ↓
+redirect:/
+
+Read (List All):
+
+Browser
+  ↓
+GET /
+  ↓
+StudentController.home()
+  ↓
+StudentService.getAllStudents()
+  ↓
+StudentDao.getAllStudents()
+  ↓
+JdbcTemplate.query("SELECT * FROM student")
+  ↓
+List<Student>
+  ↓
+Model
+  ↓
+home.jsp
+
+Update:
+
+GET /edit/{id}
+      ↓
+Load Student
+      ↓
+Show updateStudent.jsp
+      ↓
+POST /update
+      ↓
+JdbcTemplate.update("UPDATE ...")
+      ↓
+redirect:/
+
+Delete:
+
+GET /delete/{id}
+      ↓
+StudentController.delete()
+      ↓
+StudentService.delete()
+      ↓
+StudentDao.delete()
+      ↓
+JdbcTemplate.update("DELETE ...")
+      ↓
+redirect:/
+
+This is the classic Spring MVC + Spring JDBC architecture that many companies used before Spring Boot. Once you're comfortable with this flow, you'll find that moving to Spring Data JPA mainly replaces the DAO's manual SQL with repository interfaces, while the overall MVC request flow remains very similar.
+
+In a follow-up, I can also 
+show the XML configuration version (web.xml, dispatcher-servlet.xml, applicationContext.xml) and then 
+explain exactly how the DispatcherServlet, HandlerMapping, HandlerAdapter, ViewResolver, Model, ModelMap, and ModelAndView work internally with diagrams.
