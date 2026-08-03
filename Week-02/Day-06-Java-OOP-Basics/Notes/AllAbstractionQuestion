@@ -4,7 +4,8 @@ Level 1 (Startup/Fresher)
 1. What is an abstract class?
 Answer
 
-An abstract class is a class declared with the abstract keyword. It cannot be instantiated and is mainly used to provide a common base class with both complete and incomplete (abstract) methods.
+An abstract class is a class declared with the abstract keyword.
+It cannot be instantiated and is mainly used to provide a common base class with both complete and incomplete (abstract) methods.
 
 abstract class Animal{
 

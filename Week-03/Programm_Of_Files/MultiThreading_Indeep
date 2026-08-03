@@ -1,0 +1,2179 @@
+MultiThreading
+
+>>
+in my programm >>> Error checking ,, code likhna ...like ek sath multiple kaam
+
+programm>>
+ is set of instructions ...like Demo.java or ye programm memory m store hoga
+
+ like demo.java ----> demo.class and this byte code runs into cpu
+
+Process>>
+ Koi bhi programm jo run kr rha h usse process khte h ....when our .class file run into
+ cpu or ram is known as Process
+
+  I have multiple Application in my laptop jb tk m unhe run nhi kruga vo programm h ...run krte hi vo process h
+
+Process bnta h toh kya kya rhta h usme.....
+
+ suppose meine chrome or insta ek sath khol dia toh ye .....meri ram m jayege like
+ process 1 and process 2......
+
+ Process run hote hi ...... Memory allcates hogi.....cpu time chahiye
+
+ >>>Suppose i have two process like Instagram or chrome toh
+ [process 1]   [process 2]
+
+ process 1 has suppose 2 GB of ram and process 2 also has 2 GB of ram then
+ dono process ek dusre k data ko nhi dekte ki tune 2 gb m kya store kr rkha h like that
+
+ >>Threads
+  Smallest Sequece of instruction executes by cpu independently
+                         or
+                 A lightweight processs
+
+ >>i divide my process into multiple thread.....
+
+  process m ek thread to hogi hi hogi Main thread ,,,,, or bhi thread bna skte h apn
+
+  >>Exactly kya hota h programm ko run krne pr
+
+  Demo.java---->Demo.class ----->then my programm become an process like [jvm[process]]
+
+  jvm hi process ko run krega memeory dega like that.....
+
+Heap ...Stack .....Program Counter ye sb dega
+
+>>java Alg alg memory m kyu rkhta h data ko like heap m method arear m stack m kyu
+
+kyuki java is an platform independent language....
+
+Kyuyki os keise deivide krta h jb programm run krta h tb like Data segments---> code segment----->Heap---->Stack---->Regoster
+
+Diffrent os k diffrent trike ho skte h kisi ko run krne k.....
+
+islie java apne andr hi store krke rkta  h .....java ka proogram ko os nhi run krta jvm krta h
+
+java khudka memory distrubation krta h
+
+
+>>>>>>when ever my program runs then my Thread were created first of all main therad were created
+
+{
+  [Heap]
+  [method arear]
+
+  [ Thread
+    [Stack]
+    [PC]
+    ]
+
+    }
+
+  Sari thread ka alg alg Stack hota h alg alg pc hota h pr vo ......Heap or method area ko share krti h
+
+bina thread k stack or pc bn hi nhi skte
+
+jvm loads into process
+jvm uses class loader
+jvm creates a main thread
+jvm creates separets stack and pc  for main thread
+code starts execution
+
+Stack
+-----
+Method Calls
+Local Variables
+References
+
+Heap
+----
+Objects
+Arrays
+Collections
+
+Method Area
+-----------
+Class Metadata
+Methods
+Fields
+Static Variables
+Constant Pool
+
+PC Register
+-----------
+Next Instruction Address
+
+Native Method Stack
+-------------------
+Native (C/C++) Methods
+
+Main ()  method loads into our stack frame or exexution suru hota h
+
+pc > it stores the current instruction where i am
+Stack > it stores the current method i am
+Heap > it store the object and instance varible
+Method area > it store class metadata and Static varible and all method in it
+
+
+>>>
+
+Multiple Thread Execution in My one process
+
+
+{
+  [Heap]
+  [method arear]
+
+[  main thread
+    [Stack]
+    [PC]
+]
+
+[  t1 thread
+    [Stack]
+    [PC]
+]
+
+[  t2 thread
+    [Stack]
+    [PC]
+]
+
+    }
+
+CPU>>>
+ cpu has it own Register  mtlb code execute keise hota h cpu ek instruction uthata h usse load krta h
+ dusra instruction uthata h fir usse load krta h like that it happens
+
+suppose explain  you with an example
+
+{
+  [Heap]
+  [method arear]
+
+[  main thread
+    [Stack]
+    [PC]
+]                             ---->
+                                  < -----[cpu ] it  has its register
+
+[  t1 thread
+    [Stack]
+    [PC]
+]
+
+[  t2 thread
+    [Stack]
+    [PC]
+]
+
+    }
+
+suppose meine mere code m multiple thread bnaye h >
+
+1> Ab mere Cpu k pass Ek hi core h toh vo ek baar m ek hi thread ko execute kr sta h
+
+  like phle main puri fir .....T1 puri.....fir T2 puri like that
+
+2> toh kya hoga sbse phle meri main thread bnegi .....cpu ko instruction kaha se
+   milege Program counter se like currect instruction konsi h aapki
+
+3> ab suppose meri line aise h .... a = b+(c *d) .....
+   toh yaha c*d intermeditate operation h ye solve hoke Register m thodi der k lie hold hoga fir a  plus hoke result aayega
+
+4>>Intermediate result humara Register store krta h ..... or current method ka pta hume stack frame se lggta h
+
+5> Ab mere pass Multiple thread run hona chahti h toh m ek sath toh kr nhi skta dono ko toh
+   context switching term aai .....mtlb thodi der main ...fir T1....fir T2
+
+
+6> toh hoga kya ki suppose meri main thread chli 0.5 sec main thread m code tha 1 to 100 print krne ka usne 50 tk print kie .
+   fir vo thread 2 pr shift ho gyi thread two m bhi same yhi kaam tha usne 50 print kie fir main thread pr shift hogyi ,,,,,,
+
+   ab kya hoga ki waps main thread pr aayege na apn toh apn ko PC or Stack se pta chlega ki last time khaa tha m
+
+7> or is trh se execution hoga like phle main fir thread 1 fir waps main toh iss execution ko bolte h apn
+concurrent execution
+
+6> Ab hume aise lgta ah dono kaam ek sath ho rhe h pr aisa nhi hotaa context swittchnign m kaam hota h
+
+
+concurrent execution mtlb ek time baad m ruk kr dekhu toh mera main ka 50 percent kaam ho gya or thread 1 ka mera 30 percent ho gya like that
+
+
+8>  Ab mere phle cpu m ek hi core hotaa tha pr ab do 3 core hote h iska mtlb ki
+
+   Suppose mere pas mulyiplr thread h toh do ko ye execute kr dega do ko vo ....is execution ko hum
+    pareelly execution bolte h
+
+pareele m km time lgega exexcute hota h
+
+Multiple core multiple thread ko execute krte h
+
+parelly chlega toh code ko fast krega .....context switching m bhi dikat nhi hoga .....
+
+abahi multiple core hote h cpu m aak kl cpu m
+
+9> ex i have t1,t2,t3,t4,t5  thread
+
+agr mere pass multiple thread h or 2 core toh parelle switching toh hogi pt .....
+concurrently bhi run hogi
+
+
+10>  aisa bhi ho skta h ki multiple process ho suppose mere pass like
+ process 1 has two thread t1 and t2
+ process 2 has two thread t3 and t4
+ process 3 has one thread t5
+
+
+ ab age m cpu m bhej rha hu isse toh execution k lie toh ye thread cpu k core m keise bhi ja skti h
+
+ aise nhi ki phle core m process 1 ki jayegi or ....core 2 m nhi ja skti vo ....aisa nhi h
+ vo ja skti h
+
+
+Diffrence between multitasking and multithreading
+
+Multithread ---> multiple thread hoti h process ki unhe concurrenttly ya parelly run krte h
+
+Multitasking ---> iss thread se mtlb nhi h isse ....process se mtlb h like multiplr applicatyion ek sath run kr skyi h
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+Thread LifeCycle>>
+
+ Creation of Thread>>
+
+   java give us Thread class and Runnable interface by with we create Thread
+
+
+We write code
+ [
+
+ public class AFirstthread {
+     public static void main(String[] args) {
+         MyThread myThread = new MyThread();
+         myThread.start();
+
+     }
+ }
+
+
+ //first i creates an thread
+
+ class MyThread extends Thread {
+     @Override
+     public void run() {
+         System.out.println("Thread is running");
+     }
+ }
+
+]
+
+when we write t1.start()  then jvm bolta h Operating system ko ki Thread create kro bhai...By default we have main thread
+
+So Thread created and it gets its Stack/pc space .... and Thread Executes its Run method .....cpu execute our thread
+We creates our Thread using Thread class
+
+Now by using Runnable interface We creating thread>>>>>>>>>
+
+package Thread;
+
+public class AFirstthread {
+    public static void main(String[] args) {
+
+        MyRunnable myRunnable = new MyRunnable();
+        Thread thread = new Thread(myRunnable);
+
+    }
+}
+class MyRunnable implements Runnable
+{
+    @Override
+    public void run() {
+        System.out.println("Runnable Thread Running");
+    }
+}
+
+When we apply extending on Class Like Thread then we (Defining an thread)
+
+When we apply implement of Runable then we (Define Task in Thread)
+
+>>Hierarchy
+
+      Runnable(interface) -----> Thread (class)
+
+      Thread class implement Runnable interface
+
+      But When we implement Runnable we only define task (by run method) and Create thread in Thread constructor
+
+>>at the end apn os ko bolege ki bhai thread bnaa toh process[main [stack/pc]]
+  aise bn jayega or is thread ko independently run kr skte h apn
+
+
+>>Runnabel interface is an fucntional interface toh bina implement kie m kr skta hu easyly
+
+class Demo
+ {
+  psvm()
+   {
+      Thread t1 = new Thread(()->{sout();});
+   }
+   }
+   }
+
+Thread Name >>
+  In thread class we have static method currentThread()  and it gives me thread refrence and by .name it give me name
+
+  Thread.cuurentThread().getName();
+
+  //here Thread is an main thread or agr m Thread 1 k andr aise likhdu toh uska naam aayega
+
+
+Diffrence between Start and run>>
+
+
+agr m start na likhu direct aise likh du
+
+Thread t = new Thread(
+()->
+{
+sout("hyy");
+}
+);
+
+t.run();
+
+ab is se meri nyi thread nyi bni bs main thread hi h usme meine object banay or bs vo chelga run method uska
+
+
+>>Execution order(koi order nhi hota context switching hoti rhti h )
+
+     Thread thread  = new Thread(
+                ()->
+                {
+                    for (int i = 0 ; i<=100 ; i++)
+                    {
+                        if(i%2==0)
+                        {
+                            System.out.println("T1" + i);
+                        }
+                    }
+                }
+        );
+        thread.start();
+
+        Thread thread2  = new Thread(
+                ()->
+                {
+                    for (int i = 0 ; i<=100 ; i++)
+                    {
+                        if(i%2!=0)
+                        {
+                            System.out.println("T2" + i);
+                        }
+                    }
+                }
+        );
+
+thread2.start();
+
+Internally algorithm hoge ....Round robin , Priority based like that
+
+Thread LifeCycle>>>
+
+New (Thread t1 = new Thread())
+Runnable(start (create new thread os krega))
+Running(run)
+dead(terminated) after we did not start it
+
+  inke alawa or bhi phases h
+
+  New ----> Runnable ----> Running -----> Terminated
+
+Blocked State>>
+
+t1 or t2 m se koi lock ko accquire kr legi toh dusri Block state m chli jayegi
+then t1 release lock and then t2 accquire lock
+
+waiting state>>
+
+when we call wait() method and it release its wait when i call notify()
+join bhi aa skta h yaha
+
+Thread_Waiting>>
+
+join() ... sleep().....wait(time k sath);
+
+fir inke baad Runnable m aajayegi
+
+Stop() method depricated because if we use it ....toh meri Thread kisi bhi state m ho vo terminated state m chli jayegi
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+Thread methods>>
+
+  Thread.sleep(); //Time_waiting state m daal skte h we giving time in milisecond
+                  //it throws inttrupted exception
+
+
+        System.out.println("MAin thread starts");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("Main thread ends");
+
+
+  Join method()
+
+    Current thread complete kro phle  like .... t1.join()
+
+    and second one is.......... t1.join(1000);..........this took our thread in time and waiting state like sleep method
+
+
+ yeild()
+
+   Same priority wale ko cpu time dedegi jo Runnable state m h
+   this is only an request or OS isse reject bhi kr skta h
+
+
+isAlive()
+
+priorirty()
+
+DeMon Threads>>>
+
+Background running threads in java there are 2 types of thread were there demon thread and second is User thread
+
+Thread t1 = new Thread(()->{  while(true) {sout("running")}});
+
+t1.setDemon(true);
+t1.start();
+
+try{
+Thread.sleep(2000) ;  2 sec baad main method khtm
+
+}
+return;
+
+
+jeise hi mera main method khtm hua toh ....mera thread bhi khtm
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+# Problems in Multithreading
+
+Multithreading improves performance, but it also introduces several problems because multiple threads execute concurrently and often share the same resources.
+
+---
+
+# 1. Race Condition ⭐⭐⭐⭐⭐
+
+## Definition
+
+A race condition occurs when two or more threads access and modify the same shared resource simultaneously, and the final result depends on the order in which the threads execute.
+
+### Conditions for Race Condition
+
+A race condition occurs only if all three conditions are true:
+
+* Multiple threads exist.
+* They share the same resource (same object in the heap).
+* At least one thread modifies that resource.
+
+### Example
+
+```java
+class Counter {
+    int count = 0;
+
+    void increment() {
+        count++;
+    }
+}
+```
+
+Here `count++` is **not atomic**.
+
+Internally it performs:
+
+```java
+int temp = count;   // Read
+temp = temp + 1;    // Modify
+count = temp;       // Write
+```
+
+If two threads execute these steps at the same time, updates can be lost.
+
+### Real-Life Example
+
+Suppose two people share the same bank account.
+
+Initial Balance = ₹1000
+
+Both withdraw ₹500 simultaneously.
+
+Thread 1:
+
+* Reads ₹1000
+* Calculates ₹500
+
+Thread 2:
+
+* Reads ₹1000
+* Calculates ₹500
+
+Both store ₹500.
+
+Final Balance = ₹500
+
+Expected Balance = ₹0
+
+This incorrect result is called a **Race Condition**.
+
+### Solutions
+
+* `synchronized`
+* `Lock` (`ReentrantLock`)
+* `AtomicInteger`
+* Concurrent Collections
+
+---
+
+# 2. Critical Section ⭐⭐⭐⭐
+
+A **critical section** is the part of the program where shared data is accessed or modified.
+
+Example:
+
+```java
+void increment() {
+    count++;
+}
+```
+
+If multiple threads execute this method simultaneously, it becomes a critical section.
+
+Critical sections should be protected using synchronization.
+
+---
+
+# 3. Atomicity Problem ⭐⭐⭐⭐
+
+## Atomic Operation
+
+An atomic operation executes completely or not at all.
+
+Examples:
+
+```java
+int x = 10;
+
+Student s = new Student();
+```
+
+These are effectively atomic assignments.
+
+## Non-Atomic Operation
+
+```java
+x++;
+```
+
+This is not atomic because it involves:
+
+* Read
+* Modify
+* Write
+
+If another thread changes the value between these steps, incorrect results occur.
+
+### Solution
+
+* `AtomicInteger`
+* `synchronized`
+* Locks
+
+---
+
+# 4. Visibility Problem ⭐⭐⭐⭐⭐
+
+Sometimes one thread updates a variable, but another thread continues using an old cached value.
+
+Example:
+
+```java
+boolean running = true;
+```
+
+Thread 1:
+
+```java
+while (running) {
+
+}
+```
+
+Thread 2:
+
+```java
+running = false;
+```
+
+Expected:
+
+Thread 1 should stop.
+
+Actual:
+
+Thread 1 may continue forever because it cannot see the updated value.
+
+### Solution
+
+Use
+
+```java
+volatile boolean running = true;
+```
+
+The `volatile` keyword ensures every read gets the latest value from main memory rather than using a stale cached value.
+
+---
+
+# 5. Ordering (Instruction Reordering) ⭐⭐⭐⭐
+
+The compiler, JVM, and CPU may reorder instructions for optimisation.
+
+Example:
+
+```java
+x = 10;
+flag = true;
+```
+
+Another thread may observe:
+
+```java
+flag = true;
+x = 0;
+```
+
+because the writes were reordered.
+
+### Solution
+
+* `volatile`
+* `synchronized`
+* Locks
+
+These establish proper memory ordering.
+
+---
+# Deadlock (Multithreading)
+
+## Deadlock Kya Hota Hai?
+
+**Definition:**
+
+> Jab 2 ya usse zyada threads ek dusre ke paas jo resource (lock) hai uska wait karte rahte hain, aur koi bhi apna lock release nahi karta, to program hamesha ke liye ruk jata hai. Is situation ko **Deadlock** kehte hain.
+
+Simple language me:
+
+> **Main tere lock ka wait kar raha hu aur tu mere lock ka wait kar raha hai. Dono wait hi karte reh gaye.**
+
+---
+
+# Real-Life Example
+
+Socho 2 dost hain.
+
+* Harshal ke paas **Bike ki Key** hai.
+* Rahul ke paas **Helmet** hai.
+
+Harshal bolta hai:
+
+> "Pehle Helmet de, fir Key dunga."
+
+Rahul bolta hai:
+
+> "Pehle Key de, fir Helmet dunga."
+
+Ab:
+
+* Harshal wait kar raha hai.
+* Rahul bhi wait kar raha hai.
+
+Koi bhi pehle nahi de raha.
+
+Result:
+
+**Dono wahi khade rahenge.**
+
+Ye hi **Deadlock** hai.
+
+---
+
+# Programming Example
+
+Maan lo hamare paas 2 Locks hain.
+
+```java
+Object lock1 = new Object();
+Object lock2 = new Object();
+```
+
+## Thread-1
+
+```java
+synchronized(lock1)
+{
+    // Lock1 mil gaya
+
+    synchronized(lock2)
+    {
+        // Lock2 chahiye
+    }
+}
+```
+
+## Thread-2
+
+```java
+synchronized(lock2)
+{
+    // Lock2 mil gaya
+
+    synchronized(lock1)
+    {
+        // Lock1 chahiye
+    }
+}
+```
+
+---
+
+# Step-by-Step Execution
+
+### Step 1
+
+Thread-1 ne **Lock1** le liya.
+
+### Step 2
+
+Thread-2 ne **Lock2** le liya.
+
+Current Situation:
+
+```
+Thread-1 → Lock1 Hold
+Thread-2 → Lock2 Hold
+```
+
+### Step 3
+
+Thread-1 ko **Lock2** chahiye.
+
+Lekin Lock2 already Thread-2 ke paas hai.
+
+Isliye Thread-1 wait karega.
+
+### Step 4
+
+Thread-2 ko **Lock1** chahiye.
+
+Lekin Lock1 already Thread-1 ke paas hai.
+
+Isliye Thread-2 bhi wait karega.
+
+---
+
+# Final Situation
+
+```
+Thread-1
+
+Lock1 Hold
+↓
+
+Waiting for Lock2
+```
+
+```
+Thread-2
+
+Lock2 Hold
+↓
+
+Waiting for Lock1
+```
+
+Ab:
+
+* Thread-1 wait kar raha hai.
+* Thread-2 bhi wait kar raha hai.
+
+Koi bhi aage nahi badh sakta.
+
+Program forever wait karta rahega.
+
+Ye hi **Deadlock** hai.
+
+---
+
+# Lock Release Kab Hota Hai?
+
+```java
+synchronized(lock)
+{
+    // Critical Section
+}
+```
+
+Jab thread `}` ke baad synchronized block se bahar nikalta hai tab JVM automatically lock release kar deti hai.
+
+Deadlock me thread synchronized block se bahar hi nahi aa pata.
+
+Isliye lock bhi release nahi hota.
+
+---
+
+# Deadlock Ke Solutions
+
+## 1. Same Order me Lock Lena (Best Solution)
+
+❌ Wrong
+
+```
+Thread-1
+
+Lock1
+↓
+
+Lock2
+```
+
+```
+Thread-2
+
+Lock2
+↓
+
+Lock1
+```
+
+Ye deadlock create kar sakta hai.
+
+---
+
+✅ Correct
+
+Dono threads same order follow karein.
+
+```
+Lock1
+↓
+
+Lock2
+```
+
+Example:
+
+```java
+synchronized(lock1)
+{
+    synchronized(lock2)
+    {
+
+    }
+}
+```
+
+Dusra thread bhi:
+
+```java
+synchronized(lock1)
+{
+    synchronized(lock2)
+    {
+
+    }
+}
+```
+
+Ab execution:
+
+```
+Thread-1
+
+Lock1
+
+↓
+
+Lock2
+
+↓
+
+Work Complete
+
+↓
+
+Lock Release
+
+↓
+
+Thread-2
+
+Lock1
+
+↓
+
+Lock2
+
+↓
+
+Work Complete
+```
+
+Deadlock nahi hoga.
+
+---
+
+## 2. tryLock()
+
+`ReentrantLock` ka `tryLock()` use kar sakte hain.
+
+```java
+if(lock.tryLock())
+{
+    try{
+
+    }
+    finally{
+        lock.unlock();
+    }
+}
+else
+{
+    System.out.println("Lock nahi mila.");
+}
+```
+
+Ye forever wait nahi karta.
+
+Agar lock nahi milta to thread doosra kaam kar sakta hai ya baad me dobara try kar sakta hai.
+
+---
+
+## 3. Kam Locks Use Karo
+
+Jitne zyada locks honge, deadlock ka chance utna zyada hoga.
+
+Agar ek hi lock se kaam chal sakta hai to unnecessary multiple locks mat use karo.
+
+---
+
+## 4. Lock Timeout
+
+```java
+lock.tryLock(2, TimeUnit.SECONDS);
+```
+
+Agar specified time tak lock nahi milta to thread wait chhod deta hai aur alternative action le sakta hai.
+
+---
+
+# Race Condition vs Deadlock
+
+## Race Condition
+
+* Multiple threads same data ko ek saath modify karte hain.
+* Program chal raha hota hai.
+* Result galat aa sakta hai.
+
+Example:
+
+```
+Expected = 2000
+
+Actual = 1987
+```
+
+---
+
+## Deadlock
+
+* Multiple threads ek dusre ke lock ka wait karte rehte hain.
+* Program aage hi nahi badhta.
+* Result kabhi aata hi nahi.
+
+Example:
+
+```
+Loading...
+
+Loading...
+
+Loading...
+```
+
+---
+
+# Interview One-Liner
+
+**Race Condition**
+
+> Program execute hota hai, lekin output incorrect ho sakta hai.
+
+**Deadlock**
+
+> Program execute hona hi band ho jata hai kyunki threads ek dusre ka indefinitely wait karte rehte hain.
+
+
+---
+
+# 7. Starvation ⭐⭐⭐⭐
+
+A thread waits indefinitely because other threads continuously get access to the shared resource.
+
+Example:
+
+A low-priority thread never gets CPU time because high-priority threads always run.
+
+### Solutions
+
+* Fair locks (`ReentrantLock(true)`)
+* Fair scheduling
+
+---
+
+# 8. Livelock ⭐⭐⭐⭐
+
+Threads are active but make no progress.
+
+Example:
+
+Two people meet in a narrow corridor.
+
+Person A moves left.
+
+Person B also moves left.
+
+Both then move right.
+
+They keep moving but never pass each other.
+
+Similarly, threads keep responding to each other but never complete their work.
+
+---
+
+# 9. Thread Interference ⭐⭐⭐⭐
+
+Multiple threads modify the same data without proper synchronization, leading to inconsistent results.
+
+This is one of the causes of race conditions.
+
+Example:
+
+```java
+count++;
+```
+
+executed simultaneously by multiple threads.
+
+---
+
+# 10. Resource Contention ⭐⭐⭐
+
+Many threads compete for the same resource.
+
+Examples:
+
+* Database connection
+* Printer
+* File
+* Shared object
+
+Too much contention reduces performance because threads spend more time waiting.
+
+---
+
+# 11. Thread Leakage ⭐⭐⭐
+
+Threads are created but never terminated.
+
+Example:
+
+```java
+while(true) {
+
+    new Thread(...).start();
+
+}
+```
+
+Eventually, the JVM may run out of memory or operating system thread limits.
+
+### Solution
+
+Use an `ExecutorService` and properly shut it down.
+
+---
+
+# 12. Context Switching Overhead ⭐⭐⭐
+
+If too many threads are created, the CPU spends significant time switching between them instead of performing useful work.
+
+More threads do not always mean better performance.
+
+### Solution
+
+Use thread pools (`ExecutorService`) instead of creating unlimited threads.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+MONITORS LOCKS IN JAVA>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Synchronized keyword>>
+
+Critical section pr Synchronized keyword lgate h apn us se ek baar m ek Thread chlegi or dusri waiting state m chli jayegi
+
+chahe thread concurrently chl rhi ho ya parrellay ek baar m ek hi chl payegi dusri wali block state m chli jayegi
+
+
+public class GThread {
+    public static void main(String[] args) throws InterruptedException{
+
+        Counter counter = new Counter();
+
+        Counter counter2 = new Counter();
+
+        //thread 1 increase this count
+        Thread thread = new Thread(
+                ()->
+                {
+                    for (int i = 1 ; i<1000 ; i++)
+                    {
+                        counter.counting();
+                    }
+                }
+        );
+
+
+        Thread thread2 = new Thread(
+                ()->
+                {
+                    for (int i = 1 ; i<1000 ; i++)
+                    {
+                        counter.counting();
+                    }
+                }
+        );
+
+        thread.start();
+        thread2.start();
+        thread.join();
+        thread2.join();
+
+        System.out.println(counter.count);
+
+    }
+}
+
+class Counter
+{
+   volatile   int count = 0;
+    public synchronized void  counting()
+    {
+        count++;
+    }
+}
+
+Thread 1 kitna bhi time lgaye vo phle pura kregi ...fir hi second thread aa payegi
+.
+
+Synchronized internally MonitorLocks pr bna h (object lock)
+
+>>
+Koi object aayega or lock se permission lega lock usse permission jb hi dega jb kisi or ne us lock ko accquire nhi kr rkha hoga
+
+
+Lock kr kise rhe h apn>>>
+
+java m Sare object k pass Lock hota h usse bolte h internal lock ....dusri thread usse lene aayegi toh hum usse block state m bhej dege,,,,,or lock ko jvm manage krta h .....or lock object pr depend hota h method pr nhi
+
+Suppose i have a class
+
+ class Count{
+    //having normal method
+
+    //having synchronized method
+
+    //having synchonized method
+
+    //having synchronized method
+ }
+
+ first thread goes into Synchronized method till it not finishes second thread ksis bhi synchronized method pr nhi ja skti
+ kyuki Lock method pr nhi object pr lgta h vo non synchronized method pr ja skti h ...pr snchronized pr nhi
+
+Ek hi object ka ek hi lock hoga....dusri Thread nhi aapayegi vo wait kregi
+
+Counter count = new Counter();
+
+Thread t = new Thread(()->{count.increasing()});
+
+Thread t = new Thread(()->{count.decreasing()});
+
+and my both this increasing and decreasing method are synchronized....so ek baar m ek chelga fir dusra chelga kyuki lock object pr lga h dono m se koi sa bhi phle chl skta h
+
+>>pr agr meien aise likha
+
+Counter count1 = new Counter();
+Counter count2 = new Counter();
+
+ab dono object k alg alg lock h count1 increasing call kre kr skti h
+count2 decreasing call kre kr skti h ... parrellely
+
+>Synchronized kisi bhi class k object ko loack kr skta h or ek baar m ek hi thread synchronized block ko lock kr skta h
+
+void increament()
+{
+ //normal code
+
+  synchronized(this)
+  {
+  count++;                //this is an synchronized block
+  }
+
+ //normal code
+}
+
+Custom lock object>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<
+
+Synchronized se dikkat kya aa skti h like i have class and synchronized method in it
+
+so at a time only one thread accuire that method
+
+class Bank {
+
+ void deposit()
+{
+Synchronized(this){
+ sout("Deposit lock");
+ //sleep for 2000
+}
+}
+
+void withdraw()
+{
+Synchronized(this){
+ sout("withdrwa lock");
+ //sleep for 2000
+}
+}
+
+}
+
+now in my main class i create Two thread but ..there has one object of this Bank class then one by one thread run
+
+psvm()
+{
+ Bank b = new Bank();
+
+ Thread t = new Thread(()->{b.deposit});
+ Thread t2 = new Thread(()->{b.withdraw});
+
+t.start();
+t2.start();
+
+}
+
+//but i want ki m custom lock bna du internally phle m aise likhta tha
+ synchronized(this) mtlb cureent class k object ka refrence
+
+ but now i do like
+
+
+
+class Bank {
+
+Obejct lock1 = new Object();
+Object lock2 = new Object();
+
+ void deposit()
+{
+Synchronized(lock1){
+ sout("Deposit lock");
+ //sleep for 2000
+}
+}
+
+void withdraw()
+{
+Synchronized(lock2){
+ sout("withdrwa lock");
+ //sleep for 2000
+}
+}
+
+}
+
+now in my main class i create Two thread but ..there has one object of this Bank class then one by one thread run
+
+psvm()
+{
+ Bank b = new Bank();
+
+ Thread t = new Thread(()->{b.deposit});
+ Thread t2 = new Thread(()->{b.withdraw});
+
+t.start();
+t2.start();
+
+}
+
+for thread 1 there has another object and for therad 2 there also has another
+
+
+Lets took one more example
+
+
+
+
+
+class Bank {
+
+Obejct lock1 = new Object();
+Object lock2 = new Object();
+
+ void deposit()
+{
+Synchronized(lock1){
+ sout("Deposit lock");
+ //sleep for 2000
+}
+}
+
+}
+
+now in my main class i create Two thread but ..there has one object of this Bank class then one by one thread run
+
+psvm()
+{
+ Bank b = new Bank();
+
+ Thread t = new Thread(()->{b.deposit});
+ Thread t2 = new Thread(()->{b.deposit});
+
+t.start();
+t2.start();
+
+}
+
+yaha single synchronized block h isme this lgau tb bhi veise kaam kregi ya lock 1 du ya lock 2 veise hi kyuki
+ek baar m ek hi thread enter kr payegi.....
+
+
+but if i write it as
+
+Synchronized(new Object()) >> jb bhi thread bnegi nya object bnega heap memeory m nya lock legi hr thread...toh yaha lock lgane ka koi mtlb hi nhi h sari thread nya object leke aajayegi
+
+>>>>Static synchronization
+
+  iska mtlb obejct pr lock nhi le rha m ....puri class pr le rha hu chelga ko sequence m hi
+
+  Example
+       static synchronized void increament()
+         {
+          count++;
+          sout(count);
+         }
+
+
+ab muje method pr nhi banana thode code ko synchronized banan h toh m aise bhi likhe skta hu like
+phle m likhta th a
+  synchronized(this) mtlb object refrence ab
+
+  static void increment()
+  {
+     synchronized(Counter.class)
+      {
+           count++ ;
+           sout(count);
+      }
+}
+
+class pr bhi ek unique lock hota h
+obejct pr bhi ek unique lock le skte h
+
+Internally working of Lock>>>>
+
+   object... has....  [lock] has .....ownerThread [null]....isLocked[false].....waitingQueue[]
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+Inter Thread Commiunication>>
+
+ Synchronized not solve every problem so this interoduced
+ Obejct class provides us three methods (wait , notify , notifyAll)
+
+<<<producer consumer problem>>>
+
+ producer[which produce data] --->  [] <---- consumer[which consume data]
+
+when we write multithreading code then it is not deterministic like
+
+>> Consumer try to consume null value
+>> producer produces the value ....and consumer did not consume it so value overwrite ho skti h
+>> dono ko sync m hona nessacary h
+
+Let's try with an example>>
+
+package Thread;
+
+public class IInterThread {
+    public static void main(String[] args) {
+
+        Box box = new Box();
+
+        //first Making Thread 1
+        Thread thread = new Thread(() ->
+        {
+            for (int i = 1; i <= 20; i++) {
+
+               try {
+                   Thread.sleep(100);
+               } catch (InterruptedException e) {
+                   throw new RuntimeException(e);
+               }
+                box.producer(i);
+            }
+        });
+
+
+        //second thread
+        Thread thread1 = new Thread(() ->
+        {
+            for (int i = 1; i <= 20; i++) {
+
+                try {
+                    Thread.sleep(70);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                box.consumer();
+            }
+        });
+
+        thread.start();
+        thread1.start();
+    }
+}
+
+class Box {
+    Integer item;
+    Boolean falg = false;
+
+    //producing method
+    void producer(int value) {
+        item = value;
+        falg = true;
+        System.out.println("Producer produce " + item);
+    }
+
+
+    //producing method
+    void consumer() {
+        System.out.println("Consumer consume " + item);
+        item = null;
+        falg = false;
+    }
+
+}
+
+i create two method consumer and producer and make two diffrent thread then...and has one Obejct of box class
+20 time i produce and then 20 time i consume i dont want like 20 time first i do produce and then cosume i want sath sath kaam hota rhe
+tum soch rhe ho join lgado phle first puri krdo fir second nhi
+
+
+Synchronized se bhi problem solve islie nhi hogi kyuki phle consumer Wali thread chl jaye toh fir thodi h koi si bhi thread chl skti h
+
+Solution>>
+
+producer(int value)
+{
+ while(iteam != null)
+ {
+  //infinite loop     m chahta hu jb box khali ho tb hi m produce kru vrna m inifine loop chladu
+  }
+
+ item = value;
+ sout(item)
+}
+
+
+consumer()
+{
+while(iteam == null)
+{
+ //agr iteam null h toh consume mt kro
+}
+
+sout(iteam)
+iteam = null;
+}
+
+>>problem ki infinite loop chla toh cpu ka kitna time waste hoga
+>>second problem synchronized like agr meine dono method pr synchronized lga dia toh race condition toh nhi aayegi ....phle producer chla tb bhi dikkat nhi aayegi
+  pr glti se consumer chl gya phle toh ....iteam starting m null that vha bhi condition m yehi hoga toh infinite m chla jayega khuch return nhi aayega
+
+  >>> We are using wait ...notify ....notifyAll instead of waiting for infinite time
+
+  Thread Commiunication (problem)
+  Occures by>>>
+    1> Shared Resource (Box)---> iteam
+    2> Condition       (box has iteam or not)
+    3> waiting          (consumer wait()  ... producer method)
+
+
+wait method >>
+      ye pause ho jati h ..... lock release kr deti h sare or ......waiting state m chli jati h
+
+   example>>
+
+      producerr
+      while(iteam != null)
+      {
+         wait()
+      }
+
+  consumer(iteam == null)
+  {
+  wait()
+  }
+
+
+  ...wait method only apply in synchronized block ....agr monitor lock m dala toh exception dega ye (IllegalStateLocation)
+   agr vo synchronized m nhi hoga kisi dusre m m hoga toh ,....wait ka ye h na vo lock ko relese kre toh vha keise krega
+
+so we have to make ....synchronized void produce and ....synchronized void consumer()
+
+....if wait() did not release monitor lock then we face deadloack situation look by example
+
+ suppose first my temp is null .....temp = null
+
+ consumer method run......
+    synchronized void consumer()
+     {
+       while(temp == null)
+       {
+       wait();
+       }
+
+       sout(iteam);
+       iteam = null;
+       flag = false;
+
+       notify();                   //if temp is null then we goes into wait state like thread 2 goes in wait thread
+     }                             //who wake up this thread ....thread 1 na by its notify method() like iteam were there i notify you and consume it ....
+                                   //pr producer khbi chl hi nhi payega kyuki Box ka ek object h usme phle consumer call kia toh vo waiting state m chl jayegi or chlti rhegi jb tk puri na ho pr usse koi wakeup hi nhi kr payega
+
+>>pr aisa nhi hota ...jeise hi wait () method call hua consumer method  m toh Object lock were releases
+  taki producer enter kr ske critical section m
+
+
+  Notify ()  call hote hi jo bhi thread wait m thi vo chl jayegi
+
+
+>>>java m hr object k pass lock hota h usse (Monitor lock bolte h )
+
+Monitor locks has many information like>>
+   OwnerThread
+   watingQueue (waiting state wali thread)
+
+>>
+what happens internally like....meri consumer wali thread chli
+  ownerThread = thread2
+  waitingQueue = but it goes into waiting state
+
+  jeise hi waiting state m  gyi lock release ho jata h or owner thread becomes null
+
+notify()>>
+ we apply notify method in both consumer and producer like for wake up
+
+   suppose i have multiple thread which was in waiting state then wake up one thread randomly
+   //suppose when notify method were call in consumer method then ....it goes into waitingQueue and checks which thread is in waiting state out of many thread it wake up one
+   and consumer goes into blocking state becuse we relase its lock and when it call again we applt lock our there
+
+1> one random thread is picked from waititnf queue
+2> that previous thread  goes into blockeed state
+3> complete lock
+
+Example of whole code
+
+
+package Thread;
+
+public class J_INTER_thread_commiunication_full {
+    public static void main(String[] args) {
+
+        Boxing box = new Boxing();
+
+        //Creating two threads
+        Thread thread = new Thread(()->
+        {
+            for (int i = 1 ; i<=20 ; i++)
+            {
+            box.producing(i);
+        }});
+
+        Thread thread2 = new Thread(()->
+        {
+            for (int i = 1 ; i<=20 ; i++)
+            {
+                try {
+                    box.consuming();
+                } catch (InterruptedException e) {
+                    e.getMessage();
+                }
+            }});
+
+
+        thread.start();
+        thread2.start();
+    }
+}
+
+class Boxing
+{
+    //making an producer method our there
+    Integer temp = null;
+    Boolean flag = false;
+
+    synchronized void producing(int value) {
+        try {
+            while (temp != null) {
+                wait();
+            }
+            temp = value;
+            flag = true;
+            System.out.println("Producer Producing this " + temp);
+            notify();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+
+    synchronized void consuming() throws InterruptedException {
+        try {
+            while (temp == null) {
+                wait();
+            }
+            System.out.println("Consumer consuming this " + temp);
+            temp = null;
+            flag = false;
+            notify();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+}
+
+>>>> notifyALL()
+
+notifyAll() is more safer then notify() method lets understand with an example
+
+...till now we have one thread of producer and one thread of consumer ...pr producer bhi bohot ho skte h ,....or cosumer bhi bohot ho skte h
+
+p1,p2,p3,p4....[box].....c1,c2,c3,c4..
+
+at a time one producer insert value in box and at a time one consumer took valaue
+
+....
+
+initally flag false tha or iteam = null......
+
+c1 goes into waiting state .....and release lock of Box object mtlb threadOwner = null ho jayega ab koi bhi aa kte h isme
+c2 also goes into waiting
+p1 ..insert value call notify
+
+...here notify only wake up one thread from waiting qeuue...c1 were comed from waiting queue and c2 vhi h
+
+ek time pr deadlock m fs skta hu toh .....muje notifyAll use krna chahiye jo sbko watiing s eabahar nikal le
+
+
+wait() , notify() , notifyAll() are method of object class becuse lock occure by object
+
+Spurious wake up>>
+
+ ki meine notify nhi kia fir bhi wait wait se bahar aajaye wake up apne aap se ho jaye ...
+ bohot hi rare h ye sitation
+
+ iska solution yhi h while wala loop agr if m krte toh ek baar hota bs .....while m toh hota jayega
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+Locks>>
+  we have interface (Lock) which is comes in java concurrency package
+
+  ..this interface say that ....ki iske do method ki implementation provide krni hogi ki kisi
+    ko lock keise krna h or dusra ki unlock keise krna h .....iske alawa optional methods hoge
+
+  >>>>>>>>>..if we have synchronized block then why we need this Lock
+
+  LIMITATION OF SYNCHRONIZED  BLOCK
+
+  1>  suppose i have a method T1
+
+  synchronized void T1()
+   {
+
+   }
+  pr m isse run krta hu toh pta chlta h lock kisi or thread ne accquire kr rkha h toh meri T1 waiting state m chli jati h
+
+
+  but i want that ki ....agr mera lock ho toh m if(ye kaam kru)  or agr lock na ho toh ye kaam kru
+
+   if(there has lock)
+   {
+     //then this
+   }
+   else
+   {
+   //vrna khuch or kaam krle
+   }
+
+   2> No timeout our there like ki 2 second  tk wait krle lock k lie agr lock nhi milta toh khuch or kaam krte h aisa nhi tha
+
+   3> No fareness
+     Synchornized block m bohot sari thread aana chahti h pr ek hi thread aa skti h ek baar m .....
+     koi bhi thread kb bhi chl skti h apn khuch nhi kr skte
+
+     or is vjh se problem hoti h starvation wali
+
+  >>>>>>>>>>>
+
+   Lock interface has two method lock and unlock
+
+   mechanisim same rhega ki ....ek baar m ek hi thread lock ko aquire kr skti h or baki Blocking state m chli jayegi.....
+
+   Four types of Lock our there>>>>
+    1> Retrental Lock
+    2> read wrtie Lock
+    3> StampedLock
+    4> Stemaphore Lock
+
+
+Reentrant lock>>>>
+
+ Lock lock = new ReentrantLock();
+
+ in my critical section>>
+
+        lock.lock();
+          ---- write here code of critical section
+         lock.unlock();
+
+>java says it did not safe ....because ki humne lock kia unlock nhi kia toh ek hi thread chlti rhegi
+
+>agr exception aagyi critical section m .....toh critical section se bahar aajayege or unlock bhi nhi chla mera
+
+>java says write it in try catch block finally block m lock realese kro
+
+lock.lock();
+try{
+  ----
+  ----
+  ----
+}
+catch()
+finally()
+{
+lock.unlock();
+}
+
+Example>>>>>
+
+public class K_Retranlock {
+    public static void main(String[] args) {
+
+        Resource resource = new Resource();
+
+        Thread thread =new Thread(()->
+        {
+            resource.f1();
+        });
+
+        Thread thread2 =new Thread(()->
+        {
+            resource.f1();
+        });
+
+        thread.start();
+        thread2.start();
+    }
+}
+
+class Resource
+{
+   Lock lock = new ReentrantLock();
+
+    void f1()
+    {
+        lock.lock();
+        try {
+            System.out.println(Thread.currentThread().getName() + "entered");
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            System.out.println(Thread.currentThread().getName() + "exit");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        finally {
+            lock.unlock();
+        }
+        }
+}
+
+
+>> tryLock
+
+if(lock.tryLock())
+ {
+    //lock accquire krne ki kosis kro ki lock mil gya toh bdia
+    //isme vhi code likhna h ...lock.lock() fir try k crtitcal section or
+    ..finally m unlock
+
+ }
+ else
+ {
+ //lock nhi mila toh other kaam krna h m nhi chhata meri thread blocking state m chli jaye
+ }
+
+ why we call it rettrental lock ...because same thread accquired lock multiple times ......
+
+ ek thread ....multiple time lock kr skti h ...pr fir utni hi baar unlock krna hoga
+
+ lock.lock();
+ lock.lock();
+ lock.lock();
+  -----
+  -----   (critical secction)
+  -----
+ lock.unlock();
+ lock.unlock();
+ lock.unlock();
+
+ example
+
+  method A()
+   {
+    lock.lock();
+    try{
+       method B();
+    }
+    finally
+    {
+    lock.unlock();
+    }
+   }
+
+
+  method b()
+   {
+    lock.lock();
+    try{
+       ----
+       ----
+    }
+    finally
+    {
+    lock.unlock();
+    }
+   }
+
+this is possible in retrental lock but not in all locks becasue they may have give us deadlock sitations
+
+//in synchronized also i do like this....it is possible   ...like same object pr do baar lokc lagana
+
+//retrental ki khas baat yhi h bs ki uske pass trylock h
+
+//i also givee
+
+ tryLock(2,TimeLimit.Second)   ki itni der wait kruga lock ka vrna m else part chlauga
+
+>>
+isLocked()....kisi thread dwara lock h ya nhi
+
+>>
+ lock.isHeldbyCurrentThread();
+
+ kya current thread lock ko accquire krti h agr aisa h toh lock . unlock kr dena
+
+>>
+ getHoldCount()
+
+>> isFair()  agr starvation nhi ho rhi toh fair h
+
+mtlb jo jitni der tk wait krta h usse phle dete h lock taki vo chl ske
+
+>>
+  RetreanalLock l1 = new RetrentalLock();  this is unfair lock
+
+  RetreanalLock l1 = new RetrentalLock(true); this is fair lock
+
+
+  2>>>>>>>>>>>>>READ WRITE LOCK
+
+  critical section m apn ek baar m ek hi thread ko enter krvate h  by Synchronized or Lock se
+  pr kyi baar m chahta hu ki multiple thread aajaye kyuki vo koi nuksaan nhi kregi
+
+  suppose Mere pass koi resource h (file,db, cache)
+
+  Muje bs read krna h toh kya ye koi afftech kr rhe  h nhi na ....toh reading safe h
+
+  problem comes in writing phase
+
+  >Here the terminology comes like Exclusive lock and Shared Lock
+
+  Shared lock>>
+    Like multiple thread enter in critical section and only do read
+  Exclusive lock>>
+    Like if one thread want to change data
+
+
+....We have ReadWriteLock(interface) and implementing class is RentralReadWriteLock...
+
+they give us
+             readLock()   (sharedLock)
+             writeLock()  (exclusive lock)
+
+
+     ReadWriteLock lock = new RetrantalReadwriteLock();
+
+//    iff multiple thread want to read then it allow if thread want to change data then it allow one thread
+
+    Lock rl = lock.readLock();
+    Lock wl = lock.writeLock();
+
+
+Reader writer problem>>>>>
+  solution>>
+      ek baar m multiReading krlo
+      ek baar m ek write kro
+
+Example>>>
+
+
+why we applying lock while reading aise hi read krlo
+because koi write thread naa aajaye bich m read krte time islie
+
+
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+public class L_REad_Write_Problem {
+    public static void main(String[] args) {
+
+        //creating threads
+
+        SharedResource sharedResource =  new SharedResource();
+
+        Thread r1 = new Thread(()-> sharedResource.read());
+        Thread r2 = new Thread(()-> sharedResource.read());
+        Thread r3 = new Thread(()-> sharedResource.read());
+
+
+
+        Thread w1 = new Thread(()->
+        {
+            sharedResource.write(1);
+        });
+
+
+        Thread w2 = new Thread(()->
+        {
+            sharedResource.write(2);
+        });
+
+        Thread w3 = new Thread(()->
+        {
+            sharedResource.write(3);
+        });
+
+        //readinf thres ek sath enter kregi
+       r1.start();
+       r2.start();
+       r3.start();
+
+
+       //wriritng thread ek ek baar enter kregi
+        w1.start();
+        w2.start();
+        w3.start();
+
+    }
+}
+
+class SharedResource {
+    private int value = 0;
+
+    ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    Lock readLock = readWriteLock.readLock(); // shared lock
+    Lock writeLock = readWriteLock.writeLock(); //exclusive
+
+
+    public int read() {
+        readLock.lock();
+        try {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
+
+            System.out.println(Thread.currentThread().getName() + "Readed thread = " + value);
+            return value;
+        }
+            finally {
+                readLock.unlock();
+            }
+        }
+
+        public void write ( int newValue){
+            writeLock.lock();
+           try {
+            try {
+                Thread.sleep(1000);
+            }
+            catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
+                value = newValue;
+               System.out.println(Thread.currentThread().getName() + " changes value" + value);
+
+           } finally {
+                writeLock.unlock();
+            }
+        }
+    }
+
+
+>>>
+  lock downgradity
+
+  writeLock()  ....khuch write krne k baad dekhna h kya kia toh read krlo
+
+  ReadLock ()  ....k baad write lock nhi lga skte
+
+Example>>>
+
+
+writeLock.lock()
+
+try{
+  value = 100;
+  readLock.lock();
+}
+finally
+{
+writeLock.unlock();
+readLock.unlock();
+}
+
+
+or is readlock ko bhi handel kr lia apne ne like
+
+try{
+print(value);
+}
+finally{
+readLock.unLock();
+}
+
+Stammped Lock>>>>>
+
+It is an Modern version of Read Write Lock...method of it are
+
+--->write Lock (exclusive lock)
+--->Read Lock (shared lock)
+--->tryOptimisticRead()
+
+stampped lock m koi token type milta h ki long m
+unlock krte time vhi stamp pass krni pdti h taki lge ki ha vhi lock h
+
+
+StampedLock lock = new StampeddLock();
+
+long  stamp = lock.readLock();
+
+try
+{
+ ----
+ ----
+}
+finally()
+{
+lock.unlockRead(stamp)
+}
+
+//stemp ,mtlb lomg value hoti h
+
+>>>We divide lock in java in two technique
+
+locking lock>>>>>>
+
+pessimistive ......................optimistic
+
+(slow h baar baar
+ lovk unlock vgre vgrr)                (yaha lock nhi kr rhe apn)
+
+
+>>>>>>>>>>>>>>>>>> tryOptimisticRead()....
+
+>>it give me stamp.....
+>>Read data without locking...
+>>checking data is modified or not
+
+
+Example with code>>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,3 +1,35 @@
+
+1. java.io.File
+2. Byte Streams
+   - FileInputStream
+   - FileOutputStream
+
+3. Character Streams
+   - FileReader
+   - FileWriter
+
+4. Buffered Streams
+   - BufferedReader
+   - BufferedWriter
+
+5. Object Streams
+   - ObjectInputStream
+   - ObjectOutputStream
+
+6. NIO (java.nio.file)
+   - Path
+   - Paths
+   - Files
+   - StandardCopyOption
+   - DirectoryStream
+   - WalkFileTree
+
+7. NIO.2 Advanced
+   - WatchService
+   - Channels
+   - Buffers
+
+
 File means storing data in some file by input output ....
 
 When we do like .... int a  = 10 ;  then our data only store in Ram for temporary basis...so i want to store my data for permanent in some formate

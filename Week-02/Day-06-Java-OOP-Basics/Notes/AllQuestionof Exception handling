@@ -86,7 +86,8 @@ Used to handle the exception thrown inside the try block.
 
 13. What is finally block?
 
-The finally block always executes whether an exception occurs or not. It is generally used for resource cleanup such as closing files, database connections, or network sockets.
+The finally block always executes whether an exception occurs or not.
+It is generally used for resource cleanup such as closing files, database connections, or network sockets.
 
 14. Will finally always execute?
 

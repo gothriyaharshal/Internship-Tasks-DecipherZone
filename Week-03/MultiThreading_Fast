@@ -1,3 +1,10 @@
+
+Program: A collection of instructions written in a programming language and stored on disk.
+Process: A program that is currently executing and has its own memory and resources.
+Thread: The smallest unit of execution within a process. Multiple threads in a process allow it to perform multiple tasks concurrently.
+
+
+
 //main Thread....
 
 Lets suppose in our ide code Wrtitng and error checking happens at same time then those are Threads
@@ -13,53 +20,500 @@ Multiple task happens in one programm at a time is non as multithreading
 //Thread ....smalleest sequece of instructions executes by cpo independently it is lightweight
 
 
-//like i have Demo.java when i run it ....there has 3 threas 1 is main and two more
-other threads ...when i run program....first jvm loads our process into memory .....jvm uses class loader
-...then jvm create an main theread.......For each and Every therad there has Seprated Stack and pc becuse if
-context swtiching happnes then we know that currently from wehre we have to start....by pc and by stack how much data is updated
+Correct Flow
 
-//code start executon from main method and there has main stack frame
+Suppose you have:
 
+public class Demo {
+    public static void main(String[] args) {
+        System.out.println("Hello");
+    }
+}
 
-//if i have multiple thread there has multiple stack and pc for them and Heap and Method area constant...
+When you execute:
 
-//previously there has only one cpu so ......context switching happens one by one....in threading like one runs .5 sec one run .5 second like that
+java Demo
 
-//but if i have multiple thread know days there hs alsop 2 or 3 cpu in system so our workd became easy....like  process one has 3 thread
- process 2 has 5 therad so.....these 2 cpu took those thread run them ,,,,,by swtcihnign by help of stack and pc we maintain history and data
+The following happens:
 
- //for or deeper digramatic view  https://github.com/adityatandon15/Java-Full-Course/blob/main/Lecture%2047/notes.pdf
+Step 1: OS creates a process
 
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+When you run java Demo, the Operating System creates a new Java process.
 
-i alos make Thread by Thread class or Runnable interface .....
+Correction: The JVM itself runs as a process. It is not that "JVM loads our process into memory." Rather, the OS starts the JVM process, and that JVM executes your program.
 
---> By Extending Thread Class my particular class automatically become that thread to directly i call start method our there
+Step 2: JVM starts
 
---> By implementing runnable interfacce there..i have to also Make Object of thread class then in constructor of it i havve to push that code
+Inside the JVM:
 
-     MyNew m = new MyNew();
-     Thread t = new Thread(m);
+Class Loader loads Demo.class.
+Bytecode Verifier verifies the bytecode.
+JVM creates runtime memory areas:
+Heap
+Method Area (or Metaspace)
+Java Stacks
+PC Registers
+Native Method Stack
+Step 3: Main Thread is created
 
-     >>or one more method like i also done this whole process in this way like
+The JVM creates the main thread.
 
-    Thread t = new Thread(()->{sout});      //here we passes the Runnable interface Body direct then also my this thread beacome an therad also
+This thread starts execution from
 
+public static void main(String[] args)
+Step 4: JVM creates some internal threads
 
-    >>> Thread lifeCycle
+Even if you don't create any threads yourself, the JVM usually creates some background threads, for example:
 
-    New---->runnable---->Running------>Terminated
+Main Thread
+Reference Handler
+Finalizer (older JVMs; newer Java versions use different cleanup mechanisms)
+Signal Dispatcher
+Common Cleaner
+GC (Garbage Collector) threads
 
-    Between them there has ....also other state like ....if i do stop() then whole thread is terminated so usaually we do not have to run this
+So yes, you'll often see multiple threads running.
 
-    >>Blocked waiting TimeWaiting(sleed)
+For every thread
 
->>Start means Creation of new thread and Run means running state
+Every thread has its own:
 
->>Locak state means if i want to change name ....then my first thread change it by "Aditya" and my Second Thread change it by "ravi"
-  so this situtation not occur so i lock my state then after one by one operation performs
+✅ Java Stack
 
+Local variables
+Method calls
+Stack frames
 
+Example
+
+Main Thread Stack
+
+main()
+ ├── method1()
+ │      ├── method2()
+ │      └── method3()
+ └── ...
+Every thread also has its own PC Register
+
+The Program Counter (PC) stores the address (or instruction) of the bytecode currently being executed.
+
+This is necessary because the CPU switches between threads.
+
+Example
+
+Suppose:
+
+Thread A
+instruction 45
+
+Thread B
+instruction 120
+
+CPU executes:
+
+A → B → A → B
+
+When switching:
+
+Thread A PC = 45
+Thread B PC = 120
+
+When the CPU comes back to Thread A, it resumes from instruction 45.
+
+Why separate stacks?
+
+Suppose:
+
+Thread A
+
+main()
+   ↓
+calculate()
+
+Local variable:
+
+int x = 10;
+
+Thread B
+
+int x = 50;
+
+If both shared one stack:
+
+x = ?
+
+There would be conflicts.
+
+Therefore every thread has its own stack.
+
+One correction to your statement
+
+You wrote:
+
+"by stack how much data is updated"
+
+That's not exactly correct.
+
+The stack doesn't store "how much data is updated."
+
+Instead, it stores:
+
+Method call frames
+Local variables
+Parameters
+Return addresses
+Intermediate values
+
+When a thread is resumed after context switching, it continues from the same method call stack, while the PC register tells it which instruction within the current method to execute next.
+
+Memory Diagram
+                 Java Process (JVM)
+
+                +----------------------+
+                |        Heap          |  ← Shared
+                +----------------------+
+                |    Method Area       |  ← Shared
+                +----------------------+
+
+Thread-1 (Main)               Thread-2 (GC)
+
++-----------+                 +-----------+
+|  PC       |                 |  PC       |
++-----------+                 +-----------+
+
++-----------+                 +-----------+
+| Stack     |                 | Stack     |
+| main()    |                 | GC Work   |
+| method()  |                 |           |
++-----------+                 +-----------+
+//code start executon from main method and there has main stack frame//code start executon from main method and there has main stack frame
+1. Program Execution ✅
+
+Code starts execution from main() method and there is a main stack frame.
+
+✔ Correct.
+
+When you run
+
+public class Demo {
+    public static void main(String[] args) {
+        System.out.println("Hello");
+    }
+}
+
+The JVM creates the main thread.
+
+The first stack frame is
+
+Main Thread Stack
+
+---------------
+| main()      |   ← First Stack Frame
+---------------
+
+Every method call creates a new stack frame.
+
+2. Multiple Threads Memory ✅
+
+You wrote:
+
+if i have multiple thread there has multiple stack and pc for them and Heap and Method area constant
+
+Almost correct.
+
+More accurately:
+
+One JVM Process
+
+Shared
+-------
+Heap
+Method Area
+
+Thread 1
+--------
+Stack
+PC Register
+
+Thread 2
+--------
+Stack
+PC Register
+
+Thread 3
+--------
+Stack
+PC Register
+
+Each thread has
+
+Own Stack ✅
+Own PC Register ✅
+
+All threads share
+
+Heap ✅
+Method Area ✅
+3. Context Switching ⚠
+
+You wrote
+
+previously there has only one cpu so context switching happens one by one
+
+Correct.
+
+Example
+
+CPU
+
+Thread A
+↓
+
+Thread B
+↓
+
+Thread C
+↓
+
+Thread A
+
+CPU rapidly switches.
+
+This is called
+
+Context Switching
+
+4. Multiple CPUs ❌ (Important Correction)
+
+You wrote
+
+nowadays there has also 2 or 3 cpu
+
+Not exactly.
+
+Your computer usually has one CPU chip with multiple cores.
+
+For example
+
+CPU
+
+Core 1
+Core 2
+Core 3
+Core 4
+
+Not
+
+CPU1
+CPU2
+CPU3
+
+Although servers can have multiple physical CPUs, when we talk about typical computers we mean multiple CPU cores.
+
+Example
+
+Core 1
+--------
+Thread A
+
+Core 2
+--------
+Thread B
+
+Core 3
+--------
+Thread C
+
+Now threads truly run in parallel.
+
+5. Stack and PC during Context Switching ⚠
+
+You wrote
+
+by switching by help of stack and pc we maintain history and data
+
+Small correction.
+
+The OS saves the thread's execution context, which includes the Program Counter (PC), CPU registers, and stack state. This allows the thread to resume from where it stopped.
+
+The PC stores the next instruction to execute.
+
+The Stack stores
+
+Method calls
+Local variables
+Return addresses
+6. Creating Threads ✅
+Thread class
+class MyThread extends Thread {
+
+    public void run() {
+        System.out.println("Running");
+    }
+}
+MyThread t = new MyThread();
+t.start();
+
+Correct.
+
+Runnable
+class MyRunnable implements Runnable {
+
+    public void run() {
+        System.out.println("Running");
+    }
+}
+MyRunnable r = new MyRunnable();
+
+Thread t = new Thread(r);
+
+t.start();
+
+Correct.
+
+Lambda
+Thread t = new Thread(() -> {
+    System.out.println("Hello");
+});
+
+t.start();
+
+Correct.
+
+7. Thread Lifecycle ⚠
+
+You wrote
+
+New → Runnable → Running → Terminated
+
+Conceptually okay, but Java officially defines these thread states:
+
+NEW
+RUNNABLE
+BLOCKED
+WAITING
+TIMED_WAITING
+TERMINATED
+
+There is no official separate Running state in Thread.State; a running thread is considered part of the RUNNABLE state.
+
+8. stop() ❌
+
+You wrote
+
+if i do stop() then whole thread is terminated
+
+Technically yes.
+
+But
+
+Never use
+
+thread.stop();
+
+It is
+
+Deprecated
+Unsafe
+
+Instead use
+
+interrupt()
+A boolean flag
+9. Blocked / Waiting / Timed Waiting ✅
+
+Correct.
+
+Examples
+
+sleep()
+
+↓
+
+TIMED_WAITING
+
+wait()
+
+↓
+
+WAITING
+
+Waiting for synchronized lock
+
+↓
+
+BLOCKED
+
+10. start() vs run() ✅
+
+Correct.
+
+start()
+
+Creates a new thread.
+
+run()
+
+Just executes like a normal method call on the current thread if you invoke it directly.
+
+11. Lock State ❌ (Important)
+
+You wrote
+
+if i want to change name then first thread change it by Aditya and second by Ravi so i lock my state
+
+The idea is right, but the terminology is wrong.
+
+It is not "Lock State".
+
+The correct term is
+
+Synchronization (Locking)
+
+Example
+
+class Student {
+
+    String name;
+
+    synchronized void changeName(String n) {
+        name = n;
+    }
+}
+
+Suppose
+
+Thread 1
+
+name = Aditya
+
+and
+
+Thread 2
+
+name = Ravi
+
+Without synchronization, both threads can modify the shared object at the same time, causing a race condition.
+
+With synchronized, only one thread enters the method at a time.
+
+Thread 1
+↓
+
+LOCK
+
+↓
+
+Update name
+
+↓
+
+Unlock
+
+↓
+
+Thread 2 enters
+Overall
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
  Thread.sleep() >  it throws an Exception inttruptedException
@@ -89,1298 +543,877 @@ psvm throws intteruptedException
                 //if i want i als apply here t1.join(1000);   1 sec m khtm ho jaye toh thik vrna dusri thread chlado
 }
 
+3. yield()
+Thread.yield();
 
->>> yield
-    Thread.yeild() >>> i am wiilling to give my cpu time to someone else with same priority and that want to run it
-                       in production it did not used....and and os isse reject bhi kr skta h or acept bhi
+Meaning:
 
+"I am willing to give my CPU time to another thread of the same priority."
 
+Important points:
 
->>> thread_name.interrupt
+It is only a hint to the scheduler.
+The Operating System may accept or ignore it.
+It does not guarantee that another thread will execute.
+Rarely used in production applications.
+4. interrupt()
+t1.interrupt();
 
- when i do this then i send signle to my thread that whatever you the wrok currently you are doing .....stop only signle ......
- In our Thread class there has a interrupt varible it is bydefault false but ...by this it set true
+interrupt() does not forcefully stop a thread.
 
- Thread t1 = new Thread(
+It only sends an interrupt signal.
 
- ()->
- {
-    while(true)
-    {
-       sout(1);                  infinite loop  by intterupt we stop our programm like
-    }                     while(!Thread.currenctThread().isIntrrupted() ){sout} like this
- }
- );
+Internally, every thread maintains an interrupt status flag.
 
+Initially:
 
-//there are two method ....isIntrupted() and intrupted() ....
+Interrupted = false
 
-isintrupped give boolean value and intrupted also give boolean value and then set back to in false again
+After
 
+t1.interrupt();
 
+it becomes
 
-//isAlive  ----> it only alive between start----> hone se terminate hone k bich
+Interrupted = true
 
-//currentThread() ----> it provides me refrence of Cuttrent thread and by it we getName and setName also
+The thread itself decides how to respond.
 
+Example:
 
-// Thread Priority..... it gives me integer value....in java there has
+Thread t1 = new Thread(() -> {
 
+    while (!Thread.currentThread().isInterrupted()) {
+        System.out.println(1);
+    }
 
-maxpriotrotu 10.....min 1..... norm 5
+    System.out.println("Thread stopped");
+});
+5. isInterrupted() vs interrupted()
+isInterrupted()
+Thread.currentThread().isInterrupted();
+Returns true or false.
+Does not clear the interrupt flag.
 
-in java bydefault norm is there all thread
+Example:
 
+true
+true
+true
+interrupted()
+Thread.interrupted();
+Static method.
+Returns the interrupt status of the current thread.
+Clears the interrupt flag after checking it.
 
-we also set Priority in thread ...like  t1.setPriority(10);
+Example:
 
-// Daemon Thread  .... backgroud running thread are deamon Thread
+true
+false
 
-  ///suppose i make an infinite running Thread  in main thread ...so denom thread are those which run in backgroud if my Parent Thread stop they also automatically stops
+because the flag is reset after the first call.
 
+6. isAlive()
+t1.isAlive();
 
-psvm()
-{
- Thread t1 = new Thread(
+Returns:
 
- ()->
- {
-    while(true)
-    {
-       sout(1);
+true → Thread has been started and has not yet terminated.
+false → Thread has not started or has already finished.
+7. currentThread()
+Thread.currentThread();
+
+Returns a reference to the currently executing thread.
+
+Example:
+
+Thread.currentThread().getName();
+Thread.currentThread().setName("Main Thread");
+
+Useful methods:
+
+getName()
+setName()
+getPriority()
+isInterrupted()
+8. Thread Priority
+
+Priority range:
+
+MAX_PRIORITY    = 10
+NORM_PRIORITY   = 5
+MIN_PRIORITY    = 1
+
+By default, every thread has priority 5.
+
+Example:
+
+t1.setPriority(Thread.MAX_PRIORITY);
+
+or
+
+t1.setPriority(10);
+
+Note: Thread priority is only a scheduling hint. The operating system may ignore it.
+
+9. Daemon Thread
+
+Daemon threads are background threads that support user threads.
+
+Examples:
+
+Garbage Collector (GC)
+Reference Handler
+Common Cleaner
+
+A daemon thread automatically terminates when all user (non-daemon) threads have finished.
+
+Example:
+
+public static void main(String[] args) {
+
+    Thread t1 = new Thread(() -> {
+
+        while (true) {
+            System.out.println(1);
         }
 
-        }
- );
+    });
 
- t1.setDemon(true);
- t1.start();
+    t1.setDaemon(true);   // Must be called before start()
 
- return ;
+    t1.start();
 
+    return;
 }
 
-this infinite running thread run backgroundgly now and when main thread stops it also stops
+Here:
 
-//like if i sleep my main thread for sleep 2 second then my this demon thread runs in background and when i stop if it automatically stops
-//Example garbase collection it runs on demon thread
+t1 runs continuously.
+Since it is a daemon thread, when the main thread (and all other user threads) finish, the JVM exits and t1 is stopped automatically.
 
+Example:
+
+If the main thread sleeps for 2 seconds,
+
+Thread.sleep(2000);
+
+the daemon thread keeps running during those 2 seconds.
+
+When the main thread exits, the daemon thread also terminates automatically.
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+# Problems in Multithreading
 
-                                Problems in Multithreading
+Multithreading improves performance, but it also introduces several problems because multiple threads execute concurrently and often share the same resources.
 
-Race-Condition>>>>
+---
 
-critical section an method ....jisko multiple thread were using
+# 1. Race Condition ⭐⭐⭐⭐⭐
 
-void increament()
- {
-   count++;
- }
+## Definition
 
- and here this is an critical section if multiple thread using it and .....count++ is an shared resource means multiple thread sharing it
+A race condition occurs when two or more threads access and modify the same shared resource simultaneously, and the final result depends on the order in which the threads execute.
 
+### Conditions for Race Condition
 
- >> so we make such operation as like atomicity like either they do not do or either they complety run
+A race condition occurs only if all three conditions are true:
 
-  Synchornized blocked and atomic integer by these we ....remove race condition
+* Multiple threads exist.
+* They share the same resource (same object in the heap).
+* At least one thread modifies that resource.
 
+### Example
 
-  Which operation are atomic and which are not atomic in java
+```java
+class Counter {
+    int count = 0;
 
-  Atomic>>>>
-   int x = 2;
-   Student s1 = new Student();
+    void increment() {
+        count++;
+    }
+}
+```
 
-    those operation are atomic like fix h ye ki hoge ya nhi hoge
+Here `count++` is **not atomic**.
 
-    Non-Atomic ===>
-     x++;
+Internally it performs:
 
+```java
+int temp = count;   // Read
+temp = temp + 1;    // Modify
+count = temp;       // Write
+```
 
-Race condition examples
+If two threads execute these steps at the same time, updates can be lost.
 
+### Real-Life Example
 
-     or check then act type oprtation like .....
-     checking balanace then acting like increasing or deducting amout those are non atomic in java
+Suppose two people share the same bank account.
 
-     Real-Life Example
+Initial Balance = ₹1000
 
-     Imagine two people are using the same bank account.
+Both withdraw ₹500 simultaneously.
 
-     Balance = ₹1000
+Thread 1:
 
-     Both try to withdraw ₹500 at the same time.
+* Reads ₹1000
+* Calculates ₹500
 
-     Thread 1
-     Reads balance = ₹1000
-     Calculates new balance = ₹500
-     Thread 2
-     Also reads balance = ₹1000
-     Calculates new balance = ₹500
+Thread 2:
 
-     Now both write ₹500.
+* Reads ₹1000
+* Calculates ₹500
 
-     Final Balance:
+Both store ₹500.
 
-     ₹500
+Final Balance = ₹500
 
-     But it should have been:
+Expected Balance = ₹0
 
-     ₹0
+This incorrect result is called a **Race Condition**.
 
-     This happened because both threads raced to update the same data.
+### Solutions
 
-     This is called a Race Condition.
+* `synchronized`
+* `Lock` (`ReentrantLock`)
+* `AtomicInteger`
+* Concurrent Collections
 
-     Java Example (Without Synchronization)
-     class Counter {
-         int count = 0;
+---
 
-         void increment() {
-             count++;
-         }
-     }
+# 2. Critical Section ⭐⭐⭐⭐
 
-     public class Main {
-         public static void main(String[] args) throws Exception {
+A **critical section** is the part of the program where shared data is accessed or modified.
 
-             Counter c = new Counter();
+Example:
 
-             Thread t1 = new Thread(() -> {
-                 for (int i = 0; i < 100000; i++)
-                     c.increment();
-             });
+```java
+void increment() {
+    count++;
+}
+```
 
-             Thread t2 = new Thread(() -> {
-                 for (int i = 0; i < 100000; i++)
-                     c.increment();
-             });
+If multiple threads execute this method simultaneously, it becomes a critical section.
 
-             t1.start();
-             t2.start();
+Critical sections should be protected using synchronization.
 
-             t1.join();
-             t2.join();
+---
 
-             System.out.println(c.count);
-         }
-     }
-     Expected Output
-     200000
-     Actual Output (may vary)
-     183456
+# 3. Atomicity Problem ⭐⭐⭐⭐
 
-     or
+## Atomic Operation
 
-     197842
+An atomic operation executes completely or not at all.
 
-     or
+Examples:
 
-     199999
+```java
+int x = 10;
 
-     The output changes every run because of a race condition.
+Student s = new Student();
+```
 
-     Why does this happen?
+These are effectively atomic assignments.
 
-     Many beginners think:
+## Non-Atomic Operation
 
-     count++;
+```java
+x++;
+```
 
-     is one operation.
+This is not atomic because it involves:
 
-     It is not.
+* Read
+* Modify
+* Write
 
-     Internally it is approximately:
+If another thread changes the value between these steps, incorrect results occur.
 
-     int temp = count;   // Read
-     temp = temp + 1;    // Modify
-     count = temp;       // Write
+### Solution
 
-     Suppose:
+* `AtomicInteger`
+* `synchronized`
+* Locks
 
-     Initial value
+---
 
-     count = 5
-     Thread 1
+# 4. Visibility Problem ⭐⭐⭐⭐⭐
 
-     Reads
+Sometimes one thread updates a variable, but another thread continues using an old cached value.
 
-     5
-     Thread 2
+Example:
 
-     Also reads
+```java
+boolean running = true;
+```
 
-     5
+Thread 1:
 
-     Thread 1 writes
+```java
+while (running) {
 
-     6
+}
+```
 
-     Thread 2 also writes
+Thread 2:
 
-     6
+```java
+running = false;
+```
 
-     Expected:
+Expected:
 
-     7
+Thread 1 should stop.
 
-     Actual:
+Actual:
 
-     6
+Thread 1 may continue forever because it cannot see the updated value.
 
-     One increment is lost.
+### Solution
 
+Use
 
->>>>>Volatile keyword means read and Write operation perform from Ram not from data
+```java
+volatile boolean running = true;
+```
 
->>>>>Synchronized keyword used for loacking
+The `volatile` keyword ensures every read gets the latest value from main memory rather than using a stale cached value.
 
->>Ordering
-  the sequece in which instruction are executed
+---
 
+# 5. Ordering (Instruction Reordering) ⭐⭐⭐⭐
 
-  for protecting our multithreaded enviourment from Race condition ,  orderring and non atomitcity
+The compiler, JVM, and CPU may reorder instructions for optimisation.
 
-  there has Synchronization .....Volatile keyword that data read wwrite from ram memory not from thread directly ...memeory m jake dekhuga ab kya value h uski ......Atomic integer(By it manage atomitcity).....Proper laocking
+Example:
 
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+```java
+x = 10;
+flag = true;
+```
 
+Another thread may observe:
 
-  Synchronized means at a time one thread goes into critical section and run then after one by one
+```java
+flag = true;
+x = 0;
+```
 
-    >>>>> it locks my critical section..........
+because the writes were reordered.
 
+### Solution
 
-   means at first suppose t1 therad ...goes in critical section our t1 thread goes into lock state like it fully finishees first then after other another thread comes
-   so that another thread goes into block state ...........
+* `volatile`
+* `synchronized`
+* Locks
 
-  >>>t1 will perform task ...then t2 perform
+These establish proper memory ordering.
 
-  >>>what synchronized do ....to potrotec shared data.....to make any operation atomic......to ensure visibiltiy(reading data from ram actual data).....to prent ordering
+---
+# Deadlock (Multithreading)
 
+## Deadlock Kya Hota Hai?
 
->>>>>>>Synchronized internally uses (Monitor locks and Object Locks)
+**Definition:**
 
->>>>>Lock means (an permission token for entering in critical section but loack only gives permission if there has no other therd in critical section)
+> Jab 2 ya usse zyada threads ek dusre ke paas jo resource (lock) hai uska wait karte rahte hain, aur koi bhi apna lock release nahi karta, to program hamesha ke liye ruk jata hai. Is situation ko **Deadlock** kehte hain.
 
->>>>>in java every object has internal lock which means any new thread comes aquire and another theread goes into block state
+Simple language me:
 
->>>>but if i have two object of one class then ....there is we aquire two thread
+> **Main tere lock ka wait kar raha hu aur tu mere lock ka wait kar raha hai. Dono wait hi karte reh gaye.**
 
-   like i have t1 thread and t2 thread but if there has one object then only run one by one ......but if i have two object then parrellay run possible
+---
 
-    Test test = new Test();
-    Test test2 = new Test();
+# Real-Life Example
 
-    Thread t1 = new Thread(() -> test.m1()) ; synchronized method m1
-    Thread t2 = new Thread(() -> test2.m1()) ;
+Socho 2 dost hain.
 
-        these both run in parrelly
+* Harshal ke paas **Bike ki Key** hai.
+* Rahul ke paas **Helmet** hai.
 
+Harshal bolta hai:
 
->>>>>>synchronized block{}  like there has only critical situation
+> "Pehle Helmet de, fir Key dunga."
 
->>>>>static method have synchronized then what haappend......iska mtlb h class k uoer lock lena static method belongs to class level
+Rahul bolta hai:
 
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+> "Pehle Key de, fir Helmet dunga."
 
-Inter thread commiunication>>>
+Ab:
 
-  Synchronized hr chiz ko handle nhi kr skta like.....
+* Harshal wait kar raha hai.
+* Rahul bhi wait kar raha hai.
 
->>  Producer and consumer Problem in MultiThreading........
+Koi bhi pehle nahi de raha.
 
->>  producer produce and fill in box and consumer consume from box......
+Result:
 
-  if consumer try to consume data from box but ...produce did not produce it then what happen....
-  if producer produce but consumer did not consume then also problem happens
+**Dono wahi khade rahenge.**
 
-  [producer] ------>  [data] ----> [consumer]
+Ye hi **Deadlock** hai.
 
->>so this is nessacry to commiunication between two threads
+---
 
->>So why synchronized also not wrking here because ....suppose first consumer method run then it return null na like that
+# Programming Example
 
- when we apply Synchornized then there has....deadlock situtation
+Maan lo hamare paas 2 Locks hain.
 
+```java
+Object lock1 = new Object();
+Object lock2 = new Object();
+```
 
->>>Watinign state (wait() , notify() , notifyAll())
+## Thread-1
 
+```java
+synchronized(lock1)
+{
+    // Lock1 mil gaya
 
-This is probably the hardest Java topic, but if you understand why threads exist, you'll never fear it again.
+    synchronized(lock2)
+    {
+        // Lock2 chahiye
+    }
+}
+```
 
-Most people memorize:
+## Thread-2
 
-Thread
-Runnable
-synchronized
-wait()
-notify()
+```java
+synchronized(lock2)
+{
+    // Lock2 mil gaya
 
-without understanding what the CPU is actually doing.
+    synchronized(lock1)
+    {
+        // Lock1 chahiye
+    }
+}
+```
 
-Let's build the picture from scratch.
+---
 
-Step 1: Imagine You're the CPU
+# Step-by-Step Execution
 
-Suppose you are the CPU.
+### Step 1
 
-You receive this program.
+Thread-1 ne **Lock1** le liya.
 
-System.out.println("Start");
+### Step 2
 
-calculate();
+Thread-2 ne **Lock2** le liya.
 
-downloadMovie();
+Current Situation:
 
-playMusic();
+```
+Thread-1 → Lock1 Hold
+Thread-2 → Lock2 Hold
+```
 
-System.out.println("End");
+### Step 3
 
-You execute it like this.
+Thread-1 ko **Lock2** chahiye.
 
-Start
+Lekin Lock2 already Thread-2 ke paas hai.
 
+Isliye Thread-1 wait karega.
+
+### Step 4
+
+Thread-2 ko **Lock1** chahiye.
+
+Lekin Lock1 already Thread-1 ke paas hai.
+
+Isliye Thread-2 bhi wait karega.
+
+---
+
+# Final Situation
+
+```
+Thread-1
+
+Lock1 Hold
 ↓
 
-calculate()
+Waiting for Lock2
+```
 
+```
+Thread-2
+
+Lock2 Hold
 ↓
 
-downloadMovie()
+Waiting for Lock1
+```
 
+Ab:
+
+* Thread-1 wait kar raha hai.
+* Thread-2 bhi wait kar raha hai.
+
+Koi bhi aage nahi badh sakta.
+
+Program forever wait karta rahega.
+
+Ye hi **Deadlock** hai.
+
+---
+
+# Lock Release Kab Hota Hai?
+
+```java
+synchronized(lock)
+{
+    // Critical Section
+}
+```
+
+Jab thread `}` ke baad synchronized block se bahar nikalta hai tab JVM automatically lock release kar deti hai.
+
+Deadlock me thread synchronized block se bahar hi nahi aa pata.
+
+Isliye lock bhi release nahi hota.
+
+---
+
+# Deadlock Ke Solutions
+
+## 1. Same Order me Lock Lena (Best Solution)
+
+❌ Wrong
+
+```
+Thread-1
+
+Lock1
 ↓
 
-playMusic()
+Lock2
+```
 
+```
+Thread-2
+
+Lock2
 ↓
 
-End
+Lock1
+```
 
-One after another.
+Ye deadlock create kar sakta hai.
 
-This is called
+---
 
-Single Thread Execution
+✅ Correct
 
-Only one task happens at a time.
+Dono threads same order follow karein.
 
-What is a Thread?
-
-A thread is simply
-
-A single path of execution inside a program.
-
-Imagine you're reading a book.
-
-Page 1
-
+```
+Lock1
 ↓
 
-Page 2
-
-↓
-
-Page 3
-
-↓
-
-Page 4
-
-There is only one flow.
-
-That's one thread.
-
-What is a Process?
-
-Suppose you open
-
-Chrome
-VS Code
-Spotify
-RAM
-
-├── Chrome
-├── VS Code
-└── Spotify
-
-Each one is called a Process.
-
-A process has
-
-its own memory
-its own resources
-
-Inside Chrome...
-
-Chrome Process
-
-├── UI Thread
-├── Rendering Thread
-├── Audio Thread
-├── Network Thread
-└── JavaScript Thread
-
-These are threads.
-
-So,
-
-Process
-    ↓
-Contains Threads
-Visual Picture
-Operating System
-
-│
-
-├── Process 1 (Chrome)
-
-│      ├── Thread A
-
-│      ├── Thread B
-
-│      └── Thread C
-
-│
-
-├── Process 2 (Spotify)
-
-│      ├── Thread A
-
-│      └── Thread B
-
-│
-
-└── Process 3 (Java Program)
-
-       └── Main Thread
-Your Java Program
-
-Suppose
-
-public static void main(String[] args)
-
-Who executes this?
-
-Java automatically creates
-
-Main Thread
-
-before your code starts.
-
-So
-
-JVM Starts
-
-↓
-
-Creates Main Thread
-
-↓
-
-Runs main()
-Why do we need multiple threads?
-
-Imagine downloading a movie.
-
-Download
-
-↓
-
-5 minutes
-
-During those 5 minutes,
-
-should your entire application freeze?
-
-No.
-
-Instead
-
-Main Thread
-
-↓
-
-Starts Download Thread
-
-↓
-
-Main Thread keeps working
-
-Now
-
-Downloading
-
-+
-
-Playing Music
-
-+
-
-Updating UI
-
-all happen together.
-
-Does the CPU really execute them simultaneously?
-
-Here's the biggest misunderstanding.
-
-Suppose you have
-
-Thread A
-
-Thread B
-
-If your CPU has
-
-one core
-
-it cannot execute both at exactly the same instant.
-
-Instead it does
-
-A
-
-↓
-
-B
-
-↓
-
-A
-
-↓
-
-B
-
-↓
-
-A
-
-↓
-
-B
-
-Very quickly.
-
-Maybe millions of switches every second.
-
-Your brain thinks
-
-Both together
-
-This is called
-
-Concurrency
-
-Multi-Core CPU
-
-Suppose your laptop has
-
-Core 1
-
-Core 2
-
-Core 3
-
-Core 4
-
-Now
-
-Thread A → Core 1
-
-Thread B → Core 2
-
-Thread C → Core 3
-
-Actually simultaneous.
-
-This is
-
-Parallelism
-
-Thread Scheduler
-
-Who decides which thread runs?
-
-Not Java.
-
-The
-
-Operating System Scheduler
-
-Example
-
-Threads
-
-A
-
-B
-
-C
-
-D
-
-Scheduler chooses
-
-A
-
-↓
-
-B
-
-↓
-
-A
-
-↓
-
-D
-
-↓
-
-C
-
-You don't control this order.
-
-Creating Threads
-
-Method 1
-
-Extend Thread.
-
-class MyThread extends Thread{
-
-    public void run(){
-
-        System.out.println("Running");
+Lock2
+```
+
+Example:
+
+```java
+synchronized(lock1)
+{
+    synchronized(lock2)
+    {
 
     }
-
 }
+```
 
-Start
+Dusra thread bhi:
 
-MyThread t = new MyThread();
-
-t.start();
-
-Notice
-
-start()
-
-NOT
-
-run()
-Why not call run()?
-
-This is another interview favorite.
-
-Suppose
-
-t.run();
-
-What happens?
-
-Main Thread
-
-↓
-
-run()
-
-No new thread.
-
-It's just a normal method call.
-
-When you call
-
-t.start();
-
-Java asks the JVM
-
-Please create another thread.
-
-Then JVM creates
-
-New Thread
-
-↓
-
-Calls run()
-
-This is why
-
-start()
-
-↓
-
-creates Thread
-
-↓
-
-calls run()
-Runnable
-
-Instead of
-
-extends Thread
-
-Java recommends
-
-implements Runnable
-
-Why?
-
-Because Java allows only one inheritance.
-
-Suppose
-
-class Dog extends Animal
-
-Now
-
-extends Thread
-
-Impossible.
-
-So Java separates
-
-What to do
-
-↓
-
-Runnable
-
-from
-
-Who runs it
-
-↓
-
-Thread
-
-Example
-
-class DownloadTask implements Runnable{
-
-    public void run(){
+```java
+synchronized(lock1)
+{
+    synchronized(lock2)
+    {
 
     }
+}
+```
+
+Ab execution:
+
+```
+Thread-1
+
+Lock1
+
+↓
+
+Lock2
+
+↓
+
+Work Complete
+
+↓
+
+Lock Release
+
+↓
+
+Thread-2
+
+Lock1
+
+↓
+
+Lock2
+
+↓
+
+Work Complete
+```
+
+Deadlock nahi hoga.
+
+---
+
+## 2. tryLock()
+
+`ReentrantLock` ka `tryLock()` use kar sakte hain.
+
+```java
+if(lock.tryLock())
+{
+    try{
+
+    }
+    finally{
+        lock.unlock();
+    }
+}
+else
+{
+    System.out.println("Lock nahi mila.");
+}
+```
+
+Ye forever wait nahi karta.
+
+Agar lock nahi milta to thread doosra kaam kar sakta hai ya baad me dobara try kar sakta hai.
+
+---
+
+## 3. Kam Locks Use Karo
+
+Jitne zyada locks honge, deadlock ka chance utna zyada hoga.
+
+Agar ek hi lock se kaam chal sakta hai to unnecessary multiple locks mat use karo.
+
+---
+
+## 4. Lock Timeout
+
+```java
+lock.tryLock(2, TimeUnit.SECONDS);
+```
+
+Agar specified time tak lock nahi milta to thread wait chhod deta hai aur alternative action le sakta hai.
+
+---
+
+# Race Condition vs Deadlock
+
+## Race Condition
+
+* Multiple threads same data ko ek saath modify karte hain.
+* Program chal raha hota hai.
+* Result galat aa sakta hai.
+
+Example:
+
+```
+Expected = 2000
+
+Actual = 1987
+```
+
+---
+
+## Deadlock
+
+* Multiple threads ek dusre ke lock ka wait karte rehte hain.
+* Program aage hi nahi badhta.
+* Result kabhi aata hi nahi.
+
+Example:
+
+```
+Loading...
+
+Loading...
+
+Loading...
+```
+
+---
+
+# Interview One-Liner
+
+**Race Condition**
+
+> Program execute hota hai, lekin output incorrect ho sakta hai.
+
+**Deadlock**
+
+> Program execute hona hi band ho jata hai kyunki threads ek dusre ka indefinitely wait karte rehte hain.
+
+
+---
+
+# 7. Starvation ⭐⭐⭐⭐
+
+A thread waits indefinitely because other threads continuously get access to the shared resource.
+
+Example:
+
+A low-priority thread never gets CPU time because high-priority threads always run.
+
+### Solutions
+
+* Fair locks (`ReentrantLock(true)`)
+* Fair scheduling
+
+---
+
+# 8. Livelock ⭐⭐⭐⭐
+
+Threads are active but make no progress.
+
+Example:
+
+Two people meet in a narrow corridor.
+
+Person A moves left.
+
+Person B also moves left.
+
+Both then move right.
+
+They keep moving but never pass each other.
+
+Similarly, threads keep responding to each other but never complete their work.
+
+---
+
+# 9. Thread Interference ⭐⭐⭐⭐
+
+Multiple threads modify the same data without proper synchronization, leading to inconsistent results.
+
+This is one of the causes of race conditions.
+
+Example:
+
+```java
+count++;
+```
+
+executed simultaneously by multiple threads.
+
+---
+
+# 10. Resource Contention ⭐⭐⭐
+
+Many threads compete for the same resource.
+
+Examples:
+
+* Database connection
+* Printer
+* File
+* Shared object
+
+Too much contention reduces performance because threads spend more time waiting.
+
+---
+
+# 11. Thread Leakage ⭐⭐⭐
+
+Threads are created but never terminated.
+
+Example:
+
+```java
+while(true) {
+
+    new Thread(...).start();
 
 }
+```
 
-Then
+Eventually, the JVM may run out of memory or operating system thread limits.
 
-Thread t =
-new Thread(new DownloadTask());
+### Solution
 
-t.start();
+Use an `ExecutorService` and properly shut it down.
 
-Think of it like
+---
 
-Runnable
+# 12. Context Switching Overhead ⭐⭐⭐
 
-↓
+If too many threads are created, the CPU spends significant time switching between them instead of performing useful work.
 
-Recipe
+More threads do not always mean better performance.
 
-Thread
+### Solution
 
-↓
+Use thread pools (`ExecutorService`) instead of creating unlimited threads.
 
-Cook
-Thread States
+---
 
-Imagine a person.
+# Summary Table
 
-Born
+| Problem             | Cause                                  | Solution                               |
+| ------------------- | -------------------------------------- | -------------------------------------- |
+| Race Condition      | Shared mutable data                    | `synchronized`, Locks, `AtomicInteger` |
+| Critical Section    | Shared code                            | Synchronization                        |
+| Atomicity           | Non-atomic operations                  | `AtomicInteger`, Synchronization       |
+| Visibility          | Stale cached values                    | `volatile`                             |
+| Ordering            | Instruction reordering                 | `volatile`, Synchronization            |
+| Deadlock            | Circular waiting                       | Lock ordering, `tryLock()`             |
+| Starvation          | Thread never gets resources            | Fair scheduling                        |
+| Livelock            | Threads keep reacting without progress | Change retry strategy                  |
+| Thread Interference | Simultaneous updates                   | Synchronization                        |
+| Resource Contention | Too many threads sharing one resource  | Reduce contention                      |
+| Thread Leakage      | Threads never terminate                | `ExecutorService`                      |
+| Context Switching   | Excessive thread creation              | Thread pools                           |
 
-↓
+---
 
-Ready
+# Which topics are most important for interviews?
 
-↓
+★★★★★
 
-Running
+* Race Condition
+* Critical Section
+* `synchronized`
+* Deadlock
+* `volatile`
+* `AtomicInteger`
 
-↓
+★★★★☆
 
-Sleeping
+* Starvation
+* Livelock
+* Locks (`ReentrantLock`)
+* ExecutorService
 
-↓
+★★★☆☆
 
-Running
+* Thread Leakage
+* Resource Contention
+* Context Switching Overhead
 
-↓
-
-Dead
-
-Java threads are similar.
-
-NEW
-
-↓
-
-RUNNABLE
-
-↓
-
-RUNNING
-
-↓
-
-WAITING
-
-↓
-
-TIMED_WAITING
-
-↓
-
-TERMINATED
-Shared Memory
-
-Suppose
-
-Main Thread
-
-Worker Thread
-
-Both access
-
-int balance = 1000;
-
-Memory
-
-RAM
-
-balance =1000
-
-Both threads can modify it.
-
-Now problems begin.
-
-Race Condition
-
-Suppose
-
-Balance
-
-1000
-
-Thread A
-
-Withdraw 500
-
-Thread B
-
-Withdraw 700
-
-Both read
-
-1000
-
-Both think
-
-Enough money.
-
-Finally
-
-Balance
-
-500
-
-or
-
-300
-
-or
-
-Incorrect value
-
-depending on timing.
-
-This is
-
-Race Condition
-
-synchronized
-
-Java says
-
-Only one thread enters.
-
-Imagine a bathroom.
-
-Without lock
-
-Person A
-
-Person B
-
-Person C
-
-Chaos.
-
-With lock
-
-Door Locked
-
-↓
-
-Person A
-
-↓
-
-Leaves
-
-↓
-
-Person B
-
-That's exactly
-
-synchronized
-
-Example
-
-synchronized void withdraw(){
-
-}
-
-Only one thread executes it at a time.
-
-Monitor Lock
-
-Every Java object secretly owns a lock.
-
-Account Object
-
-│
-
-└── Monitor Lock
-
-When
-
-synchronized(account)
-
-Thread does
-
-Acquire Lock
-
-↓
-
-Execute
-
-↓
-
-Release Lock
-
-Other threads wait.
-
-Deadlock
-
-Imagine
-
-Person A
-
-has
-
-Lock 1
-
-needs
-
-Lock 2
-
-Person B
-
-has
-
-Lock 2
-
-needs
-
-Lock 1
-
-Both wait forever.
-
-A ←→ B
-
-Nobody moves.
-
-Deadlock.
-
-wait()
-
-Suppose a restaurant.
-
-Customer
-
-Orders Food
-
-↓
-
-Food not ready
-
-↓
-
-Wait
-
-Instead of standing,
-
-he sits.
-
-That's
-
-wait();
-
-Thread releases the lock and waits.
-
-notify()
-
-Chef says
-
-Food Ready
-
-Customer wakes up.
-
-notify()
-sleep()
-Thread.sleep(5000);
-
-Means
-
-Thread
-
-↓
-
-Sleep 5 seconds
-
-Important:
-
-sleep() DOES NOT release the lock.
-
-wait() vs sleep()
-wait()	sleep()
-Releases lock	Doesn't release lock
-Must be inside synchronized block	Can be called anywhere
-Wakes with notify()	Wakes after time
-Executor Framework
-
-Creating thousands of threads is expensive.
-
-Imagine hiring
-
-1000 workers
-
-for 1000 tasks.
-
-Instead
-
-10 Workers
-
-↓
-
-Reuse them
-
-That's a Thread Pool.
-
-ExecutorService executor =
-Executors.newFixedThreadPool(5);
-Future
-
-Suppose
-
-Calculate Salary
-
-takes
-
-10 seconds
-
-Instead of waiting,
-
-Java gives you
-
-Future
-
-Meaning
-
-"I'll give the result later."
-CompletableFuture
-
-Modern Java.
-
-Instead of
-
-Wait
-
-↓
-
-Wait
-
-↓
-
-Wait
-
-You write
-
-Task
-
-↓
-
-Automatically continue
-
-Much cleaner for asynchronous programming.
-
-Real Spring Boot Example
-
-Suppose your API uploads images.
-
-Without multithreading
-
-Request
-
-↓
-
-Upload Image
-
-↓
-
-Resize
-
-↓
-
-Send Email
-
-↓
-
-Return Response
-
-User waits 20 seconds.
-
-Better approach
-
-Main Thread
-
-↓
-
-Save Image
-
-↓
-
-Return Response
-
-Background thread
-
-Resize
-
-↓
-
-Send Email
-
-This is exactly why Spring provides @Async and task executors.
-
-Complete Mental Picture
-                JVM
-
-                 │
-
-          Main Thread
-
-                 │
-
-      ┌──────────┴──────────┐
-
-      │                     │
-
- Download Thread      Email Thread
-
-      │                     │
-
-      └──────────┬──────────┘
-
-                 │
-
-          Shared Memory
-
-                 │
-
-         synchronized Lock
-
-                 │
-
-       Prevent Race Conditions
-Interview Summary
-Concept	Meaning
-Process	Independent running program
-Thread	Lightweight execution path inside a process
-start()	Creates a new thread and then calls run()
-run()	Contains the work to execute
-Runnable	Defines the task
-Thread	Executes the task
-synchronized	Allows only one thread at a time into a critical section
-Race Condition	Multiple threads modify shared data incorrectly
-Deadlock	Threads wait forever for each other's locks
-wait()	Releases lock and waits
-notify()	Wakes a waiting thread
-sleep()	Pauses execution but keeps any held locks
-ExecutorService	Manages a pool of reusable threads
-CompletableFuture	Modern asynchronous programming API
-The one sentence to remember forever
-
-Imagine your Java application as a restaurant:
-
-Threads are the waiters doing work.
-CPU cores are the kitchen stations where work gets done.
-The OS scheduler decides which waiter gets a station next.
-synchronized is the key to the pantry—only one waiter can use it at a time.
-wait() is a waiter stepping aside until ingredients arrive.
-notify() is the chef calling the waiter back.
-A thread pool is a fixed team of waiters that keeps serving customers instead of hiring and firing new waiters for every order.
-
-Once you see multithreading as multiple workers sharing the same restaurant, concepts like race conditions, locks, and thread pools become much more intuitive than memorizing API names.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Master the ★★★★★ topics first, then move on to the rest.

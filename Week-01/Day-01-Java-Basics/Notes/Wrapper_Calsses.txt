@@ -51,14 +51,13 @@ if i have a normal class and i want comparable type property in my clas then wha
 
  @Override
     public int compareTo(Student other) {
+ int result =  Integer.compare(this.id,normal.id);
 
-        if(this.id > other.id)
-            return 1;
-
-        if(this.id < other.id)
-            return -1;
-
-        return 0;
+        if(result==0)
+        {
+           result = this.name.compareTo(normal.name);
+        }
+        return result;
     }
 
     for name i do like

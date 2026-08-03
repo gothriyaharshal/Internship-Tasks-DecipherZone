@@ -70,7 +70,7 @@ What is Git
 >>we have pre file and(we do some changes on it are modified files)
 
 >>add and commit (Stagging and Commit means save)
-  git add . 
+  git add .   // here i also add single file and .....multiple file by dot
   git commit -m "First commit"    (-m means message)
 
 >>When we do commit it only save changes into our local machine for uploading all those    change we have to use push command
@@ -237,24 +237,48 @@ on main branch compare and pull those change it shows me updation on my git hub
  git pull origin main  (if we want to took updated code from remote branch to local branch)
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+Merge confilits means
 
-Merge conflict
+if i have main branch .....from main branch i create new Branch (Feature ) ......at that time on main branch
+Some other branch push there code so ......my feature branch goes 1 commit behind
 
->>if I have main branch            <h1> hello harshal {button} </h1>  
+when confilcts come like on feature branch i make an code and change it by my own way and in main branch
+some other change those particular line and push code then confilct come .....at that time when i go for pushing my code
+of feature branch to main.....
 
->>if I do change here on feature branch   <h1> hello harshal {dropdwon} </h1>
+first of all what did i do ......
 
-commit both branches and check difference then there we see like we have same line changes
+i am on feature branch .....first i push my whole code on feature branch
+then ....then goes into main branch and took pull our there of main branch....
+...then run command git merge main on feature branch and then i see confilt i resolve them add them then push them
 
->>git merge main   (When we do this then IDE shows us an error and we facing merger conflict so at that time we do mannully )
 
->>
-   <h1> hello harshal {button} </h1>  
-   <h1> hello harshal {dropdwon} </h1>
+# On feature
+git push origin feature
 
-if I remove first line then do merge then merge occure ...if I want second line then remove first one if I want both of them then do direct merge 
+# Update local main
+git checkout main
+git pull origin main
 
->>git merge feature......
+# Return to feature
+git checkout feature
+
+# Bring main changes into feature
+git merge main
+# or
+git rebase main
+
+# Resolve conflicts if any
+git add .
+
+# If merge:
+git commit
+
+# If rebase:
+git rebase --continue
+
+# Push feature
+git push origin feature
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -296,132 +320,7 @@ branch --->commit--->git push origin feature--->checkout main ----> git merge <b
 
 Merge conflicts only comes when ..on my main branch some other developer do changes .....and i did'nt have updated code and when
 
-i push then i face merge conflicts
-
->>>
-Means if i clone master branch then i have some code make another child branch of it
- if i do same line changes and merge them then i did not face any confilits but .......
- if on my main branch some other person do chnages on those line and whrn i go to merge i found merge confkitcs
-
-after resolving merge conflict do 
-
-git add .
-
-git commit -m "sjj"
-
-then push
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-Yes, your understanding is correct. In a company workflow, you usually do not merge your feature into main directly.
-A senior developer or maintainer does that through a Pull Request.
-
-Your flow would be like this:
-
-1. Create feature branch from main
-git checkout main
-git pull origin main
-
-git checkout -b feature/login
-
-Now you work on:
-
-main
- |
- A---B---C
-      \
-       D---E feature
-2. Do your changes
-git add .
-git commit -m "added login feature"
-3. Before pushing, take latest main updates into your feature
-
-You can do:
-
-git checkout feature/login
-
-git pull origin main
-
-This means:
-
-"Take latest main code and merge it into my current feature branch."
-
-It is equivalent to:
-
-git fetch origin
-git merge origin/main
-
-Now:
-
-main:
-A---B---C---F
-
-feature:
-        \---D---E
-             \
-              M
-
-Your feature now contains latest main.
-
-4. If conflict comes
-
-Example:
-
-Git says:
-
-CONFLICT in UserService.java
-
-You edit the file:
-
-Before:
-
-<<<<<<< HEAD
-main code
-=======
-your feature code
->>>>>>> feature
-
-After fixing:
-
-final code
-
-Then:
-
-git add .
-git commit -m "resolved merge conflict"
-5. Push ONLY your feature branch
-git push origin feature/login
-
-NOT:
-
-git push origin main
-
-Because main belongs to the team.
-
-6. Create Pull Request
-
-On GitHub:
-
-feature/login  --->  main
-
-Senior reviews it.
-
-If approved:
-
-main
- |
- A---B---C---F---D---E
-
-gets merged.
-
-So your understanding is right:
-
-Developer:
-
-feature → update from main → resolve → push feature → PR
-
-Senior:
-
-review PR → merge feature into main
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 

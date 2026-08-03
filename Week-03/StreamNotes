@@ -251,7 +251,7 @@ Example
 
     /findAny[for use of parelle streams]
 
-    //anyMatch [give boolean value if there any match of data]
+    //anyMatch [give boolean value if there any match+ of data]
 
     //allMatch [if alll elment data were matched then give boolean true otherwise false]
 

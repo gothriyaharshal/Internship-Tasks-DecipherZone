@@ -111,9 +111,7 @@ Interview me agar bole "immutable class banao":
 Tum ye rules follow karoge:
 
 Rule 1: Class ko final karo
-final class Student {
-
-}
+final class Student {}
 
 Taaki koi extend na kare.
 

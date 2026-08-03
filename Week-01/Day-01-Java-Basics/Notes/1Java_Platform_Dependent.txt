@@ -1,5 +1,49 @@
 >>
-Java version java 21.0.9 2025-10-21 LTS
+Java/ version java 21.0.9 2025-10-21 LTS
+
+
+Write Java Program (.java)
+          │
+          ▼
+JDK
+(javac Compiler)
+          │
+          ▼
+Bytecode (.class)
+          │
+          ▼
+java command
+          │
+          ▼
+JRE Starts
+          │
+          ▼
+JVM Starts
+          │
+          ▼
+Class Loader
+          │
+          ▼
+Bytecode Verifier
+          │
+          ▼
+Runtime Memory Areas
+(Heap, Stack, Method Area, etc.)
+          │
+          ▼
+Execution Engine
+     ┌───────────────┐
+     │               │
+Interpreter      JIT Compiler
+     │               │
+     └──────► Machine Code
+                   │
+                   ▼
+                  CPU
+          │
+          ▼
+Garbage Collector (during execution)
+
 
 >>
 Java program --> Java compiler(javac) ---> Byte 
