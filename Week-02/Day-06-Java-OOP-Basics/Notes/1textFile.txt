@@ -402,38 +402,5 @@ sout(a.equals(y)) //true      it compares the value becuse there has ....overidd
 here equals is an object class function
 
 
->>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<
-
-Nested class
-
->For logically grouping
-
-class Outer
-{
- class Innner
-  {
-   
-  }
-}
-
-//it access parent class private access modifiers also
-
->Static nested class (inner class is static)
-
- class Outer 
-  {
-    static Inner
-    {
-    }
-  }
-
-
-//static means it belongs to class ....all object share it
-
-//
-
-
-
-
 
 

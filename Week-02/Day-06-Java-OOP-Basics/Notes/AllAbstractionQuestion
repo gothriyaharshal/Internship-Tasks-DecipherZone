@@ -88,6 +88,56 @@ abstract class Animal{
 
     final int MAX=100;
 }
+
+here why we using constructor and those variable in abstract class understand with an suitable example
+abstract class Animal {
+
+    int age;
+    static int count = 0;
+    final int MAX;
+
+    Animal(int age, int max) {
+        this.age = age;
+        MAX = max;
+    }
+
+    void display() {
+        System.out.println("Age: " + age);
+        System.out.println("Count: " + count);
+        System.out.println("Max: " + MAX);
+    }
+
+    abstract void sound();
+}
+
+Then the child class calls the parent constructor using super():
+
+class Dog extends Animal {
+
+    Dog(int age, int max) {
+        super(age, max);
+    }
+
+    @Override
+    void sound() {
+        System.out.println("Dog barks");
+    }
+}
+
+Now in main:
+
+public class Test {
+
+    public static void main(String[] args) {
+
+        Dog d = new Dog(5, 200);
+
+        d.display();
+        d.sound();
+    }
+}
+
+
 7. Can an abstract class have static methods?
 
 Yes.
