@@ -26,7 +26,7 @@ Second thing>>>>>>>>>>>>>>>>>>>>>.
  Fourth thing>>>>>>>>>>>
 
  String class is final because no other class extend ....pr agr String final nhi hoti toh kya hota
- internally all varible of string are private and no child class access them...but what if string is not final
+ internally all variable of string are private and no child class access them...but what if string is not final
 
  then public and protected method of String class can be access and overrided in child class
 

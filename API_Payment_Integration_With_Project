@@ -1,0 +1,133 @@
+
+<<<Flow of payment>>>
+
+>> We did not write payment logic in our server
+
+when ever payment request comes then there has many servel payment gateway by in those third party
+Api perfrom action
+
+>>Ab hume success or failure dikhta h agr success wala kaam dikha toh successs ka kaam krege vrna failure ka
+
+Payment flow>>>>>>
+
+1>
+suppose there has button of [pay 50]
+2>
+jeise hi payment initiate hoga first request goes into server
+
+from fronted to backend
+
+3>
+this request is for Order creating request .....toh java k pass koi trika nhi order create krne ka toh ye use krega razor pay ki api
+
+4>
+order create krne k lie khuch method chahiye hoge apn ko....jo ki razor pay pr jayege api hit krege
+
+5> or fir order create hone k baad order id milegi ...veise order ki puri detail milegi
+
+6>or DB m order id or status ko save bhi krege like order abhi hua nhi h complete ,,,kyuki muje mera record bhi toh main tain rkhna h na
+
+7>fir checkout se mere pass amout or order id aayegi ...or fir Amount or order id h hi .....ye request mar dega Razor pay pr
+
+8> toh is se response m payment id , razorpayorder id or razorpay signature mil jayega
+
+9> then we say that payment goes success
+
+>>server pr request bhej dege ki payment ho chukha h aapka .....kyuki payment ho gya pr muje mere server pr bhi record rkhna h
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+Create RazorPay account
+
+generate and download Api keys (Test keys)
+
+create an payment form (jaha se user initate krega transaction ko frontend page bnana h )
+
+i create an form page and field like   Donate us [   ]
+                                                 [pay] button
+    i create its Html page....css ....and ts where i hit on api and response were genrated i make an frontend project of it in angular
+
+     "http://localhost:8080/api/payment/create-order",
+
+       when i hit this api my order were gone for creation
+
+>>for help we also do like ....razor pay integration
+
+add dependency of razor pay
+
+>Make an Entity class of payment
+
+
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Payment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private Double amount;
+
+    private String orderId;
+
+    private String paymentId;
+
+    private String status;
+
+}
+
+>then make its Reposiatory
+>then makes its ....Serivce interface
+
+public interface PaymentService {
+    CreateOrderResponse createOrder(CreateOrderRequest request);
+
+    void verifyPayment(VerifyPaymentRequest request);
+
+}
+
+>>and makes its implementation in impl class implement tation webclient se krvayege
+>>fir controller aise bna dege
+
+@RestController
+@RequestMapping("/api/payment")
+public class PaymentController {
+
+    @Autowired
+    private PaymentService paymentService;
+
+    @PostMapping("/create-order")
+    public ResponseEntity<CreateOrderResponse> createOrder(@RequestBody CreateOrderRequest request) {
+        System.out.println(request.getAmount());
+
+        CreateOrderResponse order = paymentService.createOrder(request);
+        return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
+and our Request and response classes are
+
+public class CreateOrderResponse {
+    private String orderId;
+    private Integer amount;
+    private String currency;
+    private String key;
+}
+
+public class CreateOrderRequest {
+    @NotNull
+    private Integer amount;
+}
+
+as like this
+
+
+>>>>
+
+ab razor pay ki Api use krege apn
+
+in my controller i write as like this    RazorpayClient razorpayClient = new RazorpayClient("rzp_test_TM2CnGxfkoyew2", "CnrKG2M44hg1y8femW51rgGx");//here i have to pass key and secret
+
+

@@ -74,14 +74,23 @@ public class Call_By_Value {
  
 //original a change nhi hoga uski copy funcntion m pass hogi
 
-//but in object ..unme andr ka data change ho skta h like  [10 ,20,30] h toh [10,30,40] ye ho skta h pr m aise krdu ki   
 
- a (refrence varible) = new Student();
- a.khchu bhi filed
+in obejct
 
-change kru toh yaha a refrence ki copy bnegi or jb m orint krvauga niche toh vo original wala data hi dikhega muje mtlb call by valye 
+int arr = [1,2,3,4] ;
 
+andr ka data change ho skta h ...like [1,2,3,4,5,6] or aise kru like int arr = new int[7]{1,2,3,4,5,6,7} aise nye ko bhi refrrence de skta h
 
+pr agr object final ho toh andr ka data change ho skta  h pr refrence fix ho jata h
+
+like.............. final int arr[] = {1,2,3,4};......
+
+   final int arr[] = {1,2,3,4,5};
+
+        arr[3] = 5;
+        arr[] = new int[5];
+
+        modify kr skta hu pr refrence chnage nhi kr skta
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<
 
 Static and final keyword

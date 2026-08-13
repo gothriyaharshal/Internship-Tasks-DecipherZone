@@ -73,7 +73,7 @@ Future executions use native code
 
 >>
 Varible an naming provide for storing data Scope of variblee inside block .
-...instance varible are part of class not an method or block
+...instance varible are part of object not an method or block
 they were created when object of that class were made and destroyes when object is destroys
 
 >>Access Modifier
