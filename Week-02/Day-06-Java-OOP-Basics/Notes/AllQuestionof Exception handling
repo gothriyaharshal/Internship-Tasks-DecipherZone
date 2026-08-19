@@ -229,6 +229,7 @@ Method	Output
 getMessage()	Exception message only
 toString()	Exception class + message
 printStackTrace()	Complete stack trace
+
 36. What is Exception Propagation?
 
 When an exception is not handled in a method, it propagates up the call stack until it is handled or reaches the JVM.

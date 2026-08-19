@@ -86,6 +86,8 @@ List interface
 
      or we also use comparator also
 
+//or set or map or queue index based nhi hota toh unpr Collections.sort kaam nhi krega unko ya toh set m convert kro ya TressSet or TreeMap ka use kro
+
     >>but in treeset or treemap ...what happens we do not have to perfrom collections.sort()....it directly
 
      >>here equals and hashcode were work but in diffrent way like

@@ -1,0 +1,194 @@
+What is a Deocker>>>
+
+flow of docker
+
+first docker file were made in which instr
+
+docker cmnd>>
+
+docker --version
+
+docker hub has many image for taking pull from hub we run this cmnd
+(docker pull hello-world)
+(docker pull openjdk)
+(docker pull openjdk:18) specific version download krke dega muje
+>>
+PS C:\Users\AKASH GOTHRIA> docker images
+                                                             i Info →   U  In Use
+IMAGE                ID             DISK USAGE   CONTENT SIZE   EXTRA
+hello-world:latest   5dd0d3e6e255       25.9kB         9.49kB    U
+
+
+>>docker search image_name (for searching all information of image)
+
+
+
+>>>
+ When i hit........... docker run imagename.........then image were run and its container were made
+
+container ko start keise kre...run this cmnd..... docker run hello-world
+
+> jitne bhi ek image se container bne unhe dekhne k li ecmnd..... docker ps -a .....sare container
+
+>docker run --env
+
+enviourment varible pass krne k lie suppose aapki mysqk ki image h toh password port number pas krna hoga uske lie
+
+docker run --env MYSQL_PASSWORD like that
+
+> docker run --detached
+ (ye option h container ko run krne ka.....)
+
+> docker run --name mysqlContainer -d mysql
+
+   name of container we were passing here
+   detached were passing ...and at last image name were passing
+
+toh container run hua or bdi si id mili
+
+> docker ki help se dekhege kon kon sa container run ho rha h .....toh ye pta nhi chelga
+  docker ps se kyuki ,,,,vo jlid se run hoke finish bhi ho jata h
+
+  >>lekin m keise mysql ko access kr pauga vo toh container chl rh ah
+
+  >>docker run --name pythonContainer1 -it -d mysql
+
+  ab mera container interactive mode se bnd nhi ho ga runhota rhega checke krne k lie docker ps dekhna chla k
+
+  >>suppose muje pyhton container ko chalna h toh m chla skata hu like
+
+  docker exec -it container_id  (de deo bs  )
+
+  >>>
+
+all information abour container  docker inspect 40d24022dc88
+
+>>>suppose i have openjdk image then
+
+docker images(i show that image)
+
+>We create an container of that image
+
+docker run --name javaContainer -it -d openJdk
+
+> docker ps
+
+>fir execute krege
+
+docker exec -it javaContainer jshell (command likhna h jo dokcer ps krne k baad command section m aata h vo)
+
+>now we are at jshell terminal and now write java code our here
+
+>  like ubuntu aise execute hoga kyuki uske cmnd m bin/slash asie khuch h
+
+docker exec -it ubuntuContainer /bin/bash
+
+
+>now we are in ubuntu run those cmnd like ...ls , pwd and if i want to exit from that then run simple cmnd exit
+
+
+
+>>>>>>>>>>>
+
+i download the mysql lateset image by this cmnd
+>git pull mysql
+
+then i want to run this image and make its container
+
+>docker run --name mysqlDB -e MYSQL_ROOT_PASSWORD=harshal14 -d mysql
+
+
+mera pass set krdia meine yaha pr
+
+is se mera mysql run ho jayega background m or mera terminal bhi free ho jayega khuhc bhi cmnd chlau chle jaeygi easyli
+
+
+>
+docker exec -it mysqlDB mysql -uroot -p  (fir run kr dena is command se)
+
+
+>>>>>>>>>>>>>>>>>>.
+
+i want to download nginix
+
+then that particular cmnd like
+
+>docker pull nginix
+>docker images (i have that image)
+>docker run --name nginixServer -d -p 8080:80 nginix
+
+ye islie kyukui container pr jo host h or server pr jo host h unke port chnage ho skte h toh meine server ka port 8080 set kia or ....container ka 80 like that....
+
+
+>>>>>>>>>>>>>>>>.
+
+mera koi container backgroud m chl rha h muje usse stop krna h toh
+
+docker stop container_id
+
+>>>>>>>>
+restart krna h toh
+
+docker restart container_name/id
+
+>>>>>>>
+
+docker login (ye docker hub pr login krne k lie h jis se jo meine locallaly image bnai usse hub or push kr sku)
+
+>>>>>>
+
+docker commit (ye save krta h image ko edit hui image ko)
+
+>>>>>>
+
+docker push  (ye docker hub pr push krti h image ko)
+
+>>>>>
+docker copy
+
+>>>>
+docker logs
+
+>>>>
+docker logout
+
+>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<
+
+We were creating our own images
+
+docker file>>>>
+ Normal text file
+
+ Suppose i am in Blogging application then i make an docker file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

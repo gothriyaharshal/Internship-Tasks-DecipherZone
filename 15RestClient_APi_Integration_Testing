@@ -1,0 +1,39 @@
+first of all we provide an configuration of this in config class
+so we can use its method effectivly
+
+@Configuration
+public class RestClientConfiguration {
+
+    @Bean
+    public RestClient restClient() {
+        return RestClient.builder().build();
+    }
+}
+
+2>
+
+we create an test class where we autowire this configuration and make normal method inside it we give implementation of getting post
+
+
+@SpringBootTest
+public class TestingRestClient {
+
+
+    @Autowired
+    private RestClient restClient;
+
+    @Test
+    public void gettingPost() {
+        RestTemplateTestResponse body = restClient
+                .get()
+                .uri("https://jsonplaceholder.typicode.com/posts/2")
+                .retrieve()
+                .body(RestTemplateTestResponse.class);
+
+        System.out.println(body);
+
+    }
+}
+
+
+

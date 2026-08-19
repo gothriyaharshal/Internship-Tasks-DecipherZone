@@ -29,6 +29,35 @@
    - Channels
    - Buffers
 
+   following this roadmap
+
+                       JAVA I/O
+                          │
+             ┌────────────┴────────────┐
+             ↓                         ↓
+        Traditional I/O              NIO
+             │                         │
+       ┌─────┼─────┐              ┌───┴────┐
+       ↓     ↓     ↓              ↓        ↓
+     File  Stream Reader         Path     Files
+             │
+        ┌────┴────┐
+        ↓         ↓
+      Byte     Character
+      Stream    Stream
+        │         │
+        ↓         ↓
+   FileInput   FileReader
+   Stream      BufferedReader
+        │
+        └───────┬──────────┐
+                ↓          ↓
+         Buffering      Try-with-
+                        resources
+                │
+                ↓
+           Serialization
+
 
 File means storing data in some file by input output ....
 

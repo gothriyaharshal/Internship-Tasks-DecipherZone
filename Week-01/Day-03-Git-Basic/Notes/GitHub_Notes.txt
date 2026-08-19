@@ -336,13 +336,124 @@ git rebase --continue
 # end
 git push origin feature --force
 
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+> for version checking cmnd
+   git --version
+
+> for setUp username or Email
+   git config --global user.name "FIRST_NAME LAST_NAME"
+   git config --global user.email "MY_NAME@example.com"
+   git config --list
+> initializing git
+   git init
+   git init -q   (git initailize in quite mode ,,,,not give unneccasary output)
+   git init --shared  ()  (that repo which shared by all developr like information of something)
+   git init --bare <repository>   this reposiatry only contains git files not project file
+
+> git status
+
+>Adding file
+ git add filename.txt
+  git add file1.txt file2.txt
+  git add .    (adding all file untracked delete modified jo phle se add thi vo bhi stagging area m aajati h  )
+  git add -p filename.txt  (puri file m jo changes tumhe chahiye vo stag kro)
+  git add -u  (modfied ....deleted file ko stage krega ......untracked ko nhi )
+
+ git add .
+      ↓
+ current directory
+      ↓
+ src/ ke changes
+
+
+ git add --all
+      ↓
+ entire repository
+      ↓
+ src + test + README
+
+
+  git commit -am "message"
+  is equivalent to
+   git add -u
+   git commit -m "message"
+
+> amned
+  git commit --amend
+
+  (meri last commit pr muje khuhc edit krne h change krne h toh like)
+  meine commit krdi ab muje yaad aaya ki nhi muje ek or file add krni h fir commit krna tha )
+
+
+  toh m kya kruga ...  git commit --amend --no edit  ....asie likh duga ki khuch edit mt kro last comit m ye add krdo
 
 
 
 
+> commit
+
+commiting particular path>
+
+git commit /path_of_the_file -m "commit_message here"
+
+commiting specific data>
+
+git commit -m "commit_message" --date="YYYY-MM-DD"
+
+>
+git merge main ka mtlb
+
+suppose remote main branch has (A B C)  and local main branch has (A B)
+if i am on feature branch and i write this like....git merge main then it only include (A B) our there not C
+
+mtlb ye cmnd local m se lake merge krti h
+
+>
+ git pull origin main
+
+ iska mtlb phle origin m se fetch kregi sb khuch apne data base m fir merge kregi
+
+> git push
+
+ force push or force with lease push
+
+ suppose meri main branch m h ABC or meine child branch li vha se C ko delete krdia reset krdia
+ ab push kru m toh push nhi hoga vha force push krna pdega
+
+toh remote pr bhi   AB chla jayega
+
+  ye apn krte h .... git push --force main......... cmnd se
 
 
+> pr problem yaha tb aati h suppose .... main branch has  ,.,,,  ABC
 
+and i remoce c in child branch which is now...AB and someone changed main branch code as  ABCD
+
+if i do .... git --force push main then ....my D commit also removed
+
+> but if i do like force with lease then git check krta h koi or commit nyi aai h ya nhi agr nhi aai toh krdega or agr aayi h toh bolega bhia commit aai h
+
+> to see all remote branch git branch -r
+
+>for deleting origin branch
+ git push origin --delete <branch-name>
+>for deleting local branch
+ Delete a safe/merged branch:git branch -d <branch_name>
+ Force-delete an unmerged branch:git branch -D <branch_name>
+
+>  rebase mtlb
+
+  main branch pr code h  (A B C)
+  child branch pr code h  (A B C D E)
+
+ab main branch pr ksis ne change krdia like ABCF
+or meine main branch ko rebase kia child m toh kya hoga main ka sara code phle aayega fir child commit ka aayega
+
+ABCFDE
+
+>>
+ fir force push kro
 
 
 
