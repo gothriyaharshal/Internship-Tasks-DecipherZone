@@ -353,7 +353,7 @@ run cmd>>>
 
 mvn archetype:generate
 
->>>It doenload all the plugins
+>>>It download all the plugins
 
 or if you use Spring Boot:
 

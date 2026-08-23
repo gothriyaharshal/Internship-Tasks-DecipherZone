@@ -1,0 +1,135 @@
+How spring boot calls External Api>>
+
+There are major 4 types>>
+
+1> RestTemplate
+
+. > introduced in spring 3.0 framework
+. > Used in heavily Spring boot 2.x
+. > Deprecated in Spring 5+
+. > work synchronize like first it took response then do other work
+. > Still found in 90 percent enterprices codebase
+. > Thread waits until Api response (Blocking state)
+
+2> WebClient
+
+.>Introduced in spring FrameWork 5.0
+.>Recommended approach
+.>Non Blocking
+.>Reactive (uses Project Reactor)
+.>Work in mono and flex
+
+3> Rest cLint
+
+,>Introduced in spring Framework 6.1
+.>Preferred blocking client
+.>Designed for spring boot 4
+.>Modern and fluent api
+.>Replaces RestTemplate officialy
+
+4> HttpExchange
+
+.> Declarative Approch
+.> spring 6
+.> Similar to Feign but Spring Native(we create an interface declare there implementation and only call them)
+   this is of spring own implementation(Native)
+.> Clean and Readable code
+.> Internally uses webclient
+
+Create an Spring boot project
+
+1> Make an configuration class
+   .> Decalre an Bean of RestTemplate our there we only do testing is it working or not
+   .>Going in Test package create an folder an do unit testing our there
+
+public class RestTemplate_Test {
+    @Test
+    void testRestTemplate()
+    {
+        System.out.println("testRestTemplate");
+    }
+}
+
+    .>Suppose i mock url of some mock website .....and we call them
+       {
+       "userId" : 1,
+       "id" : 1,
+       "title" : "Spring boot application",
+       "body" : "This i an url present in any where in goggle we just want to call this"
+       }
+
+ //autowiring RestTemplate
+    @Autowired
+    private RestTemplate restTemplate;
+
+now i want to hit normal getApi which were present in any website means i hace getApi url
+
+// then i make an method of it
+
+ @Test
+    void testRestTemplateGet(){
+        System.out.println("testRestTemplate");
+        RestTemplateTestResponse forObject = restTemplate.getForObject("https://jsonplaceholder.typicode.com/posts/2", RestTemplateTestResponse.class);
+        System.out.println(forObject);}
+
+
+// i also make an RestTemplateResponse
+
+public class RestTemplateTestResponse {
+    private Integer userId;
+    private Integer id;
+    private String title;
+    private String body;
+    }
+
+ //      RestTemplateTestResponse forObject = restTemplate.getForObject("https://jsonplaceholder.typicode.com/posts/2", RestTemplateTestResponse.class);
+
+  restTemplate hase getforObject method which took data and generate response in object formate
+
+//  now i want to post data then i make postmethod and i want to post in Entity formate i also post in object formate but i want to post in Entity then i use
+
+        @Test
+           void testRestTemplatePost()
+           {
+               System.out.println("testRestTemplate")
+               //ye bhi shi h ki m Obejct formate m pass kr rha hu pr m chahta hu ki Entity fromate m pass kru
+
+               /*  RestTemplateTestResponse restTemplateTestResponse = new RestTemplateTestResponse(1,10000,"sd","asda");
+               RestTemplateTestResponse forObject = restTemplate.postForObject("https://jsonplaceholder.typicode.com/posts", restTemplateTestResponse, RestTemplateTestResponse.class);
+               System.out.println(forObject);
+               System.out.println("Post created successfully");*/
+            }
+
+//if i want like i generate an post request with providing header part information also like content type is json like that
+@Test
+void testRestTemplatePost() {
+    System.out.println("testRestTemplate");
+    // Request body
+    RestTemplateTestResponse restTemplateTestResponse =
+            new RestTemplateTestResponse(1, 10000, "sd", "asda");
+
+    // Request headers
+    HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+    // Body + Headers
+    HttpEntity<RestTemplateTestResponse> httpEntity =
+            new HttpEntity<>(restTemplateTestResponse, httpHeaders);
+
+    // POST request
+    ResponseEntity<RestTemplateTestResponse> response =
+            restTemplate.postForEntity(
+                    "https://jsonplaceholder.typicode.com/posts",
+                    httpEntity,
+                    RestTemplateTestResponse.class
+            );
+
+    // Response body
+    System.out.println(response.getBody());
+
+    // Response status
+    System.out.println(response.getStatusCode());
+}
+
+
+In Resttemplate we did not have Native nature because and there has blocking state

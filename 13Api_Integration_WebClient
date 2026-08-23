@@ -1,0 +1,92 @@
+WebClient>>>
+
+first of all we have to provide the .... webFlux dependency our there
+
+>
+We provide configuration of Webclient
+
+@Bean
+public Webclient webClient()
+{
+  return WebClient.builder().build();
+}
+
+> i have to perform get request then i make it also in Testing an pacakge and then test it
+
+  @Autowired
+    private WebClient webClient;
+
+    @Test
+    void testRestTemplateGet()
+    {
+        System.out.println("testRestTemplate");
+
+         webClient.get().uri("https://jsonplaceholder.typicode.com/posts/2")
+                 .retrieve()
+                 .bodyToMono(RestTemplateTestResponse.class);
+             //    .block();  agr muje blocking state m rkhna h toh pr nhi rkhna toh hta do isse
+}
+ Because web client is in Blocking and non blocking both state.......
+
+>>
+if i apply block our there like
+
+
+  RestTemplateTestResponse  restTemplateTestResponse =      webClient.get().uri("https://jsonplaceholder.typicode.com/posts/2")
+                 .retrieve()
+                 .bodyToMono(RestTemplateTestResponse.class);
+                 .block();
+
+i will wait until my response is not comes so my object were made at that time and response generate
+
+>>
+But if there has no Block i apply then
+
+  Mono<RestTemplateTestResponse> restTemplateTestResponseMono1 = webClient.get().uri("https://jsonplaceholder.typicode.com/posts/2").retrieve()
+                .bodyToMono(RestTemplateTestResponse.class);
+
+        restTemplateTestResponseMono1.subscribe((iteam)->
+        {
+            System.out.println(iteam);
+        });
+
+        here in mono spring says .....i give you mono when result come i insert it into mono
+
+>>Post method
+
+Tumhare current code ko dekho:
+
+RestTemplateTestResponse response =
+        webClient
+                .post()
+                .uri("https://jsonplaceholder.typicode.com/posts")
+                .bodyValue(restTemplateTestResponse)    //ye jana chhaiye post ki body m
+                .retrieve()                             //retrive kruga m jo response aayega us side se
+                .bodyToMono(RestTemplateTestResponse.class)  //suppose response aise aa rha h userid id title toh meine response kic lass bnadi ye autpmatic response ko us class m map krke print krvadega
+                .block();      //block or mono ka pta h hi
+
+Ab maan lo tumhe header bhejna hai:
+
+Content-Type: application/json
+Authorization: Bearer xyz123
+X-Custom-Header: hello
+1. Simple header bhejna
+RestTemplateTestResponse response =
+        webClient
+                .post()
+                .uri("https://jsonplaceholder.typicode.com/posts")
+                .header("Authorization", "Bearer xyz123")
+                .header("X-Custom-Header", "hello")
+                .bodyValue(restTemplateTestResponse)
+                .retrieve()
+                .bodyToMono(RestTemplateTestResponse.class)
+                .block();
+
+Yahan:
+
+.header("Authorization", "Bearer xyz123")
+
+>WebClient provide many features to us
+
+>>HttpExchange
+

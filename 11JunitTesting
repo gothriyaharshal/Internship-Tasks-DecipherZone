@@ -1,0 +1,199 @@
+
+unit Testing
+>
+ ..Suppose i have Calculate clas having sum() and product() method in it
+ ..so this class has many method when i pick single method and test it known as unit testing
+
+integrate Testing
+>
+ when we combined test controller and inside it all method service
+
+ Advantages of Unit testing>>
+
+ 1> Find bugs early and solve it
+ 2> Easy to fix because there has one logic
+ 3> Reduce cost and time
+
+ How to perform unit Testing>>
+
+  *> Junit -> Most popular framework for unit testing
+  *> version 4 and 5
+
+  *> Mockito (its an mocking frameWork)
+    Suppose we have an repository which interact with database but at testing level i dont want to use database
+    ....it help us in that situation..it create a fake thing for us
+
+*> we creating an separate Testing project
+
+    i have Blog app and i want Testing in it
+
+
+suppose i created an class in Service package in java and now i want to test it
+
+package com.blog.blog_app.services;
+public class CalculatedServicee {
+    public static int add(int a, int b) {
+        return a + b;
+    }
+    public static int summition(int ...numbers) {
+         int sum = 0;
+        for (int number : numbers) {
+            sum += number;
+        }
+        return sum;
+    }
+}
+
+and i want to test this service method then i come in Test package and
+
+
+@SpringBootTest
+public class UserServiceTest {
+
+
+
+
+
+    @Test
+    public void addTwoNumbers_Test()
+    {
+       //here i have to call this addTwonumber method
+
+        int result = CalculatedServicee.add(1,2);
+        System.out.println(result);
+
+
+        //expected result
+        int expected = 3;
+        Assertions.assertEquals(expected, result);
+
+        //actual result
+
+
+    }
+}
+/we are providing like this is our excpected result by AssertionClass .assertEquals method
+//excepted result shi hoga tbhi pass hoga ye
+
+//Sare test cases se phle muje koi kaam krvana h toh m ....method bnauga ek isi m
+//this method is static becuase it run at initailizattion time
+
+@BeforeAll
+public static void init()
+{
+  sout("Runs before all test cases");
+  sout("Started data");
+}
+
+
+or sare test cases k baad chalan h toh
+
+ @AfterAll
+ public static void desearilization()
+ {
+   System.out.println("After all test cases");
+ }
+
+
+ >>
+
+ if i want to apply logic before every test case then there has annotation like
+\
+
+    @BeforeEach
+    public  void beforeEachTestCase()
+    {
+        System.out.println("beforeEachTestCase");
+    }
+
+ >> @Test(timeout = 2000)  if my this test case toook more then 2 sec time to execute
+                           then test case not run
+
+
+>> if i want to ignore any type of test case then i use
+    @Disabled annotation
+
+>>
+   @Tag  (tagging our test)  (use for filteration)
+
+   @Tag("login")
+   @Test
+   void loginTest() {
+   }
+
+>>
+   @Nested (one class has another class for this we apply this)
+
+   class UserServiceTest {
+
+       @Nested
+       class RegistrationTests {
+
+           @Test
+           void validRegistration() {
+           }
+
+           @Test
+           void duplicateEmail() {
+           }
+       }
+    }
+
+
+
+>>
+    @TestFactory (@TestFactory ka use dynamic tests generate karne ke liye hota hai.)
+
+
+@TestFactory
+Collection<DynamicTest> additionTests() {
+
+    return List.of(
+        DynamicTest.dynamicTest("2 + 3", () ->
+            assertEquals(5, add(2, 3))
+        ),
+        DynamicTest.dynamicTest("5 + 5", () ->
+            assertEquals(10, add(5, 5))
+        )
+    );
+}
+Yahan @TestFactory khud test nahi hai. Ye runtime par multiple dynamic tests create karta hai.
+
+>>>
+Assertion class (Validation k lie use aata h ki actual result ...excpected k lie h ya nhi h )
+
+
+int[] actual = {1,2,3,4,5};
+int[] expected = {1,2,3,4,5};
+Assertion.assertEquals(expected,actual);   //ye false dega kyuki ye refrence ko equally nhi dekhega  solution Assertions.assertArrayEquals(expected, actual);
+
+  String s = new String("rahul");
+  String s1 = new String("rahul");
+Assertions.assertEquals(s,s1);  //ye true dega kyuki value ddekhe ga ye
+
+
+>>>
+
+
+        List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6);
+
+        List<Integer> list2 = Arrays.asList(1, 2, 3, 4, 5, 6);
+
+        Assertions.assertIterableEquals(list2,list);   list ko dekege
+
+
+
+>>>
+ Assertion.assertThrows (RuntimeException ,class ,()->
+ {
+  throw new RunTimeException("");
+ })
+
+
+
+
+
+
+
+
+
