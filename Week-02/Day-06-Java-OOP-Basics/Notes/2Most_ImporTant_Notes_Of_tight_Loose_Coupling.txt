@@ -74,9 +74,14 @@ class DieselCar {
 
 >>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+we achive loose coupling by ..... composition on inheritance , abstraction , interface  , dependecy injection
+
+
+
+
 But in loose coupling i create only one car class and one engine inteface ....and makes diffrenct classes of Engine that i want like 
 
-i want pertrolEngine then i extend Engine interface our there and 
+i want petrolEngine then i extend Engine interface our there and
 implements method and if i want electricEngine then also do same
 
 and passes in its constructor

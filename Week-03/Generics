@@ -292,7 +292,7 @@ Generic break an rule of parent child relationship
   is is also possible in java
 
 >>
-   List<Animal> animals =  new Dog();
+   List<Animal> animals =  new List<Dog>();
 
 it is not possible in java
 

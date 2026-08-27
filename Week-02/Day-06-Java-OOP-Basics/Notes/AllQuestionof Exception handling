@@ -173,6 +173,9 @@ No.
 
 Yes.
 
+Checked exceptions are restricted during overriding; unchecked (RuntimeException) exceptions are not restricted by the throws rule.
+
+
 LEVEL 5 (Custom Exception)
 29. How do you create Custom Exception?
 class InvalidAgeException extends Exception{

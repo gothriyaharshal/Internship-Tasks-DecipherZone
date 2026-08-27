@@ -90,7 +90,7 @@ List interface
 
     >>but in treeset or treemap ...what happens we do not have to perfrom collections.sort()....it directly
 
-     >>here equals and hashcode were work but in diffrent way like
+     >>here equals and hashcode were work but in different way like
 
      here Hashcode did not work it only work in hashing type collection
 
